@@ -1,0 +1,80 @@
+@import "../../sass/global";
+
+$width: 60px;
+$height: $width / 3;
+$gap: 3px;
+
+.checkbox {
+    display: none;
+}
+
+.toggle {
+    position: relative;
+    display: inline-block;
+
+    width: $width;
+    height: $height + $gap * 2;
+
+    background-color: darken($background-color, 20%);
+    box-shadow: inset 0 0 3px 3px rgba(0, 0, 0, 0.1);
+
+    border-radius: 0.3 * $width;
+    cursor: pointer;
+
+    &:after {
+        content: '';
+        position: absolute;
+        width: $height;
+        height: $height;
+        background-color: $background-color;
+
+        border-radius: 50%;
+
+        transition: all 0.5s;
+
+        top: $gap;
+        left: $gap;
+    }
+}
+
+.checkbox:checked + .toggle {
+    background-color: lighten(#2f2055, 10%);
+    box-shadow: inset 0 0 2px 2px rgba(gold, 0.1);
+}
+
+.checkbox:checked + .toggle::after {
+    transform: translateX($width - (2 * $gap + $height));
+}
+
+
+.emojisContainer {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    span {
+        margin: $gap * 2.5;
+        font-size: 1em;
+    }
+
+    .day {
+        transition: 0.3s;
+        transform: scale(1) rotate(0deg);
+
+        @include whenDark {
+            transform: scale(0) rotate(360deg);
+        }
+    }
+
+    .night {
+        transition: 0.3s;
+        transform: scale(0) rotate(45deg);
+
+        @include whenDark {
+            transform: scale(1) rotate(0deg);
+        }
+    }
+}

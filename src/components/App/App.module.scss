@@ -1,0 +1,36 @@
+@import "../../sass/global";
+
+.header {
+    text-align: center;
+    padding: 1em;
+    margin-bottom: 5em;
+
+    .artfxLogo {
+        position: absolute;
+        right: 1em;
+        top: 0.5em;
+        width: 100px;
+
+        @include whenDark {
+            filter: invert(1);
+        }
+    }
+}
+
+.pageContent {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+
+    flex-wrap: wrap;
+}
+
+.chartGrid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+
+    width: 80%;
+}

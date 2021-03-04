@@ -1,0 +1,27 @@
+// Normalize CSS
+@import-normalize;
+
+@import "./sass/global";
+@import "./sass/typography";
+@import "./sass/recharts";
+
+html {
+    background-color: $background-color;
+    color: $text-color;
+
+    font-family: $main-font;
+
+    transition: all 0.5s;
+}
+
+html.dark {
+    background-color: $text-color;
+    color: $background-color;
+}
+
+button, select {
+    @include whenDarkGlobal {
+        background-color: $text-color;
+        color: $background-color;
+    }
+}

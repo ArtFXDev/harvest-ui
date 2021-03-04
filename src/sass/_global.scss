@@ -1,0 +1,15 @@
+$text-color: rgb(40, 39, 39);
+$background-color: #fff;
+$main-font: SanitrixieSans;
+
+@mixin whenDarkGlobal {
+    html.dark & {
+        @content;
+    }
+}
+
+@mixin whenDark {
+    :global html.dark :local & {
+        @content;
+    }
+}

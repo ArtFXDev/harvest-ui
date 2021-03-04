@@ -1,0 +1,25 @@
+.nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    ul {
+        padding: 0;
+
+        li {
+            display: inline;
+            list-style: none;
+
+            padding: 0 1em;
+
+            a {
+                text-decoration: none;
+                color: inherit;
+
+                &.activeLink {
+                    text-decoration: underline;
+                }
+            }
+        }
+    }
+}

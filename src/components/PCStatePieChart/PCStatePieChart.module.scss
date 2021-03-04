@@ -1,0 +1,9 @@
+@import "../../sass/global";
+
+.centeredLabel {
+    font-family: $main-font;
+
+    @include whenDark {
+        fill: $background-color;
+    }
+}
