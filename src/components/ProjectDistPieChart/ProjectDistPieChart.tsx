@@ -3,7 +3,7 @@ import { Cell, Label, Pie, PieChart, ResponsiveContainer, Tooltip } from 'rechar
 
 import styles from "./ProjectDistPieChart.module.scss";
 
-import { COLORS } from '../../global.d';
+import { PROJECTS, getProjectFromName } from '../../global.d';
 
 interface Data {
   name: string;
@@ -20,7 +20,8 @@ const ProjectDistPieChart: React.FC = () => {
     const result = await fetch(process.env.REACT_APP_API_URL + '/pc-crew').then((response) => {
       return response.json();
     }).then((json) => {
-      setData(json);
+      // Sort the list by project name alphabetically
+      setData(json.sort((a: any, b: any) => (a.name > b.name) ? 1 : -1));
     }).catch((error) => {
       setData(undefined);
     });
@@ -29,7 +30,9 @@ const ProjectDistPieChart: React.FC = () => {
   // Fetch data at component mount
   useEffect(() => {
     const interval = setInterval(() => {
-      fetchData();
+      if (document.visibilityState === "visible") {
+        fetchData();
+      }
     }, 10000);
 
     fetchData();
@@ -63,9 +66,10 @@ const ProjectDistPieChart: React.FC = () => {
           >
 
             {data &&
-              data.map((el, i) => (
-                <Cell key={`pcstate-${i}`} fill={COLORS[i]} />
-              ))
+              data.map((el, i) => {
+                const project = getProjectFromName(el.name);
+                return <Cell key={`pcstate-${i}`} fill={project.color} />;
+              })
             }
 
             <Label

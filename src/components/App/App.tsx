@@ -14,6 +14,8 @@ import ComputeTimeBarChart from '../ComputeTimeBarChart/ComputeTimeBarChart';
 import PCStatePieChart from '../PCStatePieChart/PCStatePieChart';
 import ProjectDistPieChart from '../ProjectDistPieChart/ProjectDistPieChart';
 
+// Frame validation tool
+import FrameValidationTool from '../FrameValidationTool/FrameValidationTool';
 
 const App: React.FC = () => {
 
@@ -43,6 +45,12 @@ const App: React.FC = () => {
               <ComputeTimeBarChart />
             </div>
           } />
+
+          <Route
+            path={`${process.env.PUBLIC_URL}/project/:projectName`}
+            exact
+            component={FrameValidationTool}
+          />
 
         </Switch>
       </main>

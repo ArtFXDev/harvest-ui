@@ -3,7 +3,7 @@ import { Cell, Label, Pie, PieChart, ResponsiveContainer, Tooltip } from 'rechar
 
 import styles from "./PCStatePieChart.module.scss";
 
-import { COLORS } from '../../global.d';
+import { PROJECTS } from '../../global.d';
 
 interface Data {
   name: string;
@@ -29,7 +29,9 @@ const PCStatePieChart: React.FC = () => {
   // Fetch data at component mount
   useEffect(() => {
     const interval = setInterval(() => {
-      fetchData();
+      if (document.visibilityState === "visible") {
+        fetchData();
+      }
     }, 10000);
 
     fetchData();
@@ -64,7 +66,7 @@ const PCStatePieChart: React.FC = () => {
 
             {data &&
               data.map((el, i) => (
-                <Cell key={`pcstate-${i}`} fill={COLORS[i]} />
+                <Cell key={`pcstate-${i}`} fill={PROJECTS[i].color} />
               ))
             }
 

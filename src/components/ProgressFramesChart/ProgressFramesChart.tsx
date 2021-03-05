@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ResponsiveContainer, CartesianGrid, Legend, Line, LineChart, Tooltip, XAxis, YAxis, ReferenceLine } from 'recharts';
 
-import { Project, PROJECTS, COLORS } from "../../global.d";
+import { PROJECTS, Project } from "../../global.d";
 
 import styles from './ProgressFramesChart.module.scss';
 
@@ -63,7 +63,7 @@ const ProgressFramesChart: React.FC = () => {
       <label htmlFor="start" className={styles.dateSelector}>End date:</label>
       <input type="date" id="endDate" name="end-date"
         value={endDate.toISOString().substr(0, 10)}
-        onChange={event => { setEndDate(new Date(event.target.value)); console.log(endDate); }}
+        onChange={event => setEndDate(new Date(event.target.value))}
       />
 
       <ResponsiveContainer width="100%" height="100%">
@@ -116,7 +116,7 @@ const ProgressFramesChart: React.FC = () => {
                   type="monotone"
                   dataKey={project.name}
                   strokeWidth={3}
-                  stroke={COLORS[project.id]}
+                  stroke={project.color}
                   dot={false}
                 />
               })
@@ -125,7 +125,9 @@ const ProgressFramesChart: React.FC = () => {
           {/* Format tooltip with the real number of frames */}
           <Tooltip
             formatter={(value: any, projectName: any) => {
-              const totalFrames: number = (PROJECTS as any | undefined).find((pr: Project) => pr.name === projectName).totalFrames;
+              // if (PROJECTS === undefined) return;
+
+              const totalFrames = (PROJECTS as any | undefined).find((pr: Project) => pr.name === projectName).totalFrames ?? 1;
               return `${Math.floor((value / 100) * totalFrames)} frames`;
             }}
 

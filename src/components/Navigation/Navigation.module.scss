@@ -1,7 +1,8 @@
-.nav {
+.mainNav {
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
 
     ul {
         padding: 0;
@@ -16,10 +17,20 @@
                 text-decoration: none;
                 color: inherit;
 
+                transition: filter 0.3s;
+
                 &.activeLink {
                     text-decoration: underline;
+                }
+
+                &:hover {
+                    filter: brightness(1.2);
                 }
             }
         }
     }
+}
+
+.projectsList {
+    font-size: 0.8em;
 }
