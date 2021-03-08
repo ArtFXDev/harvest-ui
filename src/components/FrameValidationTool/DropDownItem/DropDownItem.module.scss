@@ -1,0 +1,50 @@
+.container {
+    padding-left: 2em;
+
+    .item {
+        border: 1px solid grey;
+
+        display: flex;
+        align-items: center;
+
+        transition: background-color ease 0.3s;
+
+        background-color: lightgray;
+
+        &.valid {
+            background-color: rgb(175, 208, 149);
+        }
+
+        &.modified {
+            background-color: rgb(255, 162, 70);
+        }
+
+        .checkbox {
+            margin-left: auto;
+        }
+    }
+
+
+    .children {
+    }
+}
+
+.arrow {
+    border-right: 3px solid;
+    border-bottom: 3px solid;
+    height: 0.5em;
+    width: 0.5em;
+
+    margin-right: 30px;
+    margin-left: 20px;
+
+    transition: transform ease 0.2s;
+}
+
+.closed {
+    transform: rotate(-45deg);
+}
+
+.open {
+    transform: rotate(45deg);
+}

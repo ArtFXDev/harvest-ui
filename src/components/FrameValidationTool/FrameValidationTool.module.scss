@@ -1,9 +1,11 @@
 .container {
-    width: 80%;
+    width: 70%;
 
     .projectTitle {
-        display: inline;
+        display: inline-block;
+        margin: 0.5em;
         padding: 0.5em;
         color: white;
+        border-radius: 0.4em;
     }
 }

@@ -5,6 +5,8 @@
 @import "./sass/typography";
 @import "./sass/recharts";
 
+@import '~pretty-checkbox/src/pretty-checkbox.scss';
+
 html {
     background-color: $background-color;
     color: $text-color;

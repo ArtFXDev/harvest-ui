@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
-import { PROJECTS } from '../../global.d';
+import { PROJECTS, projectNameToLowerHyphen, projectNameToReadable } from '../../global.d';
 
 import styles from "./Navigation.module.scss";
 
@@ -21,7 +21,8 @@ const Navigation: React.FC = () => {
       <ul className={styles.projectsList}>
         {
           PROJECTS.map((project, index) => {
-            const lowerNameHyphen: string = project.name.toLowerCase().replaceAll('_', '-');
+            const lowerNameHyphen: string = projectNameToLowerHyphen(project.name);
+
             return (<li key={`project-${index}`}>
               <NavLink
                 to={`${process.env.PUBLIC_URL}/project/${lowerNameHyphen}`}
@@ -30,7 +31,7 @@ const Navigation: React.FC = () => {
                   color: `${PROJECTS[index].color}`
                 }}
               >
-                {project.name.split('_').map(e => e[0] + e.slice(1).toLowerCase()).join(' ')}
+                {projectNameToReadable(project.name)}
               </NavLink>
             </li>);
           })
