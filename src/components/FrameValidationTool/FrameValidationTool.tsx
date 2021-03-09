@@ -59,7 +59,7 @@ const FrameValidationTool: React.FC<Props> = (props) => {
       <DropDownContainer>
         {sequences &&
           sequences.map((s: Sequence) => {
-            return <DropDownItem key={"sq-" + s.index} text={"SQ" + s.index} baseUrl={apiUrl} index={s.index} valid={s.valid === s.total} modified={false} />
+            return <DropDownItem key={"sq-" + s.index} depth={0} baseUrl={apiUrl} index={s.index} valid={s.valid === s.total} isModified={false} />
           })
         }
       </DropDownContainer>

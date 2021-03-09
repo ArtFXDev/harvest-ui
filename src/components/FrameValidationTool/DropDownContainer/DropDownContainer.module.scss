@@ -1,0 +1,26 @@
+.buttonConfirm {
+    background-color: rgb(255, 84, 41);
+    height: 15px;
+    display: inline-block;
+
+    padding: 10px 20px;
+    margin: 10px;
+
+    border-radius: 5px;
+
+    font-family: monospace;
+
+    color: white;
+
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+
+    cursor: pointer;
+
+    float: right;
+
+    transition: ease 0.3s;
+
+    &:hover {
+        transform: scale(1.1);
+    }
+}

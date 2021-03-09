@@ -1,15 +1,19 @@
+@import "../../../sass/global";
+
 .container {
     padding-left: 2em;
 
     .item {
-        border: 1px solid grey;
+        border-radius: 10px;
+
+        margin: 10px 10px 10px 0px;
 
         display: flex;
         align-items: center;
 
         transition: background-color ease 0.3s;
-
-        background-color: lightgray;
+        background-color: darken($background-color, 3%);
+        box-shadow: 5px 5px 8px rgba(0, 0, 0, 0.2);
 
         &.valid {
             background-color: rgb(175, 208, 149);
@@ -22,11 +26,32 @@
         .checkbox {
             margin-left: auto;
         }
+
+        @include whenDark {
+            background-color: lighten($text-color, 3%);
+
+            &.valid {
+                background-color: rgb(0, 161, 115);
+            }
+
+            &.modified {
+                background-color: rgb(229, 84, 68);
+            }
+        }
     }
 
 
     .children {
     }
+}
+
+.item-depth0 {
+}
+
+.item-depth1 {
+}
+
+.item-depth2 {
 }
 
 .arrow {
@@ -38,13 +63,20 @@
     margin-right: 30px;
     margin-left: 20px;
 
-    transition: transform ease 0.2s;
+    transition: all ease 0.2s;
+    cursor: pointer;
+
+    display: block;
+
+    &:hover {
+        scale: 1.2;
+    }
 }
 
 .closed {
-    transform: rotate(-45deg);
+    rotate: -45deg;
 }
 
 .open {
-    transform: rotate(45deg);
+    rotate: 45deg;
 }
