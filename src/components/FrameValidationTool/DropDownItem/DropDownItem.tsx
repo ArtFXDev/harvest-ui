@@ -1,79 +1,120 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useReducer } from 'react';
+
+import { ItemNode, createNodeItem, isNodeValid } from "../DropDownContainer/DropDownContainer";
 
 import styles from "./DropDownItem.module.scss";
 
 interface Props {
-  depth: number; // The depth in the item hierarchy
-  baseUrl: string;
-  index: number;
-  valid: boolean;
-  isModified: boolean;
+  node: ItemNode;
+  updateParent?: Function;
+  updateChangeCounter: Function;
 }
 
 const DropDownItem: React.FC<Props> = (props) => {
+  const [node, setNode] = useState<ItemNode>(props.node);
   const [open, setOpen] = useState<boolean>(false);
+  const [error, setError] = useState<string | undefined>(undefined);
 
-  const [modified, setModified] = useState<boolean>(props.isModified);
-  const [data, setData] = useState([]);
-
-  const urlApi = `${props.baseUrl}/${props.index}`;
+  const [, forceUpdate] = useReducer(x => x + 1, 0);
 
   const fetchData = async () => {
-    await fetch(urlApi).then((response) => {
+    const nextUrl = `${node.url}/${node.index}`
+
+    await fetch(nextUrl).then((response) => {
       return response.json();
-    }).then((json) => setData(json.sort((a: any, b: any) => a.index > b.index ? 1 : -1)))
-      .catch((error) => console.log(error));
+    }).then((json) => {
+
+      // Add children to the node
+      props.node.children = json.sort((a: any, b: any) => a.index > b.index ? 1 : -1)
+        .map((e: any) => createNodeItem(e.index, nextUrl, e.total === e.valid, node.depth + 1, node.modified, node));
+
+    }).catch((err) => setError(String(err)));
   }
 
   // Fetch data when opened
   useEffect(() => {
-    if (open && data.length === 0) {
+    const fetchIfNotCached = async () => {
+      await fetchData();
+      forceUpdate();
+    }
 
-      fetchData();
+    if (open && !node.children) {
+      fetchIfNotCached();
+    }
+
+    if (!open) {
+      setError(undefined);
     }
   }, [open]);
 
-  // Update when modified
+  // Update node when props updated
   useEffect(() => {
-    setModified(props.isModified);
-  }, [props.isModified]);
+    setNode(props.node);
+  }, [props.node]);
+
+  // Force update when state modified
+  useEffect(() => {
+    forceUpdate();
+  }, [props.node.modified]);
 
   // Return CSS class according to state
   const getStatusClass = (): string => {
-    if (modified) {
+    if (node.modified) {
       return styles.modified;
-    } else if (props.valid) {
+    } else if (node.valid) {
       return styles.valid;
     }
 
     return "";
   }
 
-  // Return true if valid (xor)
-  const isValid = (): boolean => {
-    return modified !== props.valid;
+  const getText = (): string => {
+    const zeroFill = (n: number, pad: number) => ('0000' + n).slice(-pad);
+    const number = (node.depth <= 1) ? zeroFill(node.index, 3) : zeroFill(node.index, 4);
+    return ["s", "p", "frame ", "Layer "][node.depth] + number;
   }
 
-  const getText = (): string => {
-    return ["SQ", "Shot ", "Frame ", "Layer "][props.depth] + props.index;
+  const recursiveCheck = (node: ItemNode, targetState: boolean) => {
+    if (isNodeValid(node) !== targetState) {
+      node.modified = !node.modified;
+    }
+
+    if (node.children) {
+      node.children.forEach(child => recursiveCheck(child, targetState));
+    }
+  }
+
+  const updateParent = () => {
+    if (!node.parent || !node.parent.children) return;
+
+    const nValid = node.parent.children.map(n => isNodeValid(n)).filter(x => x === true).length;
+
+    if ((nValid === node.parent.children.length) !== isNodeValid(node.parent)) {
+      node.parent.modified = !node.parent.modified;
+      if (props.updateParent) props.updateParent();
+    }
   }
 
   const onChecked = () => {
-    setModified(!modified);
+    const targetState = !node.modified !== node.valid;
+    recursiveCheck(node, targetState);
+
+    if (node.parent) updateParent();
+
+    forceUpdate();
+    props.updateChangeCounter();
   }
 
   const onDropDownClicked = () => {
-    // Don't use dropdown on frames now
-    if (props.depth < 2) {
-      setOpen(!open);
-    }
+    setOpen(!open);
   }
 
   return (
     <div className={styles.container}>
 
       {/* Item */}
-      <div className={`${styles.item} ${getStatusClass()} ${styles["item-depth" + props.depth]}`}>
+      <div className={`${styles.item} ${getStatusClass()} ${styles["item-depth" + node.depth]}`}>
+
         {/* Arrow */}
         <div className={`${styles.arrow} ${open ? styles.open : styles.closed}`}
           onClick={onDropDownClicked}
@@ -82,9 +123,13 @@ const DropDownItem: React.FC<Props> = (props) => {
         {/* Text */}
         <p className={styles.text}>{getText()}</p>
 
+        {error &&
+          <p className={`${styles.text} ${styles.error}`}>{error}</p>
+        }
+
         {/* Checkbox */}
         <div className={`pretty p-svg p-curve ${styles.checkbox}`}>
-          <input type="checkbox" checked={isValid()} onChange={onChecked} />
+          <input type="checkbox" checked={isNodeValid(node)} onChange={onChecked} />
           <div className="state p-success">
             <svg className="svg svg-icon" viewBox="0 0 20 20">
               <path d="M7.629,14.566c0.125,0.125,0.291,0.188,0.456,0.188c0.164,0,0.329-0.062,0.456-0.188l8.219-8.221c0.252-0.252,0.252-0.659,0-0.911c-0.252-0.252-0.659-0.252-0.911,0l-7.764,7.763L4.152,9.267c-0.252-0.251-0.66-0.251-0.911,0c-0.252,0.252-0.252,0.66,0,0.911L7.629,14.566z" style={{ stroke: "white", fill: "white" }}></path>
@@ -96,18 +141,9 @@ const DropDownItem: React.FC<Props> = (props) => {
 
       {/* Display children */}
       <div className={styles.children}>
-        {data && open &&
-          data.map((e: any) => {
-            const isElementValid: boolean = e.valid === e.total;
-
-            return <DropDownItem
-              key={`${getText()}-${e.index}`}
-              baseUrl={urlApi}
-              index={e.index}
-              valid={isElementValid}
-              isModified={modified && !isElementValid}
-              depth={props.depth + 1}
-            />
+        {node.children && open &&
+          node.children.map((child: ItemNode) => {
+            return <DropDownItem key={`node-${child.depth}-${child.index}`} node={child} updateParent={forceUpdate} updateChangeCounter={props.updateChangeCounter} />
           })
         }
       </div>

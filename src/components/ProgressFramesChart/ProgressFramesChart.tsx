@@ -21,7 +21,6 @@ const ProgressFramesChart: React.FC = () => {
   const [data, setData] = useState<Array<any> | undefined>([]);
   const [endDate, setEndDate] = useState<Date>(new Date(deadline));
 
-
   /**
    * Get data from api
    */

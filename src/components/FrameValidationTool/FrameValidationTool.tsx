@@ -28,22 +28,12 @@ const FrameValidationTool: React.FC<Props> = (props) => {
 
   const [sequences, setSequences] = useState<Array<Sequence>>([]);
 
-  const apiUrl = process.env.REACT_APP_API_URL + '/validation/validated-progression/' + props.match!.params.projectName;
-
-  const fetchSequences = async () => {
-    await fetch(apiUrl).then((response) => {
-      return response.json();
-    }).then((json) => setSequences(json))
-      .catch((error) => console.log(error));
-  }
+  const baseAPIUrl: string = process.env.REACT_APP_API_URL + '/validation/validated-progression/' + props.match!.params.projectName;
 
   // Update state when switching between project routes
   useEffect(() => {
     const upperCaseName: string = projectNameToUpperCase(props.match!.params.projectName);
     setProject(getProjectFromName(upperCaseName));
-
-    // Fetch sequences based on the project
-    fetchSequences();
   }, [props.match!.params.projectName]);
 
 
@@ -56,13 +46,7 @@ const FrameValidationTool: React.FC<Props> = (props) => {
         </h2>
       }
 
-      <DropDownContainer>
-        {sequences &&
-          sequences.map((s: Sequence) => {
-            return <DropDownItem key={"sq-" + s.index} depth={0} baseUrl={apiUrl} index={s.index} valid={s.valid === s.total} isModified={false} />
-          })
-        }
-      </DropDownContainer>
+      <DropDownContainer baseAPIUrl={baseAPIUrl} />
     </div>
   );
 }
