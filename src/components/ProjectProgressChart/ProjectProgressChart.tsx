@@ -51,9 +51,10 @@ const ProjectProgressChart: React.FC<Props> = (props) => {
   }
 
   // Fetch data at component mount
+  // Pass the props as parameter to force update when switching routes
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [props.match!.params.projectName]);
 
   return (
     <div className="chartContainerWide">
