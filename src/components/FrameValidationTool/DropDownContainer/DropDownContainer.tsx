@@ -86,6 +86,10 @@ const DropDownContainer: React.FC<Props> = (props) => {
     if (userConfirm) {
 
       fetch(props.baseAPIUrl.replace("validated", "validate"), {
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
         method: "POST",
         body: JSON.stringify(changes)
       }).then((response) => {
