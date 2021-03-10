@@ -29,7 +29,7 @@ const ProjectProgressChart: React.FC<Props> = (props) => {
   const [projectFilter, setProjectFilter] = useState<string>("all");
   const [data, setData] = useState<Array<any> | undefined>([]);
   const [endDate, setEndDate] = useState<Date>(new Date(deadline));
-  const totalFrames = PROJECTS.filter(p => p.name === props.match!.params.projectName.toUpperCase())[0].totalFrames
+  const totalFrames = PROJECTS.filter(p => p.name === props.match!.params.projectName.toUpperCase().replace("-", "_"))[0].totalFrames
 
   /**
    * Get data from api
@@ -41,7 +41,7 @@ const ProjectProgressChart: React.FC<Props> = (props) => {
 
       // Normalize values
         for (const sample of json) {
-          sample[props.match!.params.projectName.toUpperCase()] = (sample[props.match!.params.projectName.toUpperCase()] / totalFrames) * 100;
+          sample[props.match!.params.projectName.toUpperCase().replace("-", "_")] = (sample[props.match!.params.projectName.toUpperCase().replace("-", "_")] / totalFrames) * 100;
         }
 
       setData(json);
