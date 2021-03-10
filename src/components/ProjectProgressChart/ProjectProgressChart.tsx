@@ -29,6 +29,7 @@ const ProjectProgressChart: React.FC<Props> = (props) => {
   const [projectFilter, setProjectFilter] = useState<string>("all");
   const [data, setData] = useState<Array<any> | undefined>([]);
   const [endDate, setEndDate] = useState<Date>(new Date(deadline));
+  const totalFrames = PROJECTS.filter(p => p.name === props.match!.params.projectName.toUpperCase())[0].totalFrames
 
   /**
    * Get data from api
@@ -39,11 +40,9 @@ const ProjectProgressChart: React.FC<Props> = (props) => {
     }).then((json) => {
 
       // Normalize values
-      for (const project of PROJECTS) {
         for (const sample of json) {
-          sample[project.name] = (sample[project.name] / project.totalFrames) * 100;
+          sample[props.match!.params.projectName.toUpperCase()] = (sample[props.match!.params.projectName.toUpperCase()] / totalFrames) * 100;
         }
-      }
 
       setData(json);
     }).catch((error) => {
@@ -58,14 +57,6 @@ const ProjectProgressChart: React.FC<Props> = (props) => {
 
   return (
     <div className="chartContainerWide">
-
-      {/* Project selector */}
-      <select onChange={e => setProjectFilter(e.target.value)}>
-        <option value="all">All projects</option>
-        {
-          PROJECTS.map(project => <option key={project.name} value={project.name}>{project.name}</option>)
-        }
-      </select>
 
       {/* End date selector */}
       <label htmlFor="start" className={styles.dateSelector}>End date:</label>
@@ -141,8 +132,6 @@ const ProjectProgressChart: React.FC<Props> = (props) => {
 
             labelFormatter={formatTimestamp}
           />
-
-          <Legend />
 
           <ReferenceLine
             label="Goal"
