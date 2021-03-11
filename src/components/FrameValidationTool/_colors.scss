@@ -1,0 +1,13 @@
+@import "../../sass/global";
+
+$color-valid-light: rgb(175, 208, 149);
+$color-valid-dark: rgb(0, 161, 115);
+
+$color-modified-light: rgb(255, 162, 70);
+$color-modified-dark: rgb(229, 84, 68);
+
+$color-notRendered-light: darken($background-color, 3%);
+$color-notRendered-dark: lighten($text-color, 3%);
+
+$color-confirm: rgb(255, 84, 41);
+$color-reset: rgb(133, 119, 189);

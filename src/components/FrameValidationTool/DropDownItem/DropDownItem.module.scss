@@ -1,4 +1,4 @@
-@import "../../../sass/global";
+@import "../colors";
 
 .container {
     padding-left: 2em;
@@ -12,15 +12,21 @@
         align-items: center;
 
         transition: background-color ease 0.3s;
-        background-color: darken($background-color, 3%);
+        background-color: $color-notRendered-light;
         box-shadow: 5px 5px 8px rgba(0, 0, 0, 0.2);
 
         &.valid {
-            background-color: rgb(175, 208, 149);
+            background-color: $color-valid-light;
         }
 
         &.modified {
-            background-color: rgb(255, 162, 70);
+            background-color: $color-modified-light;
+        }
+
+        .error {
+            color: red;
+            font-size: 0.8em;
+            margin-left: 1em;
         }
 
         .checkbox {
@@ -28,14 +34,14 @@
         }
 
         @include whenDark {
-            background-color: lighten($text-color, 3%);
+            background-color: $color-notRendered-dark;
 
             &.valid {
-                background-color: rgb(0, 161, 115);
+                background-color: $color-valid-dark;
             }
 
             &.modified {
-                background-color: rgb(229, 84, 68);
+                background-color: $color-modified-dark;
             }
         }
     }
