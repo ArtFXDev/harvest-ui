@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { match } from 'react-router';
 import { ResponsiveContainer, CartesianGrid, Legend, Line, LineChart, Tooltip, XAxis, YAxis, ReferenceLine } from 'recharts';
 
-import { PROJECTS, Project } from "../../global.d";
+import { PROJECTS, Project, projectNameToUpperCase} from "../../global.d";
 
 import styles from './ProjectProgressChart.module.scss';
 
@@ -29,7 +29,7 @@ const ProjectProgressChart: React.FC<Props> = (props) => {
   const [projectFilter, setProjectFilter] = useState<string>("all");
   const [data, setData] = useState<Array<any> | undefined>([]);
   const [endDate, setEndDate] = useState<Date>(new Date(deadline));
-  const totalFrames = PROJECTS.filter(p => p.name === props.match!.params.projectName.toUpperCase().replace("-", "_"))[0].totalFrames
+  const totalFrames = PROJECTS.filter(p => p.name === projectNameToUpperCase(props.match!.params.projectName))[0].totalFrames
 
   /**
    * Get data from api
@@ -41,7 +41,7 @@ const ProjectProgressChart: React.FC<Props> = (props) => {
 
       // Normalize values
         for (const sample of json) {
-          sample[props.match!.params.projectName.toUpperCase().replace("-", "_")] = (sample[props.match!.params.projectName.toUpperCase().replace("-", "_")] / totalFrames) * 100;
+          sample[props.match!.params.projectName.toUpperCase().replace("-", "_")] = (sample[projectNameToUpperCase(props.match!.params.projectName)] / totalFrames) * 100;
         }
 
       setData(json);

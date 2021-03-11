@@ -85,7 +85,7 @@ export const PROJECTS: Array<Project> = [
     id: 12,
     name: "TEST_PIPE",
     color: "black",
-    totalFrames: 10
+    totalFrames: 3811
   }
 ];
 
