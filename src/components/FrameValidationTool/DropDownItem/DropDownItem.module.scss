@@ -33,6 +33,20 @@
             margin-left: auto;
         }
 
+        .expression {
+            border: none;
+            border-radius: 4px;
+            font-family: SanitrixieSans;
+            margin: auto;
+            background-color: #D9D9D9;
+            color: black;
+
+            @include whenDark {
+                background-color: #282727;
+                color: white;
+            }
+        }
+
         @include whenDark {
             background-color: $color-notRendered-dark;
 

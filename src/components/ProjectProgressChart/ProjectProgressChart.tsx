@@ -1,30 +1,33 @@
+// Import third-party
 import React, { useState, useEffect } from 'react';
 import { match } from 'react-router';
 import { ResponsiveContainer, CartesianGrid, Legend, Line, LineChart, Tooltip, XAxis, YAxis, ReferenceLine } from 'recharts';
 
 import { PROJECTS, Project, projectNameToUpperCase} from "../../global.d";
 
+// import sytle
 import styles from './ProjectProgressChart.module.scss';
 
-const startTime = (+ new Date(2021, 1, 23));
+// Initialise dates
+const startTime = (+ new Date(2021, 2, 0));
 const deadline = (+ new Date(2021, 5, 2));
 
 
-/**
- * Format timestamp to MM/DD/YYYY
- */
+ // Format timestamp to MM/DD/YYYY
 function formatTimestamp(unixTime: number): string {
-  return (new Date(unixTime)).toLocaleDateString("en-US");
+    return (new Date(unixTime)).toLocaleDateString("en-US");
 }
 
+// Interface to get the route string
 interface RouteParams {
-  projectName: string;
+    projectName: string;
 }
 
 interface Props {
-  match?: match<RouteParams>;
+    match?: match<RouteParams>;
 }
 
+// Create a graph out of the api data using recharts
 const ProjectProgressChart: React.FC<Props> = (props) => {
   const [projectFilter, setProjectFilter] = useState<string>("all");
   const [data, setData] = useState<Array<any> | undefined>([]);
