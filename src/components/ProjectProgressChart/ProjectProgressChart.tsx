@@ -41,7 +41,6 @@ const ProjectProgressChart: React.FC<Props> = (props) => {
         await fetch(process.env.REACT_APP_API_URL + '/infos/projects').then((response) => {
         return response.json();
         }).then((projects) => {
-        console.log(projects);
         }).catch((error) => {
             console.log(error)
         })

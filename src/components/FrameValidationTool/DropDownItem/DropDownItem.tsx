@@ -109,16 +109,26 @@ const DropDownItem: React.FC<Props> = (props) => {
     setOpen(!open);
   }
 
-  const onExpressionChaged = (e : React.ChangeEvent<HTMLInputElement>) => {
-    const expression = e.target.value;
+  // Callback when enter is pressed on the expression
+  const onSubmitExpression = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    // If the key pressed is not enter, do nothing
+    if(e.code != "Enter" && e.code != "NumpadEnter") { return; }
+
+    // Get the expression
+    const expression = e.currentTarget.value;
     
+    // Initialize the list of child to toogle
     const childList: number[] = [];
+
     const splits = expression.split(",", 10)
     for(let split of splits) {
+        // Initialise the step, start, end
         let step = 1;
         let start = 0;
         let end = 0;
+        // If the expression is a range
         if(split.indexOf("-") > -1) {
+            // If the expression specifies a step
             if(split.indexOf("x") > -1) {
                 step = (+split.split("x")[1] > 0) ? +split.split("x")[1] : 1;
                 split = split.split("x")[0]
@@ -126,20 +136,23 @@ const DropDownItem: React.FC<Props> = (props) => {
             start = +split.split("-")[0]
             end = +split.split("-")[1]
         }
+        // If the expression is just a single index
         else {
             start = end = +split
         }
+        // Gather all the matching frames
         for(let i = start; i <= end; i += step) {
             childList.push(i)
         }
     }
 
-    console.log(childList)
+    // Toogle all the children that are set in the childList
     node.children?.map((child) => { 
         if(childList.includes(child.index)) {
-            child.modified = true; 
+            child.modified = !child.modified; 
         }
     })
+    // Update the children to see the modifications
     forceUpdate();
   }
 
@@ -158,7 +171,7 @@ const DropDownItem: React.FC<Props> = (props) => {
         <p className={styles.text}>{getText()}</p>
 
         {open &&
-            <input type="text" onChange={onExpressionChaged}/>
+            <input type="text" onKeyDown={onSubmitExpression}/>
         }
         
         {error &&
