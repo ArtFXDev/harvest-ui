@@ -171,7 +171,7 @@ const DropDownItem: React.FC<Props> = (props) => {
         <p className={styles.text}>{getText()}</p>
 
         {open &&
-            <input type="text" onKeyDown={onSubmitExpression}/>
+            <input className={`${styles.expression}`} type="text" onKeyDown={onSubmitExpression}/>
         }
         
         {error &&
