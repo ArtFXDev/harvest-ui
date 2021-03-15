@@ -1,26 +1,93 @@
-.buttonConfirm {
-    background-color: rgb(255, 84, 41);
-    height: 15px;
+@import "../colors";
+
+.floatRight {
+    display: flex;
+
+    justify-content: flex-end;
+
+    .changes {
+        display: inline-block;
+        color: $color-confirm;
+    }
+
+    .button {
+        color: white;
+        display: inline-block;
+        height: 15px;
+
+        padding: 10px 20px;
+        margin: 10px;
+
+        font-family: monospace;
+
+        box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+
+        cursor: pointer;
+        transition: ease 0.3s;
+        border-radius: 5px;
+
+        &:hover {
+            transform: scale(1.1);
+        }
+
+        &.confirm {
+            background-color: $color-confirm;
+        }
+
+        &.reset {
+            background-color: $color-reset;
+        }
+    }
+}
+
+.floatLeft {
     display: inline-block;
 
-    padding: 10px 20px;
-    margin: 10px;
+    .square {
+        width: 30px;
+        height: 30px;
 
-    border-radius: 5px;
+        background-color: $color-notRendered-light;
+        border: 2px solid $color-notRendered-light;
+        border-radius: 10px;
 
-    font-family: monospace;
+        display: inline-block;
+        margin: 10px;
 
-    color: white;
+        &.valid {
+            background-color: $color-valid-light;
+        }
 
-    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+        &.modified {
+            background-color: $color-modified-light;
+        }
 
-    cursor: pointer;
+        @include whenDark {
+            background-color: $color-notRendered-dark;
 
-    float: right;
+            &.valid {
+                background-color: $color-valid-dark;
+            }
 
-    transition: ease 0.3s;
-
-    &:hover {
-        transform: scale(1.1);
+            &.modified {
+                background-color: $color-modified-dark;
+            }
+        }
     }
+}
+
+.requestStatus {
+    margin: 10px;
+    padding: 10px;
+    display: inline-block;
+    border-radius: 5px;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+}
+
+.error {
+    background-color: rgba(255, 0, 0, 0.7);
+}
+
+.success {
+    background-color: green;
 }

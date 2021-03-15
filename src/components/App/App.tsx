@@ -13,6 +13,7 @@ import ProgressFramesChart from '../ProgressFramesChart/ProgressFramesChart';
 import ComputeTimeBarChart from '../ComputeTimeBarChart/ComputeTimeBarChart';
 import PCStatePieChart from '../PCStatePieChart/PCStatePieChart';
 import ProjectDistPieChart from '../ProjectDistPieChart/ProjectDistPieChart';
+import ProjectProgressChart from '../ProjectProgressChart/ProjectProgressChart';
 
 // Frame validation tool
 import FrameValidationTool from '../FrameValidationTool/FrameValidationTool';
@@ -30,6 +31,13 @@ const App: React.FC = () => {
       </header>
 
       <main className={styles.pageContent}>
+
+        <Route
+          path={`${process.env.PUBLIC_URL}/project/:projectName`}
+          exact
+          component={ProjectProgressChart}
+        />
+
         <Switch>
 
           <Route path={`${process.env.PUBLIC_URL}/`} exact render={(props) =>

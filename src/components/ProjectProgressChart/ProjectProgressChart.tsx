@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { match } from 'react-router';
 import { ResponsiveContainer, CartesianGrid, Legend, Line, LineChart, Tooltip, XAxis, YAxis, ReferenceLine } from 'recharts';
 
-import { PROJECTS, Project } from "../../global.d";
+import { PROJECTS, Project, projectNameToUpperCase} from "../../global.d";
 
-import styles from './ProgressFramesChart.module.scss';
+import styles from './ProjectProgressChart.module.scss';
 
 const startTime = (+ new Date(2021, 1, 23));
 const deadline = (+ new Date(2021, 5, 2));
@@ -16,25 +17,32 @@ function formatTimestamp(unixTime: number): string {
   return (new Date(unixTime)).toLocaleDateString("en-US");
 }
 
-const ProgressFramesChart: React.FC = () => {
+interface RouteParams {
+  projectName: string;
+}
+
+interface Props {
+  match?: match<RouteParams>;
+}
+
+const ProjectProgressChart: React.FC<Props> = (props) => {
   const [projectFilter, setProjectFilter] = useState<string>("all");
   const [data, setData] = useState<Array<any> | undefined>([]);
   const [endDate, setEndDate] = useState<Date>(new Date(deadline));
+  const totalFrames = PROJECTS.filter(p => p.name === projectNameToUpperCase(props.match!.params.projectName))[0].totalFrames
 
   /**
    * Get data from api
    */
   const fetchData = async () => {
-    const result = await fetch(process.env.REACT_APP_API_URL + '/crew-progression').then((response) => {
+    const result = await fetch(process.env.REACT_APP_API_URL + '/graphics/progression/' + props.match!.params.projectName).then((response) => {
       return response.json();
     }).then((json) => {
 
       // Normalize values
-      for (const project of PROJECTS) {
         for (const sample of json) {
-          sample[project.name] = (sample[project.name] / project.totalFrames) * 100;
+          sample[props.match!.params.projectName.toUpperCase().replace("-", "_")] = (sample[projectNameToUpperCase(props.match!.params.projectName)] / totalFrames) * 100;
         }
-      }
 
       setData(json);
     }).catch((error) => {
@@ -43,20 +51,13 @@ const ProgressFramesChart: React.FC = () => {
   }
 
   // Fetch data at component mount
+  // Pass the props as parameter to force update when switching routes
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [props.match!.params.projectName]);
 
   return (
     <div className="chartContainerWide">
-
-      {/* Project selector */}
-      <select onChange={e => setProjectFilter(e.target.value)}>
-        <option value="all">All projects</option>
-        {
-          PROJECTS.map(project => <option key={project.name} value={project.name}>{project.name}</option>)
-        }
-      </select>
 
       {/* End date selector */}
       <label htmlFor="start" className={styles.dateSelector}>End date:</label>
@@ -133,8 +134,6 @@ const ProgressFramesChart: React.FC = () => {
             labelFormatter={formatTimestamp}
           />
 
-          <Legend />
-
           <ReferenceLine
             label="Goal"
             stroke="red"
@@ -148,4 +147,4 @@ const ProgressFramesChart: React.FC = () => {
   )
 };
 
-export default ProgressFramesChart;
+export default ProjectProgressChart;
