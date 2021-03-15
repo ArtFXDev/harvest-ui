@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 import { match } from 'react-router';
 import { ResponsiveContainer, CartesianGrid, Legend, Line, LineChart, Tooltip, XAxis, YAxis, ReferenceLine } from 'recharts';
 
-// Import global variables
 import { PROJECTS, Project, projectNameToUpperCase} from "../../global.d";
 
 // import sytle
@@ -30,43 +29,35 @@ interface Props {
 
 // Create a graph out of the api data using recharts
 const ProjectProgressChart: React.FC<Props> = (props) => {
-    const [projectFilter, setProjectFilter] = useState<string>("all");
-    const [data, setData] = useState<Array<any> | undefined>([]);
-    const [endDate, setEndDate] = useState<Date>(new Date(deadline));
-    const [startDate, setStartDate] = useState<Date>(new Date(startTime));
-    const totalFrames = PROJECTS.filter(p => p.name === projectNameToUpperCase(props.match!.params.projectName))[0].totalFrames
+  const [projectFilter, setProjectFilter] = useState<string>("all");
+  const [data, setData] = useState<Array<any> | undefined>([]);
+  const [endDate, setEndDate] = useState<Date>(new Date(deadline));
+  const totalFrames = PROJECTS.filter(p => p.name === projectNameToUpperCase(props.match!.params.projectName))[0].totalFrames
 
-    // Fetch the projects infos
-    const fetchProjects = async () => {
-        await fetch(process.env.REACT_APP_API_URL + '/infos/projects').then((response) => {
-        return response.json();
-        }).then((projects) => {
-        }).catch((error) => {
-            console.log(error)
-        })
-    }
+  /**
+   * Get data from api
+   */
+  const fetchData = async () => {
+    const result = await fetch(process.env.REACT_APP_API_URL + '/graphics/progression/' + props.match!.params.projectName).then((response) => {
+      return response.json();
+    }).then((json) => {
 
-    // Fetch graph data from the harvest api
-    const fetchData = async () => {
-        await fetch(process.env.REACT_APP_API_URL + '/graphics/progression/' + props.match!.params.projectName).then((response) => {
-        return response.json();
-        }).then((json) => {
-            // Normalize values
-            for (const sample of json) {
-                sample[projectNameToUpperCase(props.match!.params.projectName)] = (sample[projectNameToUpperCase(props.match!.params.projectName)] / totalFrames) * 100;
-            }
-            setData(json);
-        }).catch((error) => {
-            setData(undefined);
-        });
-    }
+      // Normalize values
+        for (const sample of json) {
+          sample[props.match!.params.projectName.toUpperCase().replace("-", "_")] = (sample[projectNameToUpperCase(props.match!.params.projectName)] / totalFrames) * 100;
+        }
 
-    // Fetch data at component mount
-    // Pass the props as parameter to force update when switching routes
-    useEffect(() => {
-        fetchProjects();
-        fetchData();
-    }, [props.match!.params.projectName]);
+      setData(json);
+    }).catch((error) => {
+      setData(undefined);
+    });
+  }
+
+  // Fetch data at component mount
+  // Pass the props as parameter to force update when switching routes
+  useEffect(() => {
+    fetchData();
+  }, [props.match!.params.projectName]);
 
   return (
     <div className="chartContainerWide">
