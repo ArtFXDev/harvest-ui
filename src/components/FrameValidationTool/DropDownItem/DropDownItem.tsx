@@ -109,6 +109,40 @@ const DropDownItem: React.FC<Props> = (props) => {
     setOpen(!open);
   }
 
+  const onExpressionChaged = (e : React.ChangeEvent<HTMLInputElement>) => {
+    const expression = e.target.value;
+    
+    const childList: number[] = [];
+    const splits = expression.split(",", 10)
+    for(let split of splits) {
+        let step = 1;
+        let start = 0;
+        let end = 0;
+        if(split.indexOf("-") > -1) {
+            if(split.indexOf("x") > -1) {
+                step = (+split.split("x")[1] > 0) ? +split.split("x")[1] : 1;
+                split = split.split("x")[0]
+            }
+            start = +split.split("-")[0]
+            end = +split.split("-")[1]
+        }
+        else {
+            start = end = +split
+        }
+        for(let i = start; i <= end; i += step) {
+            childList.push(i)
+        }
+    }
+
+    console.log(childList)
+    node.children?.map((child) => { 
+        if(childList.includes(child.index)) {
+            child.modified = true; 
+        }
+    })
+    forceUpdate();
+  }
+
   return (
     <div className={styles.container}>
 
@@ -123,6 +157,10 @@ const DropDownItem: React.FC<Props> = (props) => {
         {/* Text */}
         <p className={styles.text}>{getText()}</p>
 
+        {open &&
+            <input type="text" onChange={onExpressionChaged}/>
+        }
+        
         {error &&
           <p className={`${styles.text} ${styles.error}`}>{error}</p>
         }
