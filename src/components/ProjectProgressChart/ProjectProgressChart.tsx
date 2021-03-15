@@ -86,7 +86,7 @@ const ProjectProgressChart: React.FC<Props> = (props) => {
 
           <XAxis
             type="number"
-            domain={[startDate.getTime(), endDate.getTime()]}
+            domain={[startTime, endDate.getTime()]}
             dataKey="timestamp"
             tickFormatter={formatTimestamp}
             scale="linear"
