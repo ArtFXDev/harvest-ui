@@ -18,6 +18,9 @@ import ProjectProgressChart from '../ProjectProgressChart/ProjectProgressChart';
 // Frame validation tool
 import FrameValidationTool from '../FrameValidationTool/FrameValidationTool';
 
+// Test 
+import GraphCurveChart from '../GraphCurvesChart/GraphCurveChart'
+
 const App: React.FC = () => {
 
   return (
@@ -44,6 +47,7 @@ const App: React.FC = () => {
             <div className={styles.chartGrid}>
               <PCStatePieChart />
               <ProjectDistPieChart />
+              <GraphCurveChart sampleKey={"sample_temp"}/>
             </div>
           } />
 
