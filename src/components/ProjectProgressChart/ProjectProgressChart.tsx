@@ -10,7 +10,9 @@ import styles from './ProjectProgressChart.module.scss';
 
 // Initialise dates
 const startTime = (+ new Date(2021, 2, 0));
-const deadline = (+ new Date(2021, 5, 7));
+// TODO: Figure out why TF the date does not correspond to what i say here
+// The actual date is : const deadline = (+ new Date(2021, 5, 7));
+const deadline = (+ new Date(2021, 4, 8));
 
 
  // Format timestamp to MM/DD/YYYY

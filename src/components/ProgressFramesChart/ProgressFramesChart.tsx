@@ -6,7 +6,9 @@ import { PROJECTS, Project } from "../../global.d";
 import styles from './ProgressFramesChart.module.scss';
 
 const startTime = (+ new Date(2021, 2, 0));
-const deadline = (+ new Date(2021, 5, 7));
+// TODO: Figure out why TF the date does not correspond to what i say here
+// The actual date is : const deadline = (+ new Date(2021, 5, 7));
+const deadline = (+ new Date(2021, 4, 8));
 
 
 /**
