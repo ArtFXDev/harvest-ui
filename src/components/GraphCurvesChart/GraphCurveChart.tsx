@@ -27,21 +27,14 @@ interface InputInfos {
 
 // All the props
 interface Props {
-    route?: string;
-    sampleKey: string;
+    route: string;
+    index?: string;
     // inputInfos: Array<InputInfos>;
 }
 
-const defaultProps: Props = {
-    route: "/",
-    sampleKey: "timestamp",
-}
-
 // COMPONENT - Display graph from given API url
-const GraphCurveChart: React.FC<Props> = (props: Props = defaultProps) => {
+const GraphCurveChart: React.FC<Props> = (props: Props) => {
     const [data, setData] = useState<Array<any> | undefined>([]);
-    console.log(props.route)
-    console.log(props.sampleKey)
 
     return (
     <div className="chartContainerWide">
@@ -105,6 +98,10 @@ const GraphCurveChart: React.FC<Props> = (props: Props = defaultProps) => {
         </ResponsiveContainer>
     </div>
     )
+};
+
+GraphCurveChart.defaultProps = {
+    index: "timestamp"
 };
 
 export default GraphCurveChart;

@@ -90,6 +90,34 @@ export const PROJECTS: Array<Project> = [
 ];
 
 /**
+ * Get the list of project and their relative infos via harvest API
+ */
+export const getProjects = async () => {
+    let projects: Array<Project> = [];
+
+    // Query the list of project at /infos/projects
+    await fetch(process.env.REACT_APP_API_URL + '/infos/projects').then((response) => {
+        return response.json();
+    }).then((json) => {
+        // Append all the data of the json to the projects variable
+        for(const project of json) {
+            // Check if the data are correct
+            if("color" in project && project["color"] !== null &&
+                "name" in project && project["name"] !== null &&
+                "id" in project && project["id"] !== null &&
+                "frames" in project && project["frames"] !== null) {
+                projects.push({ ...project });
+            }
+        }
+    }).catch((error) => {
+        // Log errors
+        console.log(error);
+    });
+
+    return projects;
+};
+
+/**
  * Get a project object from it's name
  */
 export const getProjectFromName = (name: string): Project => {

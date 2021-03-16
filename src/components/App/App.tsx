@@ -18,6 +18,9 @@ import ProjectProgressChart from '../ProjectProgressChart/ProjectProgressChart';
 // Frame validation tool
 import FrameValidationTool from '../FrameValidationTool/FrameValidationTool';
 
+// Test graph component
+import TestComponent from '../TestDev/TestDev';
+
 
 const App: React.FC = () => {
 
@@ -45,13 +48,13 @@ const App: React.FC = () => {
             <div className={styles.chartGrid}>
               <PCStatePieChart />
               <ProjectDistPieChart />
+              <TestComponent />
             </div>
           } />
 
           <Route path={`${process.env.PUBLIC_URL}/projects`} exact render={(props) =>
             <div>
               <ProgressFramesChart />
-              <ComputeTimeBarChart />
             </div>
           } />
 
