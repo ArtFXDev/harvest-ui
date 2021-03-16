@@ -5,8 +5,8 @@ import { PROJECTS, Project } from "../../global.d";
 
 import styles from './ProgressFramesChart.module.scss';
 
-const startTime = (+ new Date(2021, 1, 23));
-const deadline = (+ new Date(2021, 5, 2));
+const startTime = (+ new Date(2021, 2, 0));
+const deadline = (+ new Date(2021, 5, 7));
 
 
 /**
@@ -25,7 +25,7 @@ const ProgressFramesChart: React.FC = () => {
    * Get data from api
    */
   const fetchData = async () => {
-    const result = await fetch(process.env.REACT_APP_API_URL + '/crew-progression').then((response) => {
+    const result = await fetch(process.env.REACT_APP_API_URL + '/graphics/progression').then((response) => {
       return response.json();
     }).then((json) => {
 

@@ -10,7 +10,7 @@ import styles from './ProjectProgressChart.module.scss';
 
 // Initialise dates
 const startTime = (+ new Date(2021, 2, 0));
-const deadline = (+ new Date(2021, 5, 2));
+const deadline = (+ new Date(2021, 5, 7));
 
 
  // Format timestamp to MM/DD/YYYY
