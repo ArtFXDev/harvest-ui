@@ -52,20 +52,19 @@ const ProgressFramesChart: React.FC = () => {
   return (
     <div className="chartContainerWide">
 
-      {/* Project selector */}
-      <select onChange={e => setProjectFilter(e.target.value)}>
-        <option value="all">All projects</option>
-        {
-          PROJECTS.map(project => <option key={project.name} value={project.name}>{project.name}</option>)
-        }
-      </select>
+      <div className={styles.infos}>
+        <div>
+          {/* End date selector */}
+          <label htmlFor="start" className={styles.dateSelector}>End date:</label>
+          <input type="date" id="endDate" name="end-date"
+            value={endDate.toISOString().substr(0, 10)}
+            onChange={event => setEndDate(new Date(event.target.value))}
+          />
+        </div>
 
-      {/* End date selector */}
-      <label htmlFor="start" className={styles.dateSelector}>End date:</label>
-      <input type="date" id="endDate" name="end-date"
-        value={endDate.toISOString().substr(0, 10)}
-        onChange={event => setEndDate(new Date(event.target.value))}
-      />
+        {/* End date info */}
+        <label className={styles.deadline}>Deadline : { (new Date(deadline)).toISOString().substr(0, 10) }</label>
+      </div>
 
       <ResponsiveContainer width="100%" height="100%">
         <LineChart
