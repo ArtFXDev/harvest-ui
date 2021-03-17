@@ -71,7 +71,7 @@ export const PROJECTS: Array<Project> = [
   },
   {
     id: 10,
-    name: "PIR_HEART",
+    name: "PIR_HEARTH",
     color: "#96bb7c",
     totalFrames: 6371
   },
