@@ -16,6 +16,11 @@ html {
     transition: all 0.5s;
 }
 
+hr {
+    color: rgba(0.1, 0.1, 0.1, 0.2);
+    width: 50%;
+}
+
 html.dark {
     background-color: $text-color;
     color: $background-color;

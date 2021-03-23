@@ -81,10 +81,7 @@ const DropDownContainer: React.FC<Props> = (props) => {
 
     const userConfirm = window.confirm("Do you really want to modify " + changes.length + " elements?");
 
-    console.log(changes, userConfirm);
-
     if (userConfirm) {
-
       fetch(props.baseAPIUrl.replace("validated", "validate"), {
         headers: {
           'Accept': 'application/json',

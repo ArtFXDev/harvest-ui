@@ -1,11 +1,15 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
-import { PROJECTS, projectNameToLowerHyphen, projectNameToReadable } from '../../global.d';
+import { PROJECTS } from 'global.d';
 
-import styles from "./Navigation.module.scss";
+import ProjectUtils from 'utils/project-utils';
 
+import styles from './Navigation.module.scss';
 
+/**
+ * Navbar component
+ */
 const Navigation: React.FC = () => {
   return (
     <nav className={styles.mainNav}>
@@ -21,17 +25,15 @@ const Navigation: React.FC = () => {
       <ul className={styles.projectsList}>
         {
           PROJECTS.map((project, index) => {
-            const lowerNameHyphen: string = projectNameToLowerHyphen(project.name);
-
             return (<li key={`project-${index}`}>
               <NavLink
-                to={`${process.env.PUBLIC_URL}/project/${lowerNameHyphen}`}
+                to={`${process.env.PUBLIC_URL}/project/${ProjectUtils.projectNameToLowerHyphen(project.name)}`}
                 activeClassName={styles.activeLink}
                 style={{
                   color: `${PROJECTS[index].color}`
                 }}
               >
-                {projectNameToReadable(project.name)}
+                {ProjectUtils.projectNameToReadable(project.name)}
               </NavLink>
             </li>);
           })

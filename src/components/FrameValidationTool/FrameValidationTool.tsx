@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { match } from 'react-router';
 
-import { Project, getProjectFromName, projectNameToUpperCase, projectNameToReadable } from '../../global.d';
+import { Project, getProjectFromName, projectNameToUpperCase, projectNameToReadable } from 'global.d';
 
 import styles from "./FrameValidationTool.module.scss";
 
@@ -39,13 +39,7 @@ const FrameValidationTool: React.FC<Props> = (props) => {
 
   return (
     <div className={styles.container}>
-      {project &&
-        <h2 style={{ backgroundColor: project?.color }}
-          className={styles.projectTitle}>
-          {projectNameToReadable(project?.name)}
-        </h2>
-      }
-
+      <h2>Validation tool : </h2>
       <DropDownContainer baseAPIUrl={baseAPIUrl} />
     </div>
   );

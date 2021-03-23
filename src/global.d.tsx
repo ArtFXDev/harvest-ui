@@ -81,13 +81,23 @@ export const PROJECTS: Array<Project> = [
     color: "#7868e6",
     totalFrames: 6990
   },
-  {
+  /*{
     id: 12,
     name: "TEST_PIPE",
     color: "black",
     totalFrames: 3811
-  }
+  }*/
 ];
+
+
+// Return the total number of frames of all projects
+export const getTotalFrames = (): number => {
+  return PROJECTS.map((project: Project) => project.totalFrames)
+    .reduce((acc: number, frames: number) => acc + frames, 0);
+}
+
+export const startTime: Date = new Date(2021, 2, 1);
+export const deadline: Date = new Date(2021, 4, 7);
 
 /**
  * Get a project object from it's name

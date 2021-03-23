@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useReducer } from 'react';
 
-import { ItemNode, createNodeItem, isNodeValid } from "../DropDownContainer/DropDownContainer";
+import { ItemNode, createNodeItem, isNodeValid } from '../DropDownContainer/DropDownContainer';
 
-import styles from "./DropDownItem.module.scss";
+import styles from './DropDownItem.module.scss';
 
 interface Props {
   node: ItemNode;
@@ -15,6 +15,8 @@ const DropDownItem: React.FC<Props> = (props) => {
   const [open, setOpen] = useState<boolean>(false);
   const [error, setError] = useState<string | undefined>(undefined);
 
+  // Hack to force the update of the component
+  // TODO: In the future change this
   const [, forceUpdate] = useReducer(x => x + 1, 0);
 
   const fetchData = async () => {
@@ -112,55 +114,56 @@ const DropDownItem: React.FC<Props> = (props) => {
   // Callback when enter is pressed on the expression
   const onSubmitExpression = (e: React.KeyboardEvent<HTMLInputElement>) => {
     // If the key pressed is not enter, do nothing
-    if(e.code != "Enter" && e.code != "NumpadEnter") { return; }
+    if (e.code !== "Enter" && e.code !== "NumpadEnter") { return; }
 
     // Get the expression
     const expression = e.currentTarget.value;
-    
+
     // Initialize the list of child to toogle
     const childList: number[] = [];
 
     const splits = expression.split(",", 10)
-    for(let split of splits) {
-        // Initialise the step, start, end
-        let step = 1;
-        let start = 0;
-        let end = 0;
-        // If the expression is a range
-        if(split.indexOf("-") > -1) {
-            // If the expression specifies a step
-            if(split.indexOf("x") > -1) {
-                step = (+split.split("x")[1] > 0) ? +split.split("x")[1] : 1;
-                split = split.split("x")[0]
-            }
-            start = +split.split("-")[0]
-            end = +split.split("-")[1]
+    for (let split of splits) {
+      // Initialise the step, start, end
+      let step = 1;
+      let start = 0;
+      let end = 0;
+      // If the expression is a range
+      if (split.indexOf("-") > -1) {
+        // If the expression specifies a step
+        if (split.indexOf("x") > -1) {
+          step = (+split.split("x")[1] > 0) ? +split.split("x")[1] : 1;
+          split = split.split("x")[0]
         }
-        // If the expression is just a single index
-        else {
-            start = end = +split
-        }
-        // Gather all the matching frames
-        for(let i = start; i <= end; i += step) {
-            childList.push(i)
-        }
+        start = +split.split("-")[0]
+        end = +split.split("-")[1]
+      }
+      // If the expression is just a single index
+      else {
+        start = end = +split
+      }
+      // Gather all the matching frames
+      for (let i = start; i <= end; i += step) {
+        childList.push(i)
+      }
     }
 
     // Toogle all the children that are set in the childList
-    node.children?.map((child) => { 
-        if(childList.includes(child.index)) {
-            child.modified = !child.modified; 
-        }
+    node.children?.forEach((child) => {
+      if (childList.includes(child.index)) {
+        child.modified = !child.modified;
+      }
     })
+
     // Update the children to see the modifications
     forceUpdate();
   }
 
   return (
-    <div className={styles.container}>
+    <div className={`${styles.container} ${styles["item-depth" + node.depth]}`}>
 
       {/* Item */}
-      <div className={`${styles.item} ${getStatusClass()} ${styles["item-depth" + node.depth]}`}>
+      <div className={`${styles.item} ${getStatusClass()} `}>
 
         {/* Arrow */}
         <div className={`${styles.arrow} ${open ? styles.open : styles.closed}`}
@@ -170,10 +173,12 @@ const DropDownItem: React.FC<Props> = (props) => {
         {/* Text */}
         <p className={styles.text}>{getText()}</p>
 
+        {/* Expression text input */}
         {open &&
-            <input className={`${styles.expression}`} type="text" onKeyDown={onSubmitExpression}/>
+          <input className={`${styles.expression}`} type="text" onKeyDown={onSubmitExpression} />
         }
-        
+
+        {/* Conditional error message */}
         {error &&
           <p className={`${styles.text} ${styles.error}`}>{error}</p>
         }

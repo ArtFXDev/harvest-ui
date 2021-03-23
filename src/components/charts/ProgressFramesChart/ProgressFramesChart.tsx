@@ -1,33 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { ResponsiveContainer, CartesianGrid, Legend, Line, LineChart, Tooltip, XAxis, YAxis, ReferenceLine } from 'recharts';
 
-import { PROJECTS, Project } from "../../global.d";
+import { PROJECTS, Project, getTotalFrames, startTime, deadline } from "global.d";
+
+import DateUtils from 'utils/date-utils';
 
 import styles from './ProgressFramesChart.module.scss';
-
-const startTime = (+ new Date(2021, 2, 0));
-// TODO: Figure out why TF the date does not correspond to what i say here
-// The actual date is : const deadline = (+ new Date(2021, 5, 7));
-const deadline = (+ new Date(2021, 4, 8));
-
-
-/**
- * Format timestamp to MM/DD/YYYY
- */
-function formatTimestamp(unixTime: number): string {
-  return (new Date(unixTime)).toLocaleDateString("en-US");
-}
 
 const ProgressFramesChart: React.FC = () => {
   const [projectFilter, setProjectFilter] = useState<string>("all");
   const [data, setData] = useState<Array<any> | undefined>([]);
-  const [endDate, setEndDate] = useState<Date>(new Date(deadline));
 
   /**
    * Get data from api
    */
   const fetchData = async () => {
-    const result = await fetch(process.env.REACT_APP_API_URL + '/graphics/progression').then((response) => {
+    await fetch(process.env.REACT_APP_API_URL + '/graphics/progression').then((response) => {
       return response.json();
     }).then((json) => {
 
@@ -44,6 +32,14 @@ const ProgressFramesChart: React.FC = () => {
     });
   }
 
+  // Return the total number of validated frames
+  const getTotalValidatedFrames = (): number => {
+    const lastData = data![data!.length - 1];
+
+    return PROJECTS.map((project: Project) => (lastData[project.name] / 100) * project.totalFrames)
+      .reduce((acc: number, e: number) => acc + e, 0);
+  }
+
   // Fetch data at component mount
   useEffect(() => {
     fetchData();
@@ -52,18 +48,29 @@ const ProgressFramesChart: React.FC = () => {
   return (
     <div className="chartContainerWide">
 
+      {/* Graph header */}
       <div className={styles.infos}>
-        <div>
-          {/* End date selector */}
-          <label htmlFor="start" className={styles.dateSelector}>End date:</label>
-          <input type="date" id="endDate" name="end-date"
-            value={endDate.toISOString().substr(0, 10)}
-            onChange={event => setEndDate(new Date(event.target.value))}
-          />
+        {/* Title */}
+        <div className={styles.containerLeft}>
+          <h2 className={styles.graphTitle}>Global project progression</h2>
         </div>
 
-        {/* End date info */}
-        <label className={styles.deadline}>Deadline : { (new Date(deadline)).toISOString().substr(0, 10) }</label>
+        <div className={styles.containerRight}>
+          {/* End date info */}
+          <p>Deadline : <span className={styles.deadline}>{DateUtils.dateToMMDDYYYY(deadline)}</span></p>
+
+          {/* Total frames */}
+          {data && (data.length !== 0) &&
+            <p>
+              Total progress :
+             <span
+                className={styles.totalFrames}
+              >
+                {`${getTotalValidatedFrames()} / ${getTotalFrames()}`}
+              </span>
+            </p>
+          }
+        </div>
       </div>
 
       <ResponsiveContainer width="100%" height="100%">
@@ -83,9 +90,9 @@ const ProgressFramesChart: React.FC = () => {
 
           <XAxis
             type="number"
-            domain={[startTime, endDate.getTime()]}
+            domain={[startTime.getTime(), deadline.getTime()]}
             dataKey="timestamp"
-            tickFormatter={formatTimestamp}
+            tickFormatter={DateUtils.timestampToMMDDYYY}
             scale="linear"
             interval="preserveStartEnd"
             label={{
@@ -106,32 +113,27 @@ const ProgressFramesChart: React.FC = () => {
             }}
           />
 
-          {/* Prevent curves from rendering when data not fully loaded
-              See : https://stackoverflow.com/questions/49756463/rechart-animation-for-linechart-bringing-in-lines-from-right-side */}
           {data && (data.length !== 0) &&
-            PROJECTS.filter(p => projectFilter === "all" || p.name === projectFilter)
-              .map((project, index) => {
-                return <Line
-                  key={project.name}
-                  type="monotone"
-                  dataKey={project.name}
-                  strokeWidth={3}
-                  stroke={project.color}
-                  dot={false}
-                />
-              })
+            PROJECTS.map(project => {
+              return <Line
+                key={project.name}
+                type="monotone"
+                dataKey={project.name}
+                strokeWidth={3}
+                stroke={project.color}
+                dot={false}
+              />
+            })
           }
 
           {/* Format tooltip with the real number of frames */}
           <Tooltip
             formatter={(value: any, projectName: any) => {
-              // if (PROJECTS === undefined) return;
-
               const totalFrames = (PROJECTS as any | undefined).find((pr: Project) => pr.name === projectName).totalFrames ?? 1;
               return `${Math.floor((value / 100) * totalFrames)} frames`;
             }}
 
-            labelFormatter={formatTimestamp}
+            labelFormatter={DateUtils.timestampToMMDDYYY}
           />
 
           <Legend />
@@ -140,7 +142,7 @@ const ProgressFramesChart: React.FC = () => {
             label="Goal"
             stroke="red"
             strokeDasharray="3 3"
-            segment={[{ x: startTime, y: 0 }, { x: deadline, y: 100 }]}
+            segment={[{ x: startTime.getTime(), y: 0 }, { x: deadline.getTime(), y: 100 }]}
             ifOverflow="extendDomain"
           />
         </LineChart>

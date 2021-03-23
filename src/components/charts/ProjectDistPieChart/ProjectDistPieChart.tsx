@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Cell, Label, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts';
 
-import styles from "./PCStatePieChart.module.scss";
+import styles from "./ProjectDistPieChart.module.scss";
 
-import { PROJECTS } from '../../global.d';
+import { getProjectFromName } from 'global.d';
 
 interface Data {
   name: string;
@@ -13,14 +13,15 @@ interface Data {
 /**
  * Distribution of free / busy and nimby on computers in real time on the farm
  */
-const PCStatePieChart: React.FC = () => {
+const ProjectDistPieChart: React.FC = () => {
   const [data, setData] = useState<Array<Data> | undefined>([]);
 
   const fetchData = async () => {
-    const result = await fetch(process.env.REACT_APP_API_URL + '/stats/blades-status').then((response) => {
+    await fetch(process.env.REACT_APP_API_URL + '/stats/projects-usage').then((response) => {
       return response.json();
     }).then((json) => {
-      setData(json);
+      // Sort the list by project name alphabetically
+      setData(json.sort((a: any, b: any) => (a.name > b.name) ? 1 : -1));
     }).catch((error) => {
       setData(undefined);
     });
@@ -65,17 +66,17 @@ const PCStatePieChart: React.FC = () => {
           >
 
             {data &&
-              data.map((el, i) => (
-                <Cell key={`pcstate-${i}`} fill={PROJECTS[i].color} />
-              ))
+              data.map((el, i) => {
+                const project = getProjectFromName(el.name);
+                return <Cell key={`pcstate-${i}`} fill={project.color} />;
+              })
             }
 
             <Label
-              value="Computer state"
+              value="Project usage"
               position="center"
               className={styles.centeredLabel}
             />
-
 
           </Pie>
 
@@ -89,4 +90,4 @@ const PCStatePieChart: React.FC = () => {
   )
 };
 
-export default PCStatePieChart;
+export default ProjectDistPieChart;

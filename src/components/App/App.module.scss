@@ -1,4 +1,4 @@
-@import "../../sass/global";
+@import "sass/global";
 
 .header {
     text-align: center;
@@ -25,6 +25,8 @@
     width: 100%;
 
     flex-wrap: wrap;
+
+    margin-bottom: 5em;
 }
 
 .chartGrid {

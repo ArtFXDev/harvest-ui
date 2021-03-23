@@ -1,12 +1,19 @@
 @import "../colors";
 
 .container {
-    padding-left: 2em;
+    padding-left: 50px;
+
+    &.item-depth0 {
+        padding-left: 0px;
+    }
+
+    &.item-depth1 {}
+    &.item-depth2 {}
 
     .item {
         border-radius: 10px;
 
-        margin: 10px 10px 10px 0px;
+        margin: 10px 0px 10px 0px;
 
         display: flex;
         align-items: center;
@@ -65,14 +72,7 @@
     }
 }
 
-.item-depth0 {
-}
 
-.item-depth1 {
-}
-
-.item-depth2 {
-}
 
 .arrow {
     border-right: 3px solid;
