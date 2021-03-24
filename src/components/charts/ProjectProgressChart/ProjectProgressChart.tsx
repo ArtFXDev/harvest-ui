@@ -47,7 +47,7 @@ const ProjectProgressChart: React.FC<Props> = (props) => {
       // Add today's sample data
       if (json.length !== 0 && json[json.length - 1].timestamp !== Date.now()) {
         const lastData = json[json.length - 1];
-        json.push({...lastData, timestamp: Date.now()});
+        json.push({ ...lastData, timestamp: Date.now() });
       }
 
       setData(json);
@@ -86,15 +86,15 @@ const ProjectProgressChart: React.FC<Props> = (props) => {
 
           {/* Total frames */}
           {data &&
-           <p>
-             {(data.length !== 0) && "Total progress :"}
-             <span
-               className={styles.totalFrames}
-               style={{backgroundColor: project.color}}
-             >
-               {(data.length !== 0) ? `${getTotalValidatedFrames()} / ${getTotalFrames()}` : "No frames validated!"}
-             </span>
-           </p>
+            <p>
+              {(data.length !== 0) && "Total progress :"}
+              <span
+                className={styles.totalFrames}
+                style={{ backgroundColor: project.color }}
+              >
+                {(data.length !== 0) ? `${getTotalValidatedFrames()} / ${project.totalFrames}` : "No frames validated!"}
+              </span>
+            </p>
           }
         </>
       }
@@ -146,13 +146,13 @@ const ProjectProgressChart: React.FC<Props> = (props) => {
 
           {/* Project data curve */}
           {data && (data.length !== 0) &&
-           <Line
-             type="linear"
-             dataKey={project.name}
-             strokeWidth={3}
-             stroke={project.color}
-             dot={false}
-           />
+            <Line
+              type="linear"
+              dataKey={project.name}
+              strokeWidth={3}
+              stroke={project.color}
+              dot={false}
+            />
           }
 
           {/* Format tooltip with the real number of frames */}
