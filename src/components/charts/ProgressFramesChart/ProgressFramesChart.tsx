@@ -69,8 +69,6 @@ const ProgressFramesChart: React.FC = () => {
       }
       >
 
-    <div className="chartContainerWide">
-
       <ResponsiveContainer width="100%" height="100%">
         <LineChart
           width={800}
@@ -146,7 +144,6 @@ const ProgressFramesChart: React.FC = () => {
           />
         </LineChart>
       </ResponsiveContainer>
-    </div>
     </ChartContainer>
   )
 };

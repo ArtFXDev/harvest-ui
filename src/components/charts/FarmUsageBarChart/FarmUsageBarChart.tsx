@@ -1,7 +1,67 @@
 import React, { useEffect, useState } from 'react';
-import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+import { Area, AreaChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
 import {PROJECTS} from 'global.d';
+
+import styles from './FarmUsageBarChart.module.scss';
+
+interface UsageProps {
+  data: any;
+  dataKey: string;
+  fillColor: string;
+}
+
+const STATES: Array<string> = ["free", "busy", "nimby", "off"];
+
+const AreaChartUsage: React.FC<UsageProps> = (props: UsageProps) => (
+  <ResponsiveContainer width="99%">
+    <AreaChart
+      data={props.data}
+      className="chart"
+      syncId="farm-usage"
+      margin={{
+        top: 20,
+        right: 20,
+        left: 20,
+        bottom: 20,
+      }}
+    >
+
+      <CartesianGrid vertical={false} strokeDasharray="4 3" />
+
+      <XAxis
+        type="number"
+        dataKey="time"
+        domain={[0, 23]}
+        height={50}
+        tickCount={24}
+        tickFormatter={(h: number) => `${h}h`}
+      />
+
+      <YAxis
+        type="number"
+        domain={[0, 100]}
+        tickFormatter={(p: number) => `${p}%`}
+      />
+
+      <Area
+        dataKey={props.dataKey}
+        type="monotone"
+        stroke={props.fillColor}
+        fill={props.fillColor}
+      />
+
+      <Tooltip
+        formatter={(percent: number, key: string, sample: any) => {
+          return `${Math.round((percent / 100) * sample.payload.totalComputers)} computers`;
+        }}
+        labelFormatter={(h: number) => `${h}h` }
+      />
+      <Legend />
+
+    </AreaChart>
+  </ResponsiveContainer>
+);
 
 /**
  * Average values of the usage of the farm over a day
@@ -13,8 +73,16 @@ const FarmUsageBarChart: React.FC = () => {
     await fetch(process.env.REACT_APP_API_URL + '/stats/blades-history/1616540400').then((response) => {
       return response.json();
     }).then((json) => {
+
+      // The number of total computers may vary over a day
+      // Se compute the percentage relative to that value
+      json.forEach((d: any) => {
+        const totalComputers = STATES.map(state => d[state]).reduce((e, acc) => acc + e, 0);
+        d.totalComputers = totalComputers;
+        STATES.forEach(state => d[state] = (d[state] / totalComputers) * 100);
+      });
+
       setData(json);
-      console.log(json);
     }).catch((error) => {
       setData(undefined);
     });
@@ -25,62 +93,23 @@ const FarmUsageBarChart: React.FC = () => {
     fetchData();
   }, []);
 
+  /* const totalComputers = (data!.length !== 0) ? STATES.map((state) => data![0][state]).reduce((a, b) => a + b) : 0; */
+
   return (
-    <div className="chartContainerWide">
+    <div className={styles.chartGrid}>
 
-      <ResponsiveContainer width="100%" height="100%">
-        <BarChart
-          width={1000}
-          height={500}
-          data={data}
-          className="chart"
-          margin={{
-            top: 20,
-            right: 20,
-            left: 20,
-            bottom: 20,
-          }}
-        >
+      {data &&
+        STATES.map((dataKey: string, i: number) => {
+          return <div className={styles.chartUsage} key={`farm-usage-${i}`}>
+            <AreaChartUsage
+              data={data}
+              dataKey={dataKey}
+              fillColor={PROJECTS[i].color}
+            />
+          </div>
+        })
+      }
 
-          <CartesianGrid strokeDasharray="3 3" />
-
-          <XAxis
-            type="number"
-            dataKey="time"
-            domain={[0, 23]}
-            height={50}
-            label={{
-              value: "Hour",
-              position: "insideBottom",
-            }}
-            padding={{ left: 50, right: 50 }}
-            tickCount={24}
-            tickFormatter={(h: number) => `${h}h`}
-          />
-
-          <YAxis
-            type="number"
-            label={{
-              value: "Number of computers",
-              angle: "-90",
-              position: "insideLeft",
-              textAnchor: "middle"
-            }}
-          />
-
-          <Bar dataKey="busy" stackId="a" fill={PROJECTS[1].color} />
-          <Bar dataKey="free"  stackId="a" fill={PROJECTS[0].color} />
-          <Bar dataKey="nimby" stackId="a" fill={PROJECTS[2].color} />
-          <Bar dataKey="off" stackId="a" fill={PROJECTS[3].color} />
-
-          <Tooltip
-            formatter={(avg: number) => `${Math.floor(avg)} computers`}
-            labelFormatter={(h: number) => `${h}h` }
-          />
-          <Legend />
-
-        </BarChart>
-      </ResponsiveContainer>
     </div>
   )
 };

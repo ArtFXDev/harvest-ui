@@ -40,16 +40,18 @@ const App: React.FC = () => {
         <Switch>
 
           <Route path={`${process.env.PUBLIC_URL}/`} exact render={() =>
-            <div className={styles.chartGrid}>
-              <PCStatePieChart />
-              <ProjectDistPieChart />
+            <>
+              <div className={styles.pieCharts}>
+                <PCStatePieChart />
+                <ProjectDistPieChart />
+              </div>
 
-              <hr />
+              <hr/>
 
-              <ChartContainer title="Farm usage over a day">
+              <ChartContainer title="Farm average usage over a day">
                 <FarmUsageBarChart />
               </ChartContainer>
-            </div>
+            </>
           } />
 
           <Route path={`${process.env.PUBLIC_URL}/projects`} exact render={() =>

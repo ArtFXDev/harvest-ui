@@ -43,6 +43,13 @@ const ProjectProgressChart: React.FC<Props> = (props) => {
       for (const sample of json) {
         sample[project.name] = (sample[project.name] / project.totalFrames) * 100;
       }
+
+      // Add today's sample data
+      if (json.length !== 0 && json[json.length - 1].timestamp !== Date.now()) {
+        const lastData = json[json.length - 1];
+        json.push({...lastData, timestamp: Date.now()});
+      }
+
       setData(json);
 
     }).catch((error) => {
@@ -68,104 +75,105 @@ const ProjectProgressChart: React.FC<Props> = (props) => {
   }, [project]);
 
   return (
-      <ChartContainer
-        title={ProjectUtils.projectNameToReadable(project?.name)}
-        color="white"
-        backgroundColor={project.color}
-        right={
-          <>
-            {/* End date info */}
-            <p>Deadline : <span className={styles.deadline}>{DateUtils.dateToMMDDYYYY(deadline)}</span></p>
+    <ChartContainer
+      title={ProjectUtils.projectNameToReadable(project?.name)}
+      color="white"
+      backgroundColor={project.color}
+      right={
+        <>
+          {/* End date info */}
+          <p>Deadline : <span className={styles.deadline}>{DateUtils.dateToMMDDYYYY(deadline)}</span></p>
 
-            {/* Total frames */}
-            {data && (data.length !== 0) &&
-             <p>
-               Total progress :
-               <span
-                 className={styles.totalFrames}
-                 style={{backgroundColor: project.color}}
-               >
-                 {`${getTotalValidatedFrames()} / ${getTotalFrames()}`}
-               </span>
-             </p>
-            }
-          </>
-        }
-      >
+          {/* Total frames */}
+          {data &&
+           <p>
+             {(data.length !== 0) && "Total progress :"}
+             <span
+               className={styles.totalFrames}
+               style={{backgroundColor: project.color}}
+             >
+               {(data.length !== 0) ? `${getTotalValidatedFrames()} / ${getTotalFrames()}` : "No frames validated!"}
+             </span>
+           </p>
+          }
+        </>
+      }
+    >
 
-      <div className="chartContainerWide">
-        <ResponsiveContainer width="100%" height="100%">
-          <LineChart
-            width={800}
-            height={500}
-            data={data}
-            className="chart"
-            margin={{
-              top: 20,
-              right: 20,
-              left: 20,
-              bottom: 20,
-            }}>
+      <ResponsiveContainer width="100%" height="100%">
+        <LineChart
+          width={800}
+          height={500}
+          data={data}
+          className="chart"
+          margin={{
+            top: 20,
+            right: 20,
+            left: 20,
+            bottom: 20,
+          }}>
 
-            <CartesianGrid strokeDasharray="3 3" />
+          <CartesianGrid strokeDasharray="3 3" />
 
-            <XAxis
-              type="number"
-              domain={[startTime.getTime(), deadline.getTime()]}
-              dataKey="timestamp"
-              tickFormatter={DateUtils.timestampToMMDDYYY}
-              scale="linear"
-              interval="preserveStartEnd"
-              height={50}
-              label={{
-                value: "Time",
-                position: "insideBottom",
-              }}
-            />
+          <XAxis
+            type="number"
+            domain={[startTime.getTime(), deadline.getTime()]}
+            dataKey="timestamp"
+            tickFormatter={DateUtils.timestampToMMDDYYY}
+            scale="linear"
+            interval="preserveStartEnd"
+            height={50}
+            label={{
+              value: "Time",
+              position: "insideBottom",
+            }}
+          />
 
-            <YAxis
-              type="number"
-              domain={[0, 100]}
-              tickFormatter={value => `${value}%`}
-              label={{
-                value: "% of frames validated",
-                angle: "-90",
-                position: "insideLeft",
-                textAnchor: "middle"
-              }}
-            />
+          <YAxis
+            type="number"
+            domain={[0, 100]}
+            tickFormatter={value => `${value}%`}
+            label={{
+              value: "% of frames validated",
+              angle: "-90",
+              position: "insideLeft",
+              textAnchor: "middle"
+            }}
+          />
 
-            {/* Project data curve */}
-            {data && (data.length !== 0) &&
-              <Line
-                type="monotone"
-                dataKey={project.name}
-                strokeWidth={3}
-                stroke={project.color}
-                dot={false}
-              />
-            }
+          {/* Line for today */}
+          <ReferenceLine x={Date.now()} stroke="rgba(255, 0, 0, 0.3)" />
 
-            {/* Format tooltip with the real number of frames */}
-            <Tooltip
-              formatter={(percent: any) => {
-                const validFrames = Math.floor((percent / 100) * project.totalFrames);
-                return `${validFrames}/${project.totalFrames} frames`;
-              }}
-              labelFormatter={DateUtils.timestampToMMDDYYY}
-            />
+          {/* Project data curve */}
+          {data && (data.length !== 0) &&
+           <Line
+             type="linear"
+             dataKey={project.name}
+             strokeWidth={3}
+             stroke={project.color}
+             dot={false}
+           />
+          }
 
-            {/* Reference line goal */}
-            <ReferenceLine
-              label="Goal"
-              stroke="red"
-              strokeDasharray="3 3"
-              segment={[{ x: startTime.getTime(), y: 0 }, { x: deadline.getTime(), y: 100 }]}
-              ifOverflow="extendDomain"
-            />
-          </LineChart>
-        </ResponsiveContainer>
-      </div>
+          {/* Format tooltip with the real number of frames */}
+          <Tooltip
+            formatter={(percent: any) => {
+              const validFrames = Math.floor((percent / 100) * project.totalFrames);
+              return `${validFrames}/${project.totalFrames} frames`;
+            }}
+            labelFormatter={DateUtils.timestampToMMDDYYY}
+          />
+
+          {/* Reference line goal */}
+          <ReferenceLine
+            label="Goal"
+            stroke="red"
+            strokeDasharray="3 3"
+            segment={[{ x: startTime.getTime(), y: 0 }, { x: deadline.getTime(), y: 100 }]}
+            ifOverflow="extendDomain"
+          />
+        </LineChart>
+      </ResponsiveContainer>
 
     </ChartContainer>
   )

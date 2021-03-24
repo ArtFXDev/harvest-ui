@@ -1,50 +1,57 @@
 @import "sass/global";
 
-.infos {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
+.container {
+    width: 80vw;
+    height: 500px;
 
-    .containerLeft {
+    .infos {
         display: flex;
-        margin-right: auto;
+        justify-content: flex-end;
+        align-items: center;
 
-        .projectTitle {
-            display: inline-block;
-            margin-left: 50px;
-            padding: 0.5em;
-            border-radius: 10px;
-        }
-    }
+        width: 100%;
 
-    .containerRight {
-        $border-color: rgba(0.2, 0.2, 0.2, 0.2);
+        .containerLeft {
+            display: flex;
+            margin-right: auto;
 
-        display: flex;
-        padding: 0 10px;
-        margin-right: 20px;
-
-        border: 1px solid $border-color;
-
-        @include whenDark {
-            border-color: invert($border-color);
+            .projectTitle {
+                display: inline-block;
+                margin-left: 50px;
+                padding: 0.5em;
+                border-radius: 10px;
+            }
         }
 
-        border-radius: 10px;
+        .containerRight {
+            $border-color: rgba(0.2, 0.2, 0.2, 0.2);
 
-        .deadline {
+            display: flex;
+            padding: 0 10px;
             margin-right: 20px;
-            color: rgba(255, 0, 0, 0.8);
 
-            border-radius: 5px;
-        }
+            border: 1px solid $border-color;
 
-        .totalFrames {
-            border-radius: 7px;
-            padding: 5px;
-            margin-left: 5px;
+            @include whenDark {
+                border-color: invert($border-color);
+            }
 
-            color: white;
+            border-radius: 10px;
+
+            .deadline {
+                margin-right: 20px;
+                color: rgba(255, 0, 0, 0.8);
+
+                border-radius: 5px;
+            }
+
+            .totalFrames {
+                border-radius: 7px;
+                padding: 5px;
+                margin-left: 5px;
+
+                color: white;
+            }
         }
     }
 }

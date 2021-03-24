@@ -42,8 +42,11 @@ const DropDownContainer: React.FC<Props> = (props) => {
   const fetchSequences = async () => {
     await fetch(props.baseAPIUrl).then((response) => {
       return response.json();
-    }).then((json) => setListItemTree(json.map((e: any) => createNodeItem(e.index, props.baseAPIUrl, e.total === e.valid, 0, false, undefined))))
-      .catch((error) => setRequestStatus({ status: false, message: "ERROR (fetch data): " + error }));
+    }).then((json) => {
+      json.sort((a: any, b: any) => a.index > b.index ? 1 : -1);
+
+      setListItemTree(json.map((e: any) => createNodeItem(e.index, props.baseAPIUrl, e.total === e.valid, 0, false, undefined)));
+    }).catch((error) => setRequestStatus({ status: false, message: "ERROR (fetch data): " + error }));
   }
 
   const resetList = () => {

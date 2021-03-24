@@ -17,13 +17,13 @@ const ChartContainer: React.FC<Props> = (props: Props) => {
   };
 
   return (
-    <div>
+    <div className={styles.container}>
       {/* Chart header */}
       <div className={styles.infos}>
         <div className={styles.containerLeft}>
           <h2 style={style}
               className={styles.projectTitle}>
-            {props.title}
+            {`>  ${props.title}`}
           </h2>
         </div>
 
