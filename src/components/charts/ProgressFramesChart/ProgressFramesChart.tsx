@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { ResponsiveContainer, CartesianGrid, Legend, Line, LineChart, Tooltip, XAxis, YAxis, ReferenceLine } from 'recharts';
 
+import ChartContainer from 'components/charts/ChartContainer/ChartContainer';
+
 import { PROJECTS, Project, getTotalFrames, startTime, deadline } from "global.d";
 
 import DateUtils from 'utils/date-utils';
@@ -8,7 +10,6 @@ import DateUtils from 'utils/date-utils';
 import styles from './ProgressFramesChart.module.scss';
 
 const ProgressFramesChart: React.FC = () => {
-  const [projectFilter, setProjectFilter] = useState<string>("all");
   const [data, setData] = useState<Array<any> | undefined>([]);
 
   /**
@@ -46,32 +47,29 @@ const ProgressFramesChart: React.FC = () => {
   }, []);
 
   return (
-    <div className="chartContainerWide">
-
-      {/* Graph header */}
-      <div className={styles.infos}>
-        {/* Title */}
-        <div className={styles.containerLeft}>
-          <h2 className={styles.graphTitle}>Global project progression</h2>
-        </div>
-
-        <div className={styles.containerRight}>
+    <ChartContainer
+      title="Global project progression"
+      right={
+        <>
           {/* End date info */}
           <p>Deadline : <span className={styles.deadline}>{DateUtils.dateToMMDDYYYY(deadline)}</span></p>
 
           {/* Total frames */}
           {data && (data.length !== 0) &&
-            <p>
-              Total progress :
+           <p>
+             Total progress :
              <span
-                className={styles.totalFrames}
-              >
-                {`${getTotalValidatedFrames()} / ${getTotalFrames()}`}
-              </span>
-            </p>
+               className={styles.totalFrames}
+             >
+               {`${getTotalValidatedFrames()} / ${getTotalFrames()}`}
+             </span>
+           </p>
           }
-        </div>
-      </div>
+        </>
+      }
+      >
+
+    <div className="chartContainerWide">
 
       <ResponsiveContainer width="100%" height="100%">
         <LineChart
@@ -95,6 +93,7 @@ const ProgressFramesChart: React.FC = () => {
             tickFormatter={DateUtils.timestampToMMDDYYY}
             scale="linear"
             interval="preserveStartEnd"
+            height={50}
             label={{
               value: "Time",
               position: "insideBottom",
@@ -148,6 +147,7 @@ const ProgressFramesChart: React.FC = () => {
         </LineChart>
       </ResponsiveContainer>
     </div>
+    </ChartContainer>
   )
 };
 

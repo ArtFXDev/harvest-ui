@@ -2,14 +2,13 @@ import React, { useState, useEffect, Fragment } from 'react';
 import { match } from 'react-router';
 import { ResponsiveContainer, CartesianGrid, Line, LineChart, Tooltip, XAxis, YAxis, ReferenceLine } from 'recharts';
 
-import { Project, getProjectFromName, startTime, deadline } from 'global.d';
+import { Project, getProjectFromName, getTotalFrames, startTime, deadline } from "global.d";
 
+import ChartContainer from 'components/charts/ChartContainer/ChartContainer';
 import ProjectUtils from 'utils/project-utils';
 import DateUtils from "utils/date-utils";
 
 import styles from './ProjectProgressChart.module.scss';
-
-// Initialize dates
 
 // Interface to get the route string
 interface RouteParams {
@@ -69,38 +68,30 @@ const ProjectProgressChart: React.FC<Props> = (props) => {
   }, [project]);
 
   return (
-    <Fragment>
+      <ChartContainer
+        title={ProjectUtils.projectNameToReadable(project?.name)}
+        color="white"
+        backgroundColor={project.color}
+        right={
+          <>
+            {/* End date info */}
+            <p>Deadline : <span className={styles.deadline}>{DateUtils.dateToMMDDYYYY(deadline)}</span></p>
 
-      {/* Graph header */}
-      <div className={styles.infos}>
-        {/* Project name */}
-        <div className={styles.containerLeft}>
-          <h2 style={{ backgroundColor: project.color }}
-            className={styles.projectTitle}>
-            {ProjectUtils.projectNameToReadable(project?.name)}
-          </h2>
-        </div>
-
-        <div className={styles.containerRight}>
-          {/* End date info */}
-          <p>Deadline : <span className={styles.deadline}>{DateUtils.dateToMMDDYYYY(deadline)}</span></p>
-
-          {/* Total frames */}
-          {data &&
-            <p>
-              Total progress :
-            <span
-                className={styles.totalFrames}
-                style={{
-                  backgroundColor: project.color,
-                }}
-              >
-                {`${getTotalValidatedFrames()} / ${project.totalFrames}`}
-              </span>
-            </p>
-          }
-        </div>
-      </div>
+            {/* Total frames */}
+            {data && (data.length !== 0) &&
+             <p>
+               Total progress :
+               <span
+                 className={styles.totalFrames}
+                 style={{backgroundColor: project.color}}
+               >
+                 {`${getTotalValidatedFrames()} / ${getTotalFrames()}`}
+               </span>
+             </p>
+            }
+          </>
+        }
+      >
 
       <div className="chartContainerWide">
         <ResponsiveContainer width="100%" height="100%">
@@ -125,6 +116,7 @@ const ProjectProgressChart: React.FC<Props> = (props) => {
               tickFormatter={DateUtils.timestampToMMDDYYY}
               scale="linear"
               interval="preserveStartEnd"
+              height={50}
               label={{
                 value: "Time",
                 position: "insideBottom",
@@ -175,7 +167,7 @@ const ProjectProgressChart: React.FC<Props> = (props) => {
         </ResponsiveContainer>
       </div>
 
-    </Fragment>
+    </ChartContainer>
   )
 };
 

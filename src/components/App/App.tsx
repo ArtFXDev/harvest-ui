@@ -9,10 +9,12 @@ import Navigation from 'components/Navigation/Navigation';
 import DarkModeToggle from 'components/DarkModeToggle/DarkModeToggle';
 
 // Import charts
+import ChartContainer from 'components/charts/ChartContainer/ChartContainer';
 import ProgressFramesChart from 'components/charts/ProgressFramesChart/ProgressFramesChart';
 import PCStatePieChart from 'components/charts/PCStatePieChart/PCStatePieChart';
 import ProjectDistPieChart from 'components/charts/ProjectDistPieChart/ProjectDistPieChart';
 import ProjectProgressChart from 'components/charts/ProjectProgressChart/ProjectProgressChart';
+import FarmUsageBarChart from 'components/charts/FarmUsageBarChart/FarmUsageBarChart';
 
 // Frame validation tool
 import FrameValidationTool from 'components/FrameValidationTool/FrameValidationTool';
@@ -41,13 +43,17 @@ const App: React.FC = () => {
             <div className={styles.chartGrid}>
               <PCStatePieChart />
               <ProjectDistPieChart />
+
+              <hr />
+
+              <ChartContainer title="Farm usage over a day">
+                <FarmUsageBarChart />
+              </ChartContainer>
             </div>
           } />
 
           <Route path={`${process.env.PUBLIC_URL}/projects`} exact render={() =>
-            <div>
               <ProgressFramesChart />
-            </div>
           } />
 
           {/* Validation tool */}

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
+import {PROJECTS} from 'global.d';
+
 /**
  * Average values of the usage of the farm over a day
  */
@@ -8,10 +10,11 @@ const FarmUsageBarChart: React.FC = () => {
   const [data, setData] = useState<Array<any> | undefined>([]);
 
   const fetchData = async () => {
-    await fetch(process.env.REACT_APP_API_URL + '/stats/blades-history').then((response) => {
+    await fetch(process.env.REACT_APP_API_URL + '/stats/blades-history/1616540400').then((response) => {
       return response.json();
     }).then((json) => {
       setData(json);
+      console.log(json);
     }).catch((error) => {
       setData(undefined);
     });
@@ -41,20 +44,39 @@ const FarmUsageBarChart: React.FC = () => {
 
           <CartesianGrid strokeDasharray="3 3" />
 
-          <XAxis dataKey="name" />
+          <XAxis
+            type="number"
+            dataKey="time"
+            domain={[0, 23]}
+            height={50}
+            label={{
+              value: "Hour",
+              position: "insideBottom",
+            }}
+            padding={{ left: 50, right: 50 }}
+            tickCount={24}
+            tickFormatter={(h: number) => `${h}h`}
+          />
 
           <YAxis
             type="number"
-            tickFormatter={sec => `${Math.floor(sec / 60)} min`}
             label={{
-              value: "Computation time (minutes)",
+              value: "Number of computers",
               angle: "-90",
               position: "insideLeft",
               textAnchor: "middle"
             }}
           />
 
-          <Tooltip />
+          <Bar dataKey="busy" stackId="a" fill={PROJECTS[1].color} />
+          <Bar dataKey="free"  stackId="a" fill={PROJECTS[0].color} />
+          <Bar dataKey="nimby" stackId="a" fill={PROJECTS[2].color} />
+          <Bar dataKey="off" stackId="a" fill={PROJECTS[3].color} />
+
+          <Tooltip
+            formatter={(avg: number) => `${Math.floor(avg)} computers`}
+            labelFormatter={(h: number) => `${h}h` }
+          />
           <Legend />
 
         </BarChart>

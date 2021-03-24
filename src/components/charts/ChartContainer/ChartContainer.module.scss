@@ -1,0 +1,50 @@
+@import "sass/global";
+
+.infos {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+    .containerLeft {
+        display: flex;
+        margin-right: auto;
+
+        .projectTitle {
+            display: inline-block;
+            margin-left: 50px;
+            padding: 0.5em;
+            border-radius: 10px;
+        }
+    }
+
+    .containerRight {
+        $border-color: rgba(0.2, 0.2, 0.2, 0.2);
+
+        display: flex;
+        padding: 0 10px;
+        margin-right: 20px;
+
+        border: 1px solid $border-color;
+
+        @include whenDark {
+            border-color: invert($border-color);
+        }
+
+        border-radius: 10px;
+
+        .deadline {
+            margin-right: 20px;
+            color: rgba(255, 0, 0, 0.8);
+
+            border-radius: 5px;
+        }
+
+        .totalFrames {
+            border-radius: 7px;
+            padding: 5px;
+            margin-left: 5px;
+
+            color: white;
+        }
+    }
+}
