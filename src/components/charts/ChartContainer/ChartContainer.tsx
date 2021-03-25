@@ -1,4 +1,5 @@
-import React, {ReactNode} from 'react';
+import React, { ReactElement, ReactNode } from 'react';
+import { ResponsiveContainer } from 'recharts';
 
 import styles from './ChartContainer.module.scss';
 
@@ -8,12 +9,13 @@ interface Props {
   color?: string;
   backgroundColor?: string;
   right?: any;
+  responsive?: boolean;
 }
 
 const ChartContainer: React.FC<Props> = (props: Props) => {
   const style: { color?: string, backgroundColor?: string } = {
-    ...props.color && {color: props.color},
-    ...props.backgroundColor && {backgroundColor: props.backgroundColor}
+    ...props.color && { color: props.color },
+    ...props.backgroundColor && { backgroundColor: props.backgroundColor }
   };
 
   return (
@@ -22,8 +24,8 @@ const ChartContainer: React.FC<Props> = (props: Props) => {
       <div className={styles.infos}>
         <div className={styles.containerLeft}>
           <h2 style={style}
-              className={styles.projectTitle}>
-            {`>  ${props.title}`}
+            className={styles.projectTitle}>
+            {`${props.title}`}
           </h2>
         </div>
 
@@ -34,7 +36,20 @@ const ChartContainer: React.FC<Props> = (props: Props) => {
         }
       </div>
 
-      {props.children}
+      {/* Display children chart */}
+      {props.children &&
+        <div className={styles.chartContainer} >
+          {!props.responsive ? (
+            <ResponsiveContainer width="100%" height="100%">
+              {props.children as ReactElement<any>}
+            </ResponsiveContainer>
+          ) : (
+            <>
+              {props.children}
+            </>
+          )}
+        </div>
+      }
     </div>
   );
 };

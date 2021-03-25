@@ -9,12 +9,12 @@ import Navigation from 'components/Navigation/Navigation';
 import DarkModeToggle from 'components/DarkModeToggle/DarkModeToggle';
 
 // Import charts
-import ChartContainer from 'components/charts/ChartContainer/ChartContainer';
 import ProgressFramesChart from 'components/charts/ProgressFramesChart/ProgressFramesChart';
 import PCStatePieChart from 'components/charts/PCStatePieChart/PCStatePieChart';
 import ProjectDistPieChart from 'components/charts/ProjectDistPieChart/ProjectDistPieChart';
 import ProjectProgressChart from 'components/charts/ProjectProgressChart/ProjectProgressChart';
 import FarmUsageBarChart from 'components/charts/FarmUsageBarChart/FarmUsageBarChart';
+import ComputeTimeBarChart from 'components/charts/ComputeTimeBarChart/ComputeTimeBarChart';
 
 // Frame validation tool
 import FrameValidationTool from 'components/FrameValidationTool/FrameValidationTool';
@@ -46,16 +46,18 @@ const App: React.FC = () => {
                 <ProjectDistPieChart />
               </div>
 
-              <hr/>
+              <hr />
 
-              <ChartContainer title="Farm average usage over a day">
-                <FarmUsageBarChart />
-              </ChartContainer>
+              <FarmUsageBarChart />
             </>
           } />
 
           <Route path={`${process.env.PUBLIC_URL}/projects`} exact render={() =>
+            <>
               <ProgressFramesChart />
+              <hr />
+              <ComputeTimeBarChart />
+            </>
           } />
 
           {/* Validation tool */}

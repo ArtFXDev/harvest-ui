@@ -56,20 +56,20 @@ const ProgressFramesChart: React.FC = () => {
 
           {/* Total frames */}
           {data && (data.length !== 0) &&
-           <p>
-             Total progress :
+            <p>
+              Total progress :
              <span
-               className={styles.totalFrames}
-             >
-               {`${getTotalValidatedFrames()} / ${getTotalFrames()}`}
-             </span>
-           </p>
+                className={styles.totalFrames}
+              >
+                {`${getTotalValidatedFrames()} / ${getTotalFrames()}`}
+              </span>
+            </p>
           }
         </>
       }
-      >
+    >
 
-      <ResponsiveContainer width="100%" height="100%">
+      <ResponsiveContainer width="100%">
         <LineChart
           width={800}
           height={500}

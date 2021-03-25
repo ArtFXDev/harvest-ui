@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Area, AreaChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
-import {PROJECTS} from 'global.d';
+import { PROJECTS } from 'global.d';
+
+import ChartContainer from 'components/charts/ChartContainer/ChartContainer';
 
 import styles from './FarmUsageBarChart.module.scss';
 
@@ -55,7 +57,7 @@ const AreaChartUsage: React.FC<UsageProps> = (props: UsageProps) => (
         formatter={(percent: number, key: string, sample: any) => {
           return `${Math.round((percent / 100) * sample.payload.totalComputers)} computers`;
         }}
-        labelFormatter={(h: number) => `${h}h` }
+        labelFormatter={(h: number) => `${h}h`}
       />
       <Legend />
 
@@ -93,24 +95,24 @@ const FarmUsageBarChart: React.FC = () => {
     fetchData();
   }, []);
 
-  /* const totalComputers = (data!.length !== 0) ? STATES.map((state) => data![0][state]).reduce((a, b) => a + b) : 0; */
-
   return (
-    <div className={styles.chartGrid}>
+    <ChartContainer title="Farm average usage over a day" responsive={false}>
 
-      {data &&
-        STATES.map((dataKey: string, i: number) => {
-          return <div className={styles.chartUsage} key={`farm-usage-${i}`}>
-            <AreaChartUsage
-              data={data}
-              dataKey={dataKey}
-              fillColor={PROJECTS[i].color}
-            />
-          </div>
-        })
-      }
+      <div className={styles.chartGrid}>
+        {data &&
+          STATES.map((dataKey: string, i: number) => {
+            return <div className={styles.chartUsage} key={`farm-usage-${i}`}>
+              <AreaChartUsage
+                data={data}
+                dataKey={dataKey}
+                fillColor={PROJECTS[i].color}
+              />
+            </div>
+          })
+        }
+      </div>
 
-    </div>
+    </ChartContainer>
   )
 };
 
