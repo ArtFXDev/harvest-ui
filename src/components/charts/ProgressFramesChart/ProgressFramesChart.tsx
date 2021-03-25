@@ -37,8 +37,8 @@ const ProgressFramesChart: React.FC = () => {
   const getTotalValidatedFrames = (): number => {
     const lastData = data![data!.length - 1];
 
-    return PROJECTS.map((project: Project) => (lastData[project.name] / 100) * project.totalFrames)
-      .reduce((acc: number, e: number) => acc + e, 0);
+    return Math.round(PROJECTS.map((project: Project) => (lastData[project.name] / 100) * project.totalFrames)
+      .reduce((acc: number, e: number) => acc + e, 0));
   }
 
   // Fetch data at component mount
