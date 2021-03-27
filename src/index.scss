@@ -7,29 +7,3 @@
 
 @import '~pretty-checkbox/src/pretty-checkbox.scss';
 
-html {
-    background-color: $background-color;
-    color: $text-color;
-
-    font-family: $main-font;
-
-    transition: all 0.5s;
-}
-
-hr {
-    color: rgba(0.1, 0.1, 0.1, 0.1);
-    width: 50%;
-    margin: 50px auto;
-}
-
-html.dark {
-    background-color: $text-color;
-    color: $background-color;
-}
-
-button, select {
-    @include whenDarkGlobal {
-        background-color: $text-color;
-        color: $background-color;
-    }
-}

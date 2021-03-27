@@ -2,14 +2,47 @@ $text-color: rgb(40, 39, 39);
 $background-color: #fff;
 $main-font: SanitrixieSans;
 
+// Use when in global css
 @mixin whenDarkGlobal {
     html.dark & {
         @content;
     }
 }
 
+// Use when inside css module
 @mixin whenDark {
     :global html.dark :local & {
         @content;
     }
+}
+
+html {
+    background-color: $background-color;
+    color: $text-color;
+
+    font-family: $main-font;
+
+    transition: all 0.5s;
+}
+
+html.dark {
+    background-color: $text-color;
+    color: $background-color;
+}
+
+hr {
+    color: rgba(0.1, 0.1, 0.1, 0.1);
+    width: 50%;
+    margin: 50px auto;
+}
+
+button, select {
+    @include whenDarkGlobal {
+        background-color: $text-color;
+        color: $background-color;
+    }
+}
+
+.shadow {
+    
 }

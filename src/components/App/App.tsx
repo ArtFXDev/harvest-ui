@@ -13,7 +13,7 @@ import ProgressFramesChart from 'components/charts/ProgressFramesChart/ProgressF
 import PCStatePieChart from 'components/charts/PCStatePieChart/PCStatePieChart';
 import ProjectDistPieChart from 'components/charts/ProjectDistPieChart/ProjectDistPieChart';
 import ProjectProgressChart from 'components/charts/ProjectProgressChart/ProjectProgressChart';
-import FarmUsageBarChart from 'components/charts/FarmUsageBarChart/FarmUsageBarChart';
+import FarmUsageChart from 'components/charts/FarmUsageChart/FarmUsageChart';
 import ComputeTimeBarChart from 'components/charts/ComputeTimeBarChart/ComputeTimeBarChart';
 
 // Frame validation tool
@@ -48,7 +48,7 @@ const App: React.FC = () => {
 
               <hr />
 
-              <FarmUsageBarChart />
+              <FarmUsageChart />
             </>
           } />
 

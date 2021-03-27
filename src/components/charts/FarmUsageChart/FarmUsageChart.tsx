@@ -6,7 +6,11 @@ import { PROJECTS } from 'global.d';
 import DateUtils from 'utils/date-utils';
 import ChartContainer from 'components/charts/ChartContainer/ChartContainer';
 
-import styles from './FarmUsageBarChart.module.scss';
+import styles from './FarmUsageChart.module.scss';
+
+
+// All possible states of a computer
+const STATES: Array<string> = ["free", "busy", "nimby", "off"];
 
 interface UsageProps {
   data: any;
@@ -14,9 +18,6 @@ interface UsageProps {
   fillColor: string;
   maxValue: number;
 }
-
-
-const STATES: Array<string> = ["free", "busy", "nimby", "off"];
 
 /**
  * Area chart component
@@ -106,7 +107,7 @@ const AreaChartUsage: React.FC<UsageProps> = (props: UsageProps) => {
 /**
  * Average values of the usage of the farm over a day
  */
-const FarmUsageBarChart: React.FC = () => {
+const FarmUsageChart: React.FC = () => {
   const [data, setData] = useState<Array<any> | undefined>([]);
   const [startDate, setStartDate] = useState<Date | undefined>(new Date(2021, 2, 24));
   const [period, setPeriod] = useState<string>("hours");
@@ -149,27 +150,28 @@ const FarmUsageBarChart: React.FC = () => {
       right={
         <>
           {/* Start date input */}
-          <label htmlFor="start">Start date:</label>
-          <div>
+          <p className={styles.dateSelector}>
+            <label htmlFor="start" className={styles.label}>Start date:</label>
             <input type="date" id="start" name="start-date"
               value={startDate ? DateUtils.dateToYYYYMMDD(startDate) : ''}
               onChange={d => setStartDate(d.target.valueAsDate!)}
             />
-          </div>
+          </p>
 
           {/* End date input */}
-          <label htmlFor="end">End date:</label>
-          <div>
+          <p className={styles.dateSelector}>
+            <label htmlFor="end" className={styles.label}>End date:</label>
             <input type="date" id="end" name="end-date"
               value={endDate ? DateUtils.dateToYYYYMMDD(endDate) : ''}
               max={DateUtils.dateToYYYYMMDD(today)}
               onChange={d => setEndDate(d.target.valueAsDate!)}
             />
-          </div>
+          </p>
 
           {/* Time scale input */}
-          <label htmlFor="period">Period: </label>
+          <label htmlFor="period" className={styles.label}>Period: </label>
 
+          {/* Period selector */}
           <select
             name="period"
             id="period-select"
@@ -202,4 +204,4 @@ const FarmUsageBarChart: React.FC = () => {
   )
 };
 
-export default FarmUsageBarChart;
+export default FarmUsageChart;
