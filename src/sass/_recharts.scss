@@ -44,12 +44,6 @@
     }
 }
 
-.recharts-tooltip-label {
-    @include whenDarkGlobal {
-        color: $background-color;
-    }
-}
-
 // Rectangle tooltip on bar chart
 .recharts-rectangle.recharts-tooltip-cursor {
     @include whenDarkGlobal {
@@ -59,7 +53,7 @@
 
 .recharts-sector {
     @include whenDarkGlobal {
-        stroke: #353B48;
+        stroke: #353B48 !important;
     }
 
     stroke: none;

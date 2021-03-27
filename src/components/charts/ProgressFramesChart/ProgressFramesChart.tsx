@@ -69,81 +69,80 @@ const ProgressFramesChart: React.FC = () => {
       }
     >
 
-      <ResponsiveContainer width="100%">
-        <LineChart
-          width={800}
-          height={500}
-          data={data}
-          className="chart"
-          margin={{
-            top: 20,
-            right: 20,
-            left: 20,
-            bottom: 20,
-          }}>
+      <LineChart
+        width={800}
+        height={500}
+        data={data}
+        className="chart"
+        margin={{
+          top: 20,
+          right: 20,
+          left: 20,
+          bottom: 20,
+        }}>
 
-          <CartesianGrid strokeDasharray="3 3" />
+        <CartesianGrid strokeDasharray="3 3" />
 
-          <XAxis
-            type="number"
-            domain={[startTime.getTime(), deadline.getTime()]}
-            dataKey="timestamp"
-            tickFormatter={DateUtils.timestampToMMDDYYY}
-            scale="linear"
-            interval="preserveStartEnd"
-            height={50}
-            label={{
-              value: "Time",
-              position: "insideBottom",
-            }}
-          />
+        <XAxis
+          type="number"
+          domain={[startTime.getTime(), deadline.getTime()]}
+          dataKey="timestamp"
+          tickFormatter={DateUtils.timestampToMMDDYYY}
+          scale="linear"
+          interval="preserveStartEnd"
+          height={50}
+          label={{
+            value: "Time",
+            position: "insideBottom",
+          }}
+        />
 
-          <YAxis
-            type="number"
-            domain={[0, 100]}
-            tickFormatter={value => `${value}%`}
-            label={{
-              value: "% of frames rendered",
-              angle: "-90",
-              position: "insideLeft",
-              textAnchor: "middle"
-            }}
-          />
+        <YAxis
+          type="number"
+          domain={[0, 100]}
+          tickFormatter={value => `${value}%`}
+          label={{
+            value: "% of frames rendered",
+            angle: "-90",
+            position: "insideLeft",
+            textAnchor: "middle"
+          }}
+        />
 
-          {data && (data.length !== 0) &&
-            PROJECTS.map(project => {
-              return <Line
-                key={project.name}
-                type="monotone"
-                dataKey={project.name}
-                strokeWidth={3}
-                stroke={project.color}
-                dot={false}
-              />
-            })
-          }
+        {data && (data.length !== 0) &&
+          PROJECTS.map(project => {
+            return <Line
+              key={project.name}
+              type="monotone"
+              dataKey={project.name}
+              strokeWidth={3}
+              stroke={project.color}
+              dot={false}
+            />
+          })
+        }
 
-          {/* Format tooltip with the real number of frames */}
-          <Tooltip
-            formatter={(value: any, projectName: any) => {
-              const totalFrames = (PROJECTS as any | undefined).find((pr: Project) => pr.name === projectName).totalFrames ?? 1;
-              return `${Math.floor((value / 100) * totalFrames)} frames`;
-            }}
+        {/* Format tooltip with the real number of frames */}
+        <Tooltip
+          formatter={(value: any, projectName: any) => {
+            const totalFrames = (PROJECTS as any | undefined).find((pr: Project) => pr.name === projectName).totalFrames ?? 1;
+            return `${Math.floor((value / 100) * totalFrames)} frames`;
+          }}
 
-            labelFormatter={DateUtils.timestampToMMDDYYY}
-          />
+          labelFormatter={DateUtils.timestampToMMDDYYY}
+        />
 
-          <Legend />
+        <Legend />
 
-          <ReferenceLine
-            label="Goal"
-            stroke="red"
-            strokeDasharray="3 3"
-            segment={[{ x: startTime.getTime(), y: 0 }, { x: deadline.getTime(), y: 100 }]}
-            ifOverflow="extendDomain"
-          />
-        </LineChart>
-      </ResponsiveContainer>
+        <ReferenceLine
+          label="Goal"
+          stroke="red"
+          strokeDasharray="3 3"
+          segment={[{ x: startTime.getTime(), y: 0 }, { x: deadline.getTime(), y: 100 }]}
+          ifOverflow="extendDomain"
+        />
+      </LineChart>
+
     </ChartContainer>
   )
 };

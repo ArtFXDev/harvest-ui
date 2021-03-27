@@ -100,80 +100,78 @@ const ProjectProgressChart: React.FC<Props> = (props) => {
       }
     >
 
-      <ResponsiveContainer width="100%" height="100%">
-        <LineChart
-          width={800}
-          height={500}
-          data={data}
-          className="chart"
-          margin={{
-            top: 20,
-            right: 20,
-            left: 20,
-            bottom: 20,
-          }}>
+      <LineChart
+        width={800}
+        height={500}
+        data={data}
+        className="chart"
+        margin={{
+          top: 20,
+          right: 20,
+          left: 20,
+          bottom: 20,
+        }}>
 
-          <CartesianGrid strokeDasharray="3 3" />
+        <CartesianGrid strokeDasharray="3 3" />
 
-          <XAxis
-            type="number"
-            domain={[startTime.getTime(), deadline.getTime()]}
-            dataKey="timestamp"
-            tickFormatter={DateUtils.timestampToMMDDYYY}
-            scale="linear"
-            interval="preserveStartEnd"
-            height={50}
-            label={{
-              value: "Time",
-              position: "insideBottom",
-            }}
+        <XAxis
+          type="number"
+          domain={[startTime.getTime(), deadline.getTime()]}
+          dataKey="timestamp"
+          tickFormatter={DateUtils.timestampToMMDDYYY}
+          scale="linear"
+          interval="preserveStartEnd"
+          height={50}
+          label={{
+            value: "Time",
+            position: "insideBottom",
+          }}
+        />
+
+        <YAxis
+          type="number"
+          domain={[0, 100]}
+          tickFormatter={value => `${value}%`}
+          label={{
+            value: "% of frames validated",
+            angle: "-90",
+            position: "insideLeft",
+            textAnchor: "middle"
+          }}
+        />
+
+        {/* Line for today */}
+        <ReferenceLine x={Date.now()} stroke="rgba(255, 0, 0, 0.3)" />
+
+        {/* Project data curve */}
+        {data && (data.length !== 0) &&
+          <Line
+            type="linear"
+            dataKey={project.name}
+            strokeWidth={3}
+            stroke={project.color}
+            dot={false}
           />
+        }
 
-          <YAxis
-            type="number"
-            domain={[0, 100]}
-            tickFormatter={value => `${value}%`}
-            label={{
-              value: "% of frames validated",
-              angle: "-90",
-              position: "insideLeft",
-              textAnchor: "middle"
-            }}
-          />
+        {/* Format tooltip with the real number of frames */}
+        <Tooltip
+          formatter={(percent: any) => {
+            const validFrames = Math.floor((percent / 100) * project.totalFrames);
+            return `${validFrames}/${project.totalFrames} frames`;
+          }}
+          labelFormatter={DateUtils.timestampToMMDDYYY}
+        />
 
-          {/* Line for today */}
-          <ReferenceLine x={Date.now()} stroke="rgba(255, 0, 0, 0.3)" />
-
-          {/* Project data curve */}
-          {data && (data.length !== 0) &&
-            <Line
-              type="linear"
-              dataKey={project.name}
-              strokeWidth={3}
-              stroke={project.color}
-              dot={false}
-            />
-          }
-
-          {/* Format tooltip with the real number of frames */}
-          <Tooltip
-            formatter={(percent: any) => {
-              const validFrames = Math.floor((percent / 100) * project.totalFrames);
-              return `${validFrames}/${project.totalFrames} frames`;
-            }}
-            labelFormatter={DateUtils.timestampToMMDDYYY}
-          />
-
-          {/* Reference line goal */}
-          <ReferenceLine
-            label="Goal"
-            stroke="red"
-            strokeDasharray="3 3"
-            segment={[{ x: startTime.getTime(), y: 0 }, { x: deadline.getTime(), y: 100 }]}
-            ifOverflow="extendDomain"
-          />
-        </LineChart>
-      </ResponsiveContainer>
+        {/* Reference line goal */}
+        <ReferenceLine
+          label="Goal"
+          stroke="red"
+          strokeDasharray="3 3"
+          segment={[{ x: startTime.getTime(), y: 0 }, { x: deadline.getTime(), y: 100 }]}
+          ifOverflow="extendDomain"
+        />
+      </LineChart>
 
     </ChartContainer>
   )

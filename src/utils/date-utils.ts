@@ -10,7 +10,9 @@ namespace DateUtils {
     /**
      * Convert a date object to YYYY/MM/DD string
      */
-    export const dateToYYYYMMDD = (date: Date): string => date.toISOString().split('T')[0];
+    export const dateToYYYYMMDD = (date: Date): string => new Date(date.getTime() - (date.getTimezoneOffset() * 60000))
+        .toISOString()
+        .split("T")[0];
 
     /**
      * Convert timestamp to MM/DD/YYYY

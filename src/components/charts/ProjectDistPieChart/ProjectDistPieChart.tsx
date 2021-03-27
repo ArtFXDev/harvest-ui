@@ -55,7 +55,6 @@ const ProjectDistPieChart: React.FC = () => {
             dataKey="value"
             innerRadius="60%"
             outerRadius="80%"
-            fill="#8884d8"
             labelLine={false}
             label={({ percent, index }) => {
               return (data === undefined) ? "" : `${data[index].name}: ${Math.round(percent * 100)}%`

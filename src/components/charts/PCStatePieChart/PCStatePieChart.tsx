@@ -54,7 +54,6 @@ const PCStatePieChart: React.FC = () => {
             dataKey="value"
             innerRadius="60%"
             outerRadius="80%"
-            fill="#8884d8"
             labelLine={false}
             label={({ percent, index }) => {
               return (data === undefined) ? "" : `${data[index].name}: ${Math.round(percent * 100)}%`
@@ -66,7 +65,7 @@ const PCStatePieChart: React.FC = () => {
 
             {data &&
               data.map((el, i) => (
-                <Cell key={`pcstate-${i}`} fill={PROJECTS[i].color} />
+                <Cell key={`pcstate-${i}`} fill={PROJECTS[i].color} color={PROJECTS[i].color} />
               ))
             }
 
@@ -75,7 +74,6 @@ const PCStatePieChart: React.FC = () => {
               position="center"
               className={styles.centeredLabel}
             />
-
 
           </Pie>
 
