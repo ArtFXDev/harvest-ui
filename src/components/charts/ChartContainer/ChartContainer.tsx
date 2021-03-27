@@ -8,15 +8,20 @@ interface Props {
   children: ReactNode;
   color?: string;
   backgroundColor?: string;
+  gradient?: Array<string>;
   right?: any;
   responsive?: boolean;
 }
 
 const ChartContainer: React.FC<Props> = (props: Props) => {
-  const style: { color?: string, backgroundColor?: string } = {
+  const style: { color?: string, backgroundColor?: string, background?: string } = {
     ...props.color && { color: props.color },
     ...props.backgroundColor && { backgroundColor: props.backgroundColor }
   };
+
+  if (props.gradient) {
+    style.background = `linear-gradient(to left, ${props.gradient.join(',')})`;
+  }
 
   return (
     <div className={styles.container}>
@@ -24,7 +29,7 @@ const ChartContainer: React.FC<Props> = (props: Props) => {
       <div className={styles.infos}>
         <div className={styles.containerLeft}>
           <h2 style={style}
-            className={`${styles.projectTitle} ${props.backgroundColor ? styles.shadow : ''}`}>
+            className={`${styles.projectTitle} ${props.backgroundColor || props.gradient ? styles.shadow : ''}`}>
             {`${props.title}`}
           </h2>
         </div>

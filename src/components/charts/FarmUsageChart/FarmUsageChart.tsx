@@ -116,7 +116,9 @@ const FarmUsageChart: React.FC = () => {
   const [endDate, setEndDate] = useState<Date>(today);
 
   const fetchData = async () => {
-    const url = `${process.env.REACT_APP_API_URL}/stats/farm-history/${period}?start=${startDate!.getTime()}&end=${endDate!.getTime()}`;
+    const baseRoute: string = `${process.env.REACT_APP_API_URL}/stats/farm-history/${period}`;
+    const parameters: string = `start=${startDate!.getTime()}&end=${endDate!.getTime()}`;
+    const url: string = `${baseRoute}?${parameters}`;
 
     await fetch(url).then((response) => {
       return response.json();
@@ -186,6 +188,7 @@ const FarmUsageChart: React.FC = () => {
       }
     >
 
+      {/* Display four charts */}
       <div className={styles.chartGrid}>
         {data &&
           STATES.map((dataKey: string, i: number) => {

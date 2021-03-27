@@ -36,7 +36,11 @@ const ComputeTimeBarChart: React.FC = () => {
   }
 
   return (
-    <ChartContainer title="Average frame computation time" color="white" backgroundColor="#a032c8">
+    <ChartContainer
+      title="Average frame computation time"
+      color="white"
+      gradient={["#a032c8", "#5032c8"]}
+    >
 
       <BarChart
         data={data}
