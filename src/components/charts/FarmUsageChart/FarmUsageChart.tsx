@@ -109,11 +109,11 @@ const AreaChartUsage: React.FC<UsageProps> = (props: UsageProps) => {
  */
 const FarmUsageChart: React.FC = () => {
   const [data, setData] = useState<Array<any> | undefined>([]);
-  const [startDate, setStartDate] = useState<Date | undefined>(new Date(2021, 2, 24));
+  const [startDate, setStartDate] = useState<Date>(new Date(2021, 2, 24));
   const [period, setPeriod] = useState<string>("hours");
 
   const today: Date = new Date();
-  const [endDate, setEndDate] = useState<Date | undefined>(today);
+  const [endDate, setEndDate] = useState<Date>(today);
 
   const fetchData = async () => {
     const url = `${process.env.REACT_APP_API_URL}/stats/farm-history/${period}?start=${startDate!.getTime()}&end=${endDate!.getTime()}`;
@@ -138,9 +138,7 @@ const FarmUsageChart: React.FC = () => {
 
   // Fetch data when modifying selection options
   useEffect(() => {
-    if (startDate && endDate) {
-      fetchData();
-    }
+    fetchData();
   }, [startDate, endDate, period]);
 
   return (
@@ -155,6 +153,7 @@ const FarmUsageChart: React.FC = () => {
             <input type="date" id="start" name="start-date"
               value={startDate ? DateUtils.dateToYYYYMMDD(startDate) : ''}
               onChange={d => setStartDate(d.target.valueAsDate!)}
+              required={true}
             />
           </p>
 
@@ -162,9 +161,11 @@ const FarmUsageChart: React.FC = () => {
           <p className={styles.dateSelector}>
             <label htmlFor="end" className={styles.label}>End date:</label>
             <input type="date" id="end" name="end-date"
-              value={endDate ? DateUtils.dateToYYYYMMDD(endDate) : ''}
+              value={DateUtils.dateToYYYYMMDD(endDate)}
+              min={DateUtils.dateToYYYYMMDD(startDate)}
               max={DateUtils.dateToYYYYMMDD(today)}
               onChange={d => setEndDate(d.target.valueAsDate!)}
+              required={true}
             />
           </p>
 
