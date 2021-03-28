@@ -191,7 +191,7 @@ const FarmUsageChart: React.FC = () => {
 
       {/* Display four charts */}
       <div className={styles.chartGrid}>
-        {data &&
+        {data && data.length !== 0 &&
           STATES.map((dataKey: string, i: number) => {
             return <div className={styles.chartUsage} key={`farm-usage-${i}`}>
               <AreaChartUsage
