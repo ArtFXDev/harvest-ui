@@ -1,40 +1,27 @@
 import React, { useState, useEffect } from 'react';
-import { match } from 'react-router';
 
-import { Project, getProjectFromName, projectNameToUpperCase, projectNameToReadable } from 'global.d';
+import { Project, getProjectFromName, projectNameToUpperCase } from 'global.d';
 
 import styles from "./FrameValidationTool.module.scss";
 
 // Drop down components
 import DropDownContainer from "./DropDownContainer/DropDownContainer";
-import DropDownItem from "./DropDownItem/DropDownItem";
 
-interface RouteParams {
-  projectName: string;
-}
 
 interface Props {
-  match?: match<RouteParams>;
-}
-
-interface Sequence {
-  index: number;
-  total: number;
-  valid: number;
+  projectName: string;
 }
 
 const FrameValidationTool: React.FC<Props> = (props) => {
   const [project, setProject] = useState<Project | undefined>(undefined);
 
-  const [sequences, setSequences] = useState<Array<Sequence>>([]);
-
-  const baseAPIUrl: string = process.env.REACT_APP_API_URL + '/validation/validated-progression/' + props.match!.params.projectName;
+  const baseAPIUrl: string = process.env.REACT_APP_API_URL + '/validation/validated-progression/' + props.projectName;
 
   // Update state when switching between project routes
   useEffect(() => {
-    const upperCaseName: string = projectNameToUpperCase(props.match!.params.projectName);
+    const upperCaseName: string = projectNameToUpperCase(props.projectName);
     setProject(getProjectFromName(upperCaseName));
-  }, [props.match!.params.projectName]);
+  }, [props.projectName]);
 
 
   return (

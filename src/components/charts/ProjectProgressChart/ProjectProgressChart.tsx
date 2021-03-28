@@ -1,41 +1,39 @@
-import React, { useState, useEffect, Fragment } from 'react';
-import { match } from 'react-router';
-import { ResponsiveContainer, CartesianGrid, Line, LineChart, Tooltip, XAxis, YAxis, ReferenceLine } from 'recharts';
+import React, { useState, useEffect } from 'react';
+import { CartesianGrid, Line, LineChart, Tooltip, XAxis, YAxis, ReferenceLine } from 'recharts';
 
-import { Project, getProjectFromName, getTotalFrames, startTime, deadline } from "global.d";
+// Global import
+import { Project, getProjectFromName, startTime, deadline } from 'global.d';
 
+// Utility
 import ChartContainer from 'components/charts/ChartContainer/ChartContainer';
 import ProjectUtils from 'utils/project-utils';
 import DateUtils from "utils/date-utils";
 
+// Style
 import styles from './ProjectProgressChart.module.scss';
 
-// Interface to get the route string
-interface RouteParams {
-  projectName: string;
-}
 
-interface Props {
-  match?: match<RouteParams>;
-}
-
-const getProject = (projectName: string): Project => {
+// Return project object from lower case name
+const getProjectFromLowerCaseName = (projectName: string): Project => {
   return getProjectFromName(ProjectUtils.projectNameToUpperCase(projectName))
 }
 
+interface Props {
+  projectName: string;
+}
 
 /**
  * Graph component : progression curve of a project with deadline
  */
 const ProjectProgressChart: React.FC<Props> = (props) => {
   const [data, setData] = useState<Array<any> | undefined>([]);
-  const [project, setProject] = useState<Project>(getProject(props.match!.params.projectName));
+  const [project, setProject] = useState<Project>(getProjectFromLowerCaseName(props.projectName));
 
   /**
    * Get data from api
    */
   const fetchData = async () => {
-    await fetch(process.env.REACT_APP_API_URL + '/graphics/progression/' + props.match!.params.projectName).then((response) => {
+    await fetch(process.env.REACT_APP_API_URL + '/graphics/progression/' + props.projectName).then((response) => {
       return response.json();
     }).then((json) => {
 
@@ -66,8 +64,8 @@ const ProjectProgressChart: React.FC<Props> = (props) => {
 
   // Set the project when switching the route
   useEffect(() => {
-    setProject(getProject(props.match!.params.projectName));
-  }, [props.match]);
+    setProject(getProjectFromLowerCaseName(props.projectName));
+  }, [props.projectName]);
 
   // Fetch data when the project changes
   useEffect(() => {

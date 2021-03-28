@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import styles from "./App.module.scss";
@@ -8,22 +8,19 @@ import artfxLogo from 'assets/images/ArtFx---Logo-generique-noir.png';
 import Navigation from 'components/Navigation/Navigation';
 import DarkModeToggle from 'components/DarkModeToggle/DarkModeToggle';
 
-// Import charts
-import ProgressFramesChart from 'components/charts/ProgressFramesChart/ProgressFramesChart';
-import PCStatePieChart from 'components/charts/PCStatePieChart/PCStatePieChart';
-import ProjectDistPieChart from 'components/charts/ProjectDistPieChart/ProjectDistPieChart';
-import ProjectProgressChart from 'components/charts/ProjectProgressChart/ProjectProgressChart';
-import FarmUsageChart from 'components/charts/FarmUsageChart/FarmUsageChart';
-import ComputeTimeBarChart from 'components/charts/ComputeTimeBarChart/ComputeTimeBarChart';
-
-// Frame validation tool
-import FrameValidationTool from 'components/FrameValidationTool/FrameValidationTool';
+// Import pages (use lazy loading)
+const HomePage = React.lazy(() => import('components/pages/HomePage/HomePage'));
+const ProjectsPage = React.lazy(() => import('components/pages/ProjectsPage/ProjectsPage'));
+const ProjectPage = React.lazy(() => import('components/pages/ProjectPage/ProjectPage'));
 
 
 /**
- * Main application component, contains the router and all the routes
+ * Main application component, contains the router, the routes and the pages
  */
 const App: React.FC = () => {
+
+  // Return the full url with website url
+  const fullURL = (path: string): string => `${process.env.PUBLIC_URL}${path}`;
 
   return (
     <Router>
@@ -37,43 +34,29 @@ const App: React.FC = () => {
 
       <main className={styles.pageContent}>
 
-        <Switch>
+        <Suspense fallback={<div>Loading...</div>}>
+          <Switch>
 
-          <Route path={`${process.env.PUBLIC_URL}/`} exact render={() =>
-            <>
-              <div className={styles.pieCharts}>
-                <PCStatePieChart />
-                <ProjectDistPieChart />
-              </div>
+            {/* Home page */}
+            <Route
+              path={fullURL("/")} exact
+              component={HomePage}
+            />
 
-              <hr />
+            {/* Projects page */}
+            <Route
+              path={fullURL("/projects")} exact
+              component={ProjectsPage}
+            />
 
-              <FarmUsageChart />
-            </>
-          } />
+            {/* Project page */}
+            <Route
+              path={fullURL("/project/:projectName")} exact
+              render={(props: any) => (<ProjectPage {...props} />)}
+            />
 
-          <Route path={`${process.env.PUBLIC_URL}/projects`} exact render={() =>
-            <>
-              <ProgressFramesChart />
-              <hr />
-              <ComputeTimeBarChart />
-            </>
-          } />
-
-          {/* Validation tool */}
-          <Route
-            path={`${process.env.PUBLIC_URL}/project/:projectName`}
-            exact
-            render={(props: any) =>
-              <div>
-                <ProjectProgressChart {...props} />
-                <hr />
-                <FrameValidationTool {...props} />
-              </div>
-            }
-          />
-
-        </Switch>
+          </Switch>
+        </Suspense>
 
       </main>
 
