@@ -30,7 +30,7 @@ const AreaChartUsage: React.FC<UsageProps> = (props: UsageProps) => {
     if (props.maxValue === 24) {
       return `${i}h`;
     } else {
-      return ['monday', 'tuesday', 'wendnesday', 'thursday', 'friday', 'saturday', 'sunday'][i];
+      return ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'][i];
     }
   }
 
