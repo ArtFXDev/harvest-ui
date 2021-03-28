@@ -43,7 +43,6 @@ const AreaChartUsage: React.FC<UsageProps> = (props: UsageProps) => {
     if (props.maxValue === 24) {
       return now.getHours() + now.getMinutes() / 60.0;
     } else {
-      console.log(now.getDay() + now.getHours() / 24.0);
       return now.getDay() - 1 + now.getHours() / 24.0;
     }
   }
@@ -123,6 +122,8 @@ const FarmUsageChart: React.FC = () => {
     await fetch(url).then((response) => {
       return response.json();
     }).then((json) => {
+      // Sort the data
+      json.sort((a: any, b: any) => a.time > b.time ? 1 : -1);
 
       // The number of total computers may vary over a day
       // Se compute the percentage relative to that value

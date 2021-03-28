@@ -51,7 +51,6 @@ const ProjectProgressChart: React.FC<Props> = (props) => {
       setData(json);
 
     }).catch((error) => {
-      console.log(error);
       setData(undefined);
     });
   }
