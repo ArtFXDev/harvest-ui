@@ -1,6 +1,6 @@
 $text-color: rgb(40, 39, 39);
 $background-color: #fff;
-$main-font: SanitrixieSans;
+$main-font: CooperHewitt;
 
 // Use when in global css
 @mixin whenDarkGlobal {
@@ -40,6 +40,9 @@ button, select, input {
     border: 1px solid rgba($text-color, 0.2);
     border-radius: 5px;
     cursor: pointer;
+
+    &[type="checkbox"] {
+    }
 
     @include whenDarkGlobal {
         background-color: $text-color;

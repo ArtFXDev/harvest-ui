@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ResponsiveContainer, CartesianGrid, Legend, Line, LineChart, Tooltip, XAxis, YAxis, ReferenceLine } from 'recharts';
+import { CartesianGrid, Legend, Line, LineChart, Tooltip, XAxis, YAxis, ReferenceLine } from 'recharts';
 
 import ChartContainer from 'components/charts/ChartContainer/ChartContainer';
 
@@ -7,9 +7,10 @@ import { PROJECTS, Project, getTotalFrames, startTime, deadline } from "global.d
 
 import DateUtils from 'utils/date-utils';
 
-import styles from './ProgressFramesChart.module.scss';
+import styles from './ProjectsProgressChart.module.scss';
 
-const ProgressFramesChart: React.FC = () => {
+
+const ProjectsProgressChart: React.FC = () => {
   const [data, setData] = useState<Array<any> | undefined>([]);
 
   /**
@@ -24,6 +25,15 @@ const ProgressFramesChart: React.FC = () => {
       for (const project of PROJECTS) {
         for (const sample of json) {
           sample[project.name] = (sample[project.name] / project.totalFrames) * 100;
+        }
+      }
+
+      // Add today's sample data
+      if (json.length !== 0) {
+        const lastData = json[json.length - 1];
+
+        if (lastData.timestamp !== Date.now()) {
+          json.push({ ...lastData, timestamp: Date.now() });
         }
       }
 
@@ -147,4 +157,4 @@ const ProgressFramesChart: React.FC = () => {
   )
 };
 
-export default ProgressFramesChart;
+export default ProjectsProgressChart;

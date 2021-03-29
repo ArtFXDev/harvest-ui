@@ -29,7 +29,7 @@ const ChartContainer: React.FC<Props> = (props: Props) => {
       <div className={styles.infos}>
         <div className={styles.containerLeft}>
           <h2 style={style}
-            className={`${styles.projectTitle} ${props.backgroundColor || props.gradient ? styles.shadow : ''}`}>
+            className={`${styles.projectTitle} ${(props.backgroundColor || props.gradient) ? styles.shadow : ''}`}>
             {`${props.title}`}
           </h2>
         </div>

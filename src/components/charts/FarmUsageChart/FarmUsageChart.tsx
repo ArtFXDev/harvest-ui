@@ -8,6 +8,8 @@ import ChartContainer from 'components/charts/ChartContainer/ChartContainer';
 
 import styles from './FarmUsageChart.module.scss';
 
+import CheckBox from 'components/CheckBox/CheckBox';
+
 
 // All possible states of a computer
 const STATES: Array<string> = ["free", "busy", "nimby", "off"];
@@ -110,13 +112,14 @@ const FarmUsageChart: React.FC = () => {
   const [data, setData] = useState<Array<any> | undefined>([]);
   const [startDate, setStartDate] = useState<Date>(new Date(2021, 2, 24));
   const [period, setPeriod] = useState<string>("hours");
+  const [includeWE, setIncludeWE] = useState<boolean>(true);
 
   const today: Date = new Date();
   const [endDate, setEndDate] = useState<Date>(today);
 
   const fetchData = async () => {
     const baseRoute: string = `${process.env.REACT_APP_API_URL}/stats/farm-history/${period}`;
-    const parameters: string = `start=${startDate!.getTime()}&end=${endDate!.getTime()}`;
+    const parameters: string = `start=${startDate!.getTime()}&end=${endDate!.getTime()}&${!includeWE ? 'ignore-we=1' : ''}`;
     const url: string = `${baseRoute}?${parameters}`;
 
     await fetch(url).then((response) => {
@@ -142,7 +145,7 @@ const FarmUsageChart: React.FC = () => {
   // Fetch data when modifying selection options
   useEffect(() => {
     fetchData();
-  }, [startDate, endDate, period]);
+  }, [startDate, endDate, period, includeWE]);
 
   return (
     <ChartContainer
@@ -151,7 +154,7 @@ const FarmUsageChart: React.FC = () => {
       right={
         <>
           {/* Start date input */}
-          <p className={styles.dateSelector}>
+          <p className={styles.selector}>
             <label htmlFor="start" className={styles.label}>Start date:</label>
             <input type="date" id="start" name="start-date"
               value={startDate ? DateUtils.dateToYYYYMMDD(startDate) : ''}
@@ -161,7 +164,7 @@ const FarmUsageChart: React.FC = () => {
           </p>
 
           {/* End date input */}
-          <p className={styles.dateSelector}>
+          <p className={styles.selector}>
             <label htmlFor="end" className={styles.label}>End date:</label>
             <input type="date" id="end" name="end-date"
               value={DateUtils.dateToYYYYMMDD(endDate)}
@@ -181,10 +184,18 @@ const FarmUsageChart: React.FC = () => {
             id="period-select"
             value={period}
             onChange={e => setPeriod(e.target.value)}
+            className={styles.selector}
           >
             <option value="hours">day</option>
             <option value="days">week</option>
           </select>
+
+          <CheckBox
+            checked={includeWE}
+            onChange={(e: any) => setIncludeWE(e.target.checked)}
+            label="Week end"
+            title="Include week end data into the average"
+          />
         </>
       }
     >

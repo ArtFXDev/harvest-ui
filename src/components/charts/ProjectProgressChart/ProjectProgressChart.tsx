@@ -43,9 +43,12 @@ const ProjectProgressChart: React.FC<Props> = (props) => {
       }
 
       // Add today's sample data
-      if (json.length !== 0 && json[json.length - 1].timestamp !== Date.now()) {
+      if (json.length !== 0) {
         const lastData = json[json.length - 1];
-        json.push({ ...lastData, timestamp: Date.now() });
+
+        if (lastData.timestamp !== Date.now()) {
+          json.push({ ...lastData, timestamp: Date.now() });
+        }
       }
 
       setData(json);

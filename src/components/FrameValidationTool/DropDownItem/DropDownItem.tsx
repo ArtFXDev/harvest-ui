@@ -2,6 +2,8 @@ import React, { useState, useEffect, useReducer } from 'react';
 
 import { ItemNode, createNodeItem, isNodeValid } from '../DropDownContainer/DropDownContainer';
 
+import CheckBox from 'components/CheckBox/CheckBox';
+
 import styles from './DropDownItem.module.scss';
 
 interface Props {
@@ -184,28 +186,32 @@ const DropDownItem: React.FC<Props> = (props) => {
         }
 
         {/* Checkbox */}
-        <div className={`pretty p-svg p-curve ${styles.checkbox}`}>
-          <input type="checkbox" checked={isNodeValid(node)} onChange={onChecked} />
-          <div className="state p-success">
-            <svg className="svg svg-icon" viewBox="0 0 20 20">
-              <path d="M7.629,14.566c0.125,0.125,0.291,0.188,0.456,0.188c0.164,0,0.329-0.062,0.456-0.188l8.219-8.221c0.252-0.252,0.252-0.659,0-0.911c-0.252-0.252-0.659-0.252-0.911,0l-7.764,7.763L4.152,9.267c-0.252-0.251-0.66-0.251-0.911,0c-0.252,0.252-0.252,0.66,0,0.911L7.629,14.566z" style={{ stroke: "white", fill: "white" }}></path>
-            </svg>
-            <label>Valid</label>
-          </div>
-        </div>
+        <CheckBox
+          checked={isNodeValid(node)}
+          onChange={onChecked}
+          className={styles.checkbox}
+          label="Valid"
+        />
       </div>
 
       {/* Display children */}
       <div className={styles.children}>
         {node.children && open &&
           node.children.map((child: ItemNode) => {
-            return <DropDownItem key={`node-${child.depth}-${child.index}`} node={child} updateParent={forceUpdate} updateChangeCounter={props.updateChangeCounter} />
+            return (
+              <DropDownItem
+                key={`node-${child.depth}-${child.index}`}
+                node={child}
+                updateParent={forceUpdate}
+                updateChangeCounter={props.updateChangeCounter}
+              />
+            )
           })
         }
       </div>
 
     </div>
   );
-}
+};
 
 export default DropDownItem;
