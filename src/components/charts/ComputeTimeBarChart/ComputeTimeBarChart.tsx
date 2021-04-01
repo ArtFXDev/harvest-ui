@@ -59,6 +59,7 @@ const ComputeTimeBarChart: React.FC = () => {
 
         <YAxis
           type="number"
+          domain={[0, 3600]}
           tickFormatter={sec => `${Math.floor(sec / 60)} min`}
           label={{
             value: "Computation time (minutes)",

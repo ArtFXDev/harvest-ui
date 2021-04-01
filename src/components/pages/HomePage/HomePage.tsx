@@ -7,7 +7,6 @@ import FarmUsageChart from 'components/charts/FarmUsageChart/FarmUsageChart';
 import PCStatePieChart from 'components/charts/PCStatePieChart/PCStatePieChart';
 import ProjectDistPieChart from 'components/charts/ProjectDistPieChart/ProjectDistPieChart';
 import BladeStateHistoryChart from 'components/charts/BladeStateHistoryChart/BladeStateHistoryChart';
-import ProjectsHistoryChart from 'components/charts/ProjectsHistoryChart/ProjectsHistoryChart';
 
 const HomePage: React.FC = () => (
   <>
@@ -15,10 +14,6 @@ const HomePage: React.FC = () => (
       <PCStatePieChart />
       <ProjectDistPieChart />
     </div>
-
-    <hr />
-
-    <ProjectsHistoryChart />
 
     <hr />
 

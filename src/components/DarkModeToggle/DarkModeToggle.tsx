@@ -10,32 +10,45 @@ const DarkModeToggle: React.FC = () => {
     {
       query: "(prefers-color-scheme: dark)"
     },
-    undefined,
-    prefersDark => {
-      setIsDark(prefersDark);
+    undefined
+  ) ? "dark" : "light";
+
+  /**
+   * If already saved theme on local storage use it otherwise use the system preference
+   */
+  const getInitialDark = (): string => {
+    const currentTheme: (string | null) = localStorage.getItem("theme");
+
+    if (!currentTheme) {
+      localStorage.setItem("theme", systemPrefersDark);
+      console.log("set it to system preference: " + systemPrefersDark);
     }
-  );
+
+    return localStorage.getItem("theme")!;
+  }
 
   // Set the dark mode to be the user defined theme
-  const [isDark, setIsDark] = useState<boolean>(systemPrefersDark);
+  const [theme, setTheme] = useState<string>(getInitialDark());
 
   // When toggled, add "dark" class to <html> tag
   useEffect(() => {
-    if (isDark) {
+    if (theme === "dark") {
       document.documentElement.classList.add("dark")
+      localStorage.setItem("theme", "dark");
     } else {
       document.documentElement.classList.remove("dark")
+      localStorage.setItem("theme", "light");
     }
-  }, [isDark]);
+  }, [theme]);
 
   return (
     <div>
       <input
         type="checkbox"
         id="switch"
-        checked={isDark}
+        checked={theme === "dark"}
         className={styles.checkbox}
-        onChange={_ => setIsDark(!isDark)} />
+        onChange={_ => setTheme(theme === "dark" ? "light" : "dark")} />
 
       <label htmlFor="switch" className={styles.toggle}>
         <div className={styles.emojisContainer}>
