@@ -17,8 +17,15 @@ namespace DateUtils {
     /**
      * Convert timestamp to MM/DD/YYYY
      */
-    export const timestampToMMDDYYY = (timestamp: number): string => dateToMMDDYYYY(new Date(timestamp));
+    export const timestampToMMDDYYYY = (timestamp: number): string => dateToMMDDYYYY(new Date(timestamp));
 
+    /**
+     * Convert timestamp to pretty MM:HH with am / pm
+     */
+    export const timestampToMMHH = (timestamp: number): string => new Date(timestamp).toLocaleTimeString('fr-FR', {
+        hour: '2-digit',
+        minute: '2-digit'
+    }).replace(':', 'h');
 
     /**
      * Format seconds to [h]:[m]:s

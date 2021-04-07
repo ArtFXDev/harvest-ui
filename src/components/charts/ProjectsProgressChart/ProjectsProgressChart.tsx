@@ -97,7 +97,7 @@ const ProjectsProgressChart: React.FC = () => {
           type="number"
           domain={[startTime.getTime(), deadline.getTime()]}
           dataKey="timestamp"
-          tickFormatter={DateUtils.timestampToMMDDYYY}
+          tickFormatter={DateUtils.timestampToMMDDYYYY}
           scale="linear"
           interval="preserveStartEnd"
           height={50}
@@ -139,7 +139,7 @@ const ProjectsProgressChart: React.FC = () => {
             return `${Math.floor((value / 100) * totalFrames)} frames`;
           }}
 
-          labelFormatter={DateUtils.timestampToMMDDYYY}
+          labelFormatter={DateUtils.timestampToMMDDYYYY}
         />
 
         <Legend />

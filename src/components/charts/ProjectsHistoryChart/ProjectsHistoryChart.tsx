@@ -13,8 +13,8 @@ import DateSelector from '../DateSelector/DateSelector';
 const ProjectsHistoryChart: React.FC = () => {
   const [data, setData] = useState<Array<any> | undefined>([]);
 
-  // Start date one week ago
-  const [startDate, setStartDate] = useState<Date>(new Date(Date.now() - 604800000));
+  // Start date one day ago
+  const [startDate, setStartDate] = useState<Date>(new Date(Date.now() - 86400000));
 
   // Until now
   const [endDate, setEndDate] = useState<Date>(new Date());
@@ -74,7 +74,7 @@ const ProjectsHistoryChart: React.FC = () => {
           type="number"
           dataKey="time"
           domain={['minData', 'maxData']}
-          tickFormatter={DateUtils.timestampToMMDDYYY}
+          tickFormatter={DateUtils.timestampToMMDDYYYY}
           height={50}
           label={{
             value: "Time",

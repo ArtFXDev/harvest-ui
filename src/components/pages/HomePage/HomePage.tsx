@@ -7,8 +7,8 @@ import styles from './HomePage.module.scss';
 import FarmUsageChart from 'components/charts/FarmUsageChart/FarmUsageChart';
 import BladeStatePieChart from 'components/charts/BladeStatePieChart/BladeStatePieChart';
 import ProjectDistPieChart from 'components/charts/ProjectDistPieChart/ProjectDistPieChart';
-import BladeStateHistoryChart from 'components/charts/BladeStateHistoryChart/BladeStateHistoryChart';
-import BusyBladeChart from 'components/charts/BusyBladeChart/BusyBladeChart';
+import FarmUsageHistoryChart from 'components/charts/FarmUsageHistoryChart/FarmUsageHistoryChart';
+import FarmCurrentUsageChart from 'components/charts/FarmCurrentUsageChart/FarmCurrentUsageChart';
 
 const HomePage: React.FC = () => (
   <>
@@ -19,7 +19,7 @@ const HomePage: React.FC = () => (
 
     <hr />
 
-    <BusyBladeChart />
+    <FarmCurrentUsageChart />
 
     <hr />
 
@@ -27,7 +27,7 @@ const HomePage: React.FC = () => (
 
     <hr />
 
-    <BladeStateHistoryChart />
+    <FarmUsageHistoryChart />
   </>
 );
 

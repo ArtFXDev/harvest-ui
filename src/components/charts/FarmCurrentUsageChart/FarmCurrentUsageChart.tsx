@@ -3,6 +3,8 @@ import { Area, AreaChart, CartesianGrid, Legend, ReferenceLine, Tooltip, XAxis, 
 
 import { PROJECTS } from 'global.d';
 
+import DateUtils from 'utils/date-utils';
+
 import ChartContainer from '../ChartContainer/ChartContainer';
 import DateSelector from '../DateSelector/DateSelector';
 
@@ -10,20 +12,17 @@ import DateSelector from '../DateSelector/DateSelector';
  * A chart showing the farm usage in a more explicit way
  * by not considering nimby and off computers
  */
-const BusyBladeChart: React.FC = () => {
+const FarmCurrentUsage: React.FC = () => {
   const [data, setData] = useState<Array<any> | undefined>([]);
 
   // Initialize at today midnight
-  const midnight: Date = new Date();
-  midnight.setHours(0, 0, 0, 0);
-
-  const [startDate, setStartDate] = useState<Date>(midnight);
+  const [startDate, setStartDate] = useState<Date>(new Date(Date.now() - 86400000));
 
   // End now
   const [endDate, setEndDate] = useState<Date>(new Date());
 
   const fetchData = async () => {
-    const baseRoute: string = `${process.env.REACT_APP_API_URL}/stats/farm-history/hours`;
+    const baseRoute: string = `${process.env.REACT_APP_API_URL}/graphics/blade-status`;
     const parameters: string = `start=${startDate!.getTime()}&end=${endDate!.getTime()}`;
     const url: string = `${baseRoute}?${parameters}`;
 
@@ -36,10 +35,12 @@ const BusyBladeChart: React.FC = () => {
       // Only keep busy computers / busy + free so we have a better idea
       const onlyBusy = json.map((d: any) => {
         const totalComputers: number = Math.floor(d.busy + d.free);
-        return { busy: (d.busy / totalComputers) * 100, totalComputers: totalComputers, time: d.time };
+        return { busy: (d.busy / totalComputers) * 100, totalComputers: totalComputers, timestamp: d.timestamp };
       });
 
       setData(onlyBusy);
+
+      console.log(onlyBusy);
     }).catch((error) => {
       setData(undefined);
     });
@@ -53,8 +54,10 @@ const BusyBladeChart: React.FC = () => {
   return (
 
     <ChartContainer
-      title="Farm current usage"
+      title={`Farm current usage (${(data && data.length !== 0) ? Math.floor(data[data.length - 1].busy) : "?"}%)`}
       height={300}
+      color="white"
+      backgroundColor={PROJECTS[1].color}
       right={
         <DateSelector
           startDate={startDate}
@@ -68,7 +71,6 @@ const BusyBladeChart: React.FC = () => {
       <AreaChart
         data={data}
         className="chart"
-        syncId="farm-usage"
         margin={{
           top: 20,
           right: 20,
@@ -81,11 +83,11 @@ const BusyBladeChart: React.FC = () => {
 
         <XAxis
           type="number"
-          dataKey="time"
-          domain={[0, 23]}
+          dataKey="timestamp"
+          domain={['dataMin', (dataMax: number) => dataMax + 86400000]}
           height={50}
           tickCount={24}
-          tickFormatter={(i: number) => `${i}h`}
+          tickFormatter={(i: number) => DateUtils.timestampToMMHH(i).slice(0, -2)}
         />
 
         <YAxis
@@ -111,7 +113,7 @@ const BusyBladeChart: React.FC = () => {
           formatter={(percent: number, _key: string, sample: any) => {
             return `${Math.round((percent / 100) * sample.payload.totalComputers)} / ${sample.payload.totalComputers} available computers`;
           }}
-          labelFormatter={(i: number) => `${i}h`}
+          labelFormatter={(i: number) => `${DateUtils.timestampToMMDDYYYY(i)} at ${DateUtils.timestampToMMHH(i)}`}
         />
 
         <Legend />
@@ -122,4 +124,4 @@ const BusyBladeChart: React.FC = () => {
   )
 };
 
-export default BusyBladeChart;
+export default FarmCurrentUsage;

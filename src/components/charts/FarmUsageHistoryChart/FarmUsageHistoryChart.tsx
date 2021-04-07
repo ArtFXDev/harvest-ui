@@ -10,7 +10,7 @@ import DateUtils from "utils/date-utils";
 import DateSelector from '../DateSelector/DateSelector';
 
 
-const BladeStateHistoryChart: React.FC = () => {
+const FarmUsageHistoryChart: React.FC = () => {
   const [data, setData] = useState<Array<any> | undefined>([]);
 
   const [startDate, setStartDate] = useState<Date>(new Date(Date.now() - 604800000));
@@ -79,7 +79,7 @@ const BladeStateHistoryChart: React.FC = () => {
           type="number"
           dataKey="timestamp"
           domain={['minData', 'maxData']}
-          tickFormatter={DateUtils.timestampToMMDDYYY}
+          tickFormatter={DateUtils.timestampToMMDDYYYY}
           height={50}
           label={{
             value: "Time",
@@ -122,4 +122,4 @@ const BladeStateHistoryChart: React.FC = () => {
   )
 };
 
-export default BladeStateHistoryChart;
+export default FarmUsageHistoryChart;

@@ -118,7 +118,7 @@ const ProjectProgressChart: React.FC<Props> = (props) => {
           type="number"
           domain={[startTime.getTime(), deadline.getTime()]}
           dataKey="timestamp"
-          tickFormatter={DateUtils.timestampToMMDDYYY}
+          tickFormatter={DateUtils.timestampToMMDDYYYY}
           scale="linear"
           interval="preserveStartEnd"
           height={50}
@@ -160,7 +160,7 @@ const ProjectProgressChart: React.FC<Props> = (props) => {
             const validFrames = Math.floor((percent / 100) * project.totalFrames);
             return `${validFrames}/${project.totalFrames} frames`;
           }}
-          labelFormatter={DateUtils.timestampToMMDDYYY}
+          labelFormatter={DateUtils.timestampToMMDDYYYY}
         />
 
         {/* Reference line goal */}
