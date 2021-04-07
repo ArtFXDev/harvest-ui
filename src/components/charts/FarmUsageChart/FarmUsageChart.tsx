@@ -1,18 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { Area, AreaChart, CartesianGrid, Legend, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
-import { PROJECTS } from 'global.d';
+import { PROJECTS, STATES } from 'global.d';
 
-import DateUtils from 'utils/date-utils';
 import ChartContainer from 'components/charts/ChartContainer/ChartContainer';
 
 import styles from './FarmUsageChart.module.scss';
 
-import CheckBox from 'components/CheckBox/CheckBox';
+import DateSelector from '../DateSelector/DateSelector';
 
 
 // All possible states of a computer
-const STATES: Array<string> = ["free", "busy", "nimby", "off"];
 
 interface UsageProps {
   data: any;
@@ -122,7 +120,7 @@ const FarmUsageChart: React.FC = () => {
     const parameters: string = `start=${startDate!.getTime()}&end=${endDate!.getTime()}&${!includeWE ? 'ignore-we=1' : ''}`;
     const url: string = `${baseRoute}?${parameters}`;
 
-    await fetch(url).then((response) => {
+    fetch(url).then((response) => {
       return response.json();
     }).then((json) => {
       // Sort the data
@@ -152,51 +150,16 @@ const FarmUsageChart: React.FC = () => {
       title={`Farm average usage over a ${period === 'hours' ? 'day' : 'week'}`}
       responsive={false}
       right={
-        <>
-          {/* Start date input */}
-          <p className={styles.selector}>
-            <label htmlFor="start" className={styles.label}>Start date:</label>
-            <input type="date" id="start" name="start-date"
-              value={startDate ? DateUtils.dateToYYYYMMDD(startDate) : ''}
-              onChange={d => setStartDate(d.target.valueAsDate!)}
-              required={true}
-            />
-          </p>
-
-          {/* End date input */}
-          <p className={styles.selector}>
-            <label htmlFor="end" className={styles.label}>End date:</label>
-            <input type="date" id="end" name="end-date"
-              value={DateUtils.dateToYYYYMMDD(endDate)}
-              min={DateUtils.dateToYYYYMMDD(startDate)}
-              max={DateUtils.dateToYYYYMMDD(today)}
-              onChange={d => setEndDate(d.target.valueAsDate!)}
-              required={true}
-            />
-          </p>
-
-          {/* Time scale input */}
-          <label htmlFor="period" className={styles.label}>Period: </label>
-
-          {/* Period selector */}
-          <select
-            name="period"
-            id="period-select"
-            value={period}
-            onChange={e => setPeriod(e.target.value)}
-            className={styles.selector}
-          >
-            <option value="hours">day</option>
-            <option value="days">week</option>
-          </select>
-
-          <CheckBox
-            checked={includeWE}
-            onChange={(e: any) => setIncludeWE(e.target.checked)}
-            label="Week end"
-            title="Include week end data into the average"
-          />
-        </>
+        <DateSelector
+          startDate={startDate}
+          setStartDate={setStartDate}
+          endDate={endDate}
+          setEndDate={setEndDate}
+          period={period}
+          setPeriod={setPeriod}
+          includeWE={includeWE}
+          setIncludeWE={setIncludeWE}
+        />
       }
     >
 

@@ -33,7 +33,7 @@ const ProjectProgressChart: React.FC<Props> = (props) => {
    * Get data from api
    */
   const fetchData = async () => {
-    await fetch(process.env.REACT_APP_API_URL + '/graphics/progression/' + props.projectName).then((response) => {
+    fetch(process.env.REACT_APP_API_URL + '/graphics/progression/' + props.projectName).then((response) => {
       return response.json();
     }).then((json) => {
 

@@ -40,7 +40,7 @@ const DropDownContainer: React.FC<Props> = (props) => {
   const [requestStatus, setRequestStatus] = useState<{ status: boolean, message: string } | undefined>(undefined);
 
   const fetchSequences = async () => {
-    await fetch(props.baseAPIUrl).then((response) => {
+    fetch(props.baseAPIUrl).then((response) => {
       return response.json();
     }).then((json) => {
       json.sort((a: any, b: any) => a.index > b.index ? 1 : -1);

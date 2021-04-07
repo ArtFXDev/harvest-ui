@@ -1,16 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { CartesianGrid, Line, LineChart, Tooltip, XAxis, YAxis } from 'recharts';
+import { CartesianGrid, Legend, Line, LineChart, Tooltip, XAxis, YAxis } from 'recharts';
 
 // Global import
-import { PROJECTS } from 'global.d';
+import { PROJECTS, STATES } from 'global.d';
 
 // Utility
 import ChartContainer from 'components/charts/ChartContainer/ChartContainer';
 import DateUtils from "utils/date-utils";
+import DateSelector from '../DateSelector/DateSelector';
 
 
 const BladeStateHistoryChart: React.FC = () => {
   const [data, setData] = useState<Array<any> | undefined>([]);
+
+  const [startDate, setStartDate] = useState<Date>(new Date(Date.now() - 604800000));
+  const [endDate, setEndDate] = useState<Date>(new Date());
 
   /**
    * Get data from api
@@ -20,7 +24,15 @@ const BladeStateHistoryChart: React.FC = () => {
       return response.json();
     }).then((json) => {
 
-      setData(json.filter((d: any) => d.timestamp > (+ new Date(2021, 2, 26))));
+      json = json.filter((d: any) => d.timestamp > (+ new Date(2021, 2, 26)));
+
+      json.forEach((d: any) => {
+        const totalComputers = STATES.map(state => d[state]).reduce((e, acc) => acc + e, 0);
+        d.totalComputers = totalComputers;
+        STATES.forEach(state => d[state] = (d[state] / totalComputers) * 100);
+      });
+
+      setData(json);
 
     }).catch((error) => {
       setData(undefined);
@@ -35,6 +47,14 @@ const BladeStateHistoryChart: React.FC = () => {
   return (
     <ChartContainer
       title="Farm usage history"
+      right={
+        <DateSelector
+          startDate={startDate}
+          setStartDate={setStartDate}
+          endDate={endDate}
+          setEndDate={setEndDate}
+        />
+      }
     >
 
       <LineChart
@@ -65,7 +85,8 @@ const BladeStateHistoryChart: React.FC = () => {
 
         <YAxis
           type="number"
-          tickFormatter={value => `${value} computers`}
+          tickFormatter={(p: number) => `${p}%`}
+          domain={[0, 100]}
         />
 
         {/* Project data curve */}
@@ -83,8 +104,13 @@ const BladeStateHistoryChart: React.FC = () => {
         }
 
         <Tooltip
+          formatter={(percent: number, _key: string, sample: any) => {
+            return `${Math.round((percent / 100) * sample.payload.totalComputers)} computers`;
+          }}
           labelFormatter={t => new Date(t).toString()}
         />
+
+        <Legend />
 
       </LineChart>
 

@@ -7,10 +7,14 @@ import { PROJECTS } from 'global.d';
 // Utility
 import ChartContainer from 'components/charts/ChartContainer/ChartContainer';
 import DateUtils from "utils/date-utils";
+import DateSelector from '../DateSelector/DateSelector';
 
 
 const ProjectsHistoryChart: React.FC = () => {
   const [data, setData] = useState<Array<any> | undefined>([]);
+
+  const [startDate, setStartDate] = useState<Date>(new Date(Date.now() - 604800000));
+  const [endDate, setEndDate] = useState<Date>(new Date());
 
   /**
    * Get data from api
@@ -20,7 +24,7 @@ const ProjectsHistoryChart: React.FC = () => {
       return response.json();
     }).then((json) => {
 
-      setData(json);
+      setData(json.filter((d: any) => d.time > (+ new Date(2021, 2, 24))));
 
     }).catch((error) => {
       setData(undefined);
@@ -35,6 +39,14 @@ const ProjectsHistoryChart: React.FC = () => {
   return (
     <ChartContainer
       title="Project usage history"
+      right={
+        <DateSelector
+          startDate={startDate}
+          setStartDate={setStartDate}
+          endDate={endDate}
+          setEndDate={setEndDate}
+        />
+      }
     >
 
       <LineChart
@@ -87,7 +99,6 @@ const ProjectsHistoryChart: React.FC = () => {
         />
 
         <Legend />
-
       </LineChart>
 
     </ChartContainer>

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useReducer } from 'react';
+import FadeIn from 'react-fade-in';
 
 import { ItemNode, createNodeItem, isNodeValid } from '../DropDownContainer/DropDownContainer';
 
@@ -22,7 +23,7 @@ const DropDownItem: React.FC<Props> = (props) => {
   const [, forceUpdate] = useReducer(x => x + 1, 0);
 
   const fetchData = async () => {
-    const nextUrl = `${node.url}/${node.index}`
+    const nextUrl = `${node.url}/${node.index}`;
 
     await fetch(nextUrl).then((response) => {
       return response.json();
@@ -195,19 +196,22 @@ const DropDownItem: React.FC<Props> = (props) => {
       </div>
 
       {/* Display children */}
+
       <div className={styles.children}>
-        {node.children && open &&
-          node.children.map((child: ItemNode) => {
-            return (
-              <DropDownItem
-                key={`node-${child.depth}-${child.index}`}
-                node={child}
-                updateParent={forceUpdate}
-                updateChangeCounter={props.updateChangeCounter}
-              />
-            )
-          })
-        }
+        <FadeIn transitionDuration={1000} delay={20}>
+          {node.children && open &&
+            node.children.map((child: ItemNode) => {
+              return (
+                <DropDownItem
+                  key={`node-${child.depth}-${child.index}`}
+                  node={child}
+                  updateParent={forceUpdate}
+                  updateChangeCounter={props.updateChangeCounter}
+                />
+              )
+            })
+          }
+        </FadeIn>
       </div>
 
     </div>

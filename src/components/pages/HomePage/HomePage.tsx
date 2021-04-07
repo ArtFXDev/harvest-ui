@@ -1,4 +1,5 @@
 import React from 'react';
+import FadeIn from 'react-fade-in';
 
 import styles from './HomePage.module.scss';
 
@@ -10,10 +11,11 @@ import BladeStateHistoryChart from 'components/charts/BladeStateHistoryChart/Bla
 
 const HomePage: React.FC = () => (
   <>
-    <div className={styles.pieCharts}>
+
+    <FadeIn className={styles.pieCharts} transitionDuration={1500}>
       <PCStatePieChart />
       <ProjectDistPieChart />
-    </div>
+    </FadeIn>
 
     <hr />
 
