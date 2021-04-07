@@ -13,14 +13,21 @@ import DateSelector from '../DateSelector/DateSelector';
 const ProjectsHistoryChart: React.FC = () => {
   const [data, setData] = useState<Array<any> | undefined>([]);
 
+  // Start date one week ago
   const [startDate, setStartDate] = useState<Date>(new Date(Date.now() - 604800000));
+
+  // Until now
   const [endDate, setEndDate] = useState<Date>(new Date());
 
   /**
    * Get data from api
    */
   const fetchData = async () => {
-    await fetch(process.env.REACT_APP_API_URL + '/stats/projects-history').then((response) => {
+    const baseRoute: string = `${process.env.REACT_APP_API_URL}/stats/projects-history`;
+    const parameters: string = `start=${startDate!.getTime()}&end=${endDate!.getTime()}`;
+    const url: string = `${baseRoute}?${parameters}`;
+
+    await fetch(url).then((response) => {
       return response.json();
     }).then((json) => {
 
@@ -34,7 +41,7 @@ const ProjectsHistoryChart: React.FC = () => {
   // Fetch data when the project changes
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [startDate, endDate]);
 
   return (
     <ChartContainer

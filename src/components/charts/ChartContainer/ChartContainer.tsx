@@ -17,6 +17,8 @@ interface Props {
   responsive?: boolean;
 
   isVisible?: boolean;
+
+  height?: number;
 }
 
 
@@ -57,7 +59,7 @@ const Chart: React.FC<Props> = (props: Props) => {
 
       {/* Display children charts */}
       {props.children &&
-        <div className={styles.chartContainer} >
+        <div className={styles.chartContainer} style={{ ...props.height && { height: props.height } }}>
           {!props.responsive ? (
             <ResponsiveContainer width="100%" height="100%">
               {props.children as ReactElement<any>}

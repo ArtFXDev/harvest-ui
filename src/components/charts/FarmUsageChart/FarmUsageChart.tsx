@@ -108,12 +108,12 @@ const AreaChartUsage: React.FC<UsageProps> = (props: UsageProps) => {
  */
 const FarmUsageChart: React.FC = () => {
   const [data, setData] = useState<Array<any> | undefined>([]);
+
   const [startDate, setStartDate] = useState<Date>(new Date(2021, 2, 24));
   const [period, setPeriod] = useState<string>("hours");
   const [includeWE, setIncludeWE] = useState<boolean>(true);
 
-  const today: Date = new Date();
-  const [endDate, setEndDate] = useState<Date>(today);
+  const [endDate, setEndDate] = useState<Date>(new Date());
 
   const fetchData = async () => {
     const baseRoute: string = `${process.env.REACT_APP_API_URL}/stats/farm-history/${period}`;

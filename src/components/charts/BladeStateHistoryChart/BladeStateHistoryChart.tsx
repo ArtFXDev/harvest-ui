@@ -20,7 +20,11 @@ const BladeStateHistoryChart: React.FC = () => {
    * Get data from api
    */
   const fetchData = async () => {
-    await fetch(process.env.REACT_APP_API_URL + '/graphics/blade-status').then((response) => {
+    const baseRoute: string = `${process.env.REACT_APP_API_URL}/graphics/blade-status`;
+    const parameters: string = `start=${startDate!.getTime()}&end=${endDate!.getTime()}`;
+    const url: string = `${baseRoute}?${parameters}`;
+
+    await fetch(url).then((response) => {
       return response.json();
     }).then((json) => {
 
@@ -42,7 +46,7 @@ const BladeStateHistoryChart: React.FC = () => {
   // Fetch data when the project changes
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [startDate, endDate]);
 
   return (
     <ChartContainer

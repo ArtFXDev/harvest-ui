@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Cell, Label, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts';
 
-import styles from "./PCStatePieChart.module.scss";
+import styles from "./BladeStatePieChart.module.scss";
 
 import { PROJECTS } from 'global.d';
 
