@@ -1,5 +1,14 @@
 @import "../colors";
 
+@keyframes slideInFromLeft {
+    0% {
+        width: 0%;
+    }
+    100% {
+        width: 100%;
+    }
+}
+
 .container {
     padding-left: 50px;
 
@@ -7,46 +16,47 @@
         padding-left: 0px;
     }
 
-    &.item-depth1 {}
-    &.item-depth2 {}
-
     .item {
-        border-radius: 10px;
+        position: relative;
 
+        border-radius: 10px;
         margin: 10px 0px 10px 0px;
 
         display: flex;
         align-items: center;
 
-        transition: background-color ease 0.3s;
-        background-color: $color-notRendered-light;
         box-shadow: 5px 5px 8px rgba(0, 0, 0, 0.2);
 
-        &.valid {
-            background-color: $color-valid-light;
+        background-color: $color-notRendered-light;
+
+        @include whenDark {
+            background-color: $color-notRendered-dark;
         }
 
-        &.modified {
-            background-color: $color-modified-light;
+        p {
+            z-index: 1;
         }
 
         .error {
             color: red;
             font-size: 0.8em;
             margin-left: 1em;
+            z-index: 1;
         }
 
         .checkbox {
             margin-left: auto;
+            z-index: 1;
         }
 
         .expression {
             border: none;
             border-radius: 4px;
-            font-family: SanitrixieSans;
-            margin: auto;
+            margin-left: auto;
             background-color: #D9D9D9;
             color: black;
+
+            z-index: 1;
 
             @include whenDark {
                 background-color: #282727;
@@ -54,21 +64,50 @@
             }
         }
 
-        @include whenDark {
-            background-color: $color-notRendered-dark;
+        .progressBarContainer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
 
-            &.valid {
-                background-color: $color-valid-dark;
-            }
+            .progressBar {
+                position: absolute;
+                top: 0;
+                left: 0;
 
-            &.modified {
-                background-color: $color-modified-dark;
+                height: 100%;
+
+                border-radius: 10px;
+
+                transition: all 0.3s ease;
+
+                & :local {
+                    animation: slideInFromLeft 0.7s ease forwards;
+                }
+
+                background-color: $color-valid-light;
+
+                &.valid {
+                    background-color: $color-valid-light;
+                }
+
+                &.modified {
+                    background-color: $color-modified-light;
+                }
+
+                @include whenDark {
+                    background-color: $color-valid-dark;
+
+                    &.valid {
+                        background-color: $color-valid-dark;
+                    }
+
+                    &.modified {
+                        background-color: $color-modified-dark;
+                    }
+                }
             }
         }
-    }
-
-
-    .children {
     }
 }
 
@@ -85,6 +124,8 @@
     cursor: pointer;
 
     display: block;
+
+    z-index: 1;
 
     &:hover {
         scale: 1.2;

@@ -11,6 +11,7 @@ interface Props {
   node: ItemNode;
   updateParent?: Function;
   updateChangeCounter: Function;
+  index: number;
 }
 
 const DropDownItem: React.FC<Props> = (props) => {
@@ -31,7 +32,7 @@ const DropDownItem: React.FC<Props> = (props) => {
 
       // Add children to the node
       props.node.children = json.sort((a: any, b: any) => a.index > b.index ? 1 : -1)
-        .map((e: any) => createNodeItem(e.index, nextUrl, e.total === e.valid, node.depth + 1, node.modified, node));
+        .map((e: any) => createNodeItem(e.index, nextUrl, e.total === e.valid, node.depth + 1, node.modified, node, e.total, e.valid));
 
     }).catch((err) => setError(String(err)));
   }
@@ -62,9 +63,34 @@ const DropDownItem: React.FC<Props> = (props) => {
     forceUpdate();
   }, [props.node.modified]);
 
+  /**
+   * Return true if one of the children of the node was modified
+   */
+  const isChildModified = (node: ItemNode): boolean => {
+    if (!node.children) return false;
+
+    for (const child of node.children) {
+      if (child.modified || isChildModified(child)) return true;
+    }
+
+    return false;
+  }
+
+  const getNumberOfValidChilds = (node: ItemNode): number => {
+    if (!node.children) return node.totalValid;
+
+    return node.children.map(child => {
+      if (isNodeValid(child)) {
+        return child.total;
+      } else {
+        return getNumberOfValidChilds(child);
+      }
+    }).reduce((a: number, b: number) => a + b, 0);
+  }
+
   // Return CSS class according to state
   const getStatusClass = (): string => {
-    if (node.modified) {
+    if (node.modified || isChildModified(node)) {
       return styles.modified;
     } else if (node.valid) {
       return styles.valid;
@@ -96,15 +122,17 @@ const DropDownItem: React.FC<Props> = (props) => {
 
     if ((nValid === node.parent.children.length) !== isNodeValid(node.parent)) {
       node.parent.modified = !node.parent.modified;
-      if (props.updateParent) props.updateParent();
     }
+
+    // Recursively update parents
+    if (props.updateParent) props.updateParent();
   }
 
   const onChecked = () => {
     const targetState = !node.modified !== node.valid;
     recursiveCheck(node, targetState);
 
-    if (node.parent) updateParent();
+    updateParent();
 
     forceUpdate();
     props.updateChangeCounter();
@@ -151,22 +179,41 @@ const DropDownItem: React.FC<Props> = (props) => {
       }
     }
 
-    // Toogle all the children that are set in the childList
-    node.children?.forEach((child) => {
-      if (childList.includes(child.index)) {
-        child.modified = !child.modified;
-      }
-    })
+    // If the user checked all the children, validate the entire subtree
+    if (node.children && childList.length >= node.children.length) {
+      recursiveCheck(node, true);
+    } else {
+      // Toogle all the children that are set in the childList
+      node.children?.forEach((child) => {
+        if (childList.includes(child.index)) {
+          child.modified = !child.modified;
+        }
+      });
+    }
 
     // Update the children to see the modifications
     forceUpdate();
+    if (props.updateParent) props.updateParent();
   }
+
+  const currentlyValid = getNumberOfValidChilds(node);
+  const validPercent: number = isNodeValid(node) ? 100 : Math.floor((currentlyValid / node.total) * 100);
+
+  const statusClass = getStatusClass();
 
   return (
     <div className={`${styles.container} ${styles["item-depth" + node.depth]}`}>
 
       {/* Item */}
-      <div className={`${styles.item} ${getStatusClass()} `}>
+      <div className={`${styles.item}`} title={`${validPercent}% valid ${statusClass === styles.modified ? "(modified)" : ""}`}>
+
+        {/* Progress bar with CSS animation */}
+        <div
+          className={styles.progressBarContainer}
+          style={{ width: `${validPercent}%` }}
+        >
+          <div className={`${styles.progressBar} ${statusClass}`} style={{ animationDelay: `${props.index * 100}ms` }} />
+        </div>
 
         {/* Arrow */}
         <div className={`${styles.arrow} ${open ? styles.open : styles.closed}`}
@@ -200,13 +247,14 @@ const DropDownItem: React.FC<Props> = (props) => {
       <div className={styles.children}>
         <FadeIn transitionDuration={1000} delay={20}>
           {node.children && open &&
-            node.children.map((child: ItemNode) => {
+            node.children.map((child: ItemNode, index: number) => {
               return (
                 <DropDownItem
                   key={`node-${child.depth}-${child.index}`}
                   node={child}
-                  updateParent={forceUpdate}
+                  updateParent={() => { forceUpdate(); if (props.updateParent) updateParent() }}
                   updateChangeCounter={props.updateChangeCounter}
+                  index={index}
                 />
               )
             })

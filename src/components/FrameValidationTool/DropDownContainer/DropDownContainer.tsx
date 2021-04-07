@@ -15,10 +15,15 @@ export interface ItemNode {
   url: string;
   valid: boolean;
   modified: boolean;
+  total: number;
+  totalValid: number;
   children: Array<ItemNode> | undefined;
 }
 
-export const createNodeItem = (index: number, url: string, valid: boolean, depth: number, modified: boolean, parent: ItemNode | undefined): ItemNode => {
+/**
+ * Create a node object
+ */
+export const createNodeItem = (index: number, url: string, valid: boolean, depth: number, modified: boolean, parent: ItemNode | undefined, total: number, totalValid: number): ItemNode => {
   return {
     parent: parent,
     depth: depth,
@@ -26,7 +31,9 @@ export const createNodeItem = (index: number, url: string, valid: boolean, depth
     url: url,
     valid: valid,
     modified: modified,
-    children: undefined
+    children: undefined,
+    total: total,
+    totalValid: totalValid
   }
 };
 
@@ -45,7 +52,7 @@ const DropDownContainer: React.FC<Props> = (props) => {
     }).then((json) => {
       json.sort((a: any, b: any) => a.index > b.index ? 1 : -1);
 
-      setListItemTree(json.map((e: any) => createNodeItem(e.index, props.baseAPIUrl, e.total === e.valid, 0, false, undefined)));
+      setListItemTree(json.map((e: any) => createNodeItem(e.index, props.baseAPIUrl, e.total === e.valid, 0, false, undefined, e.total, e.valid)));
     }).catch((error) => setRequestStatus({ status: false, message: "ERROR (fetch data): " + error }));
   }
 
@@ -130,18 +137,17 @@ const DropDownContainer: React.FC<Props> = (props) => {
     <div className={styles.container}>
 
       {(listItemTree && listItemTree.length !== 0) ?
-        listItemTree.map((node: ItemNode) => {
-          return <DropDownItem key={`node-${node.depth}-${node.index}`} node={node} updateParent={undefined} updateChangeCounter={() => setChangeCounter(getChanges().length)} />
-        }) :
+        listItemTree.map((node: ItemNode, index: number) => (
+          <DropDownItem
+            key={`node-${node.depth}-${node.index}`}
+            node={node}
+            index={index}
+            updateChangeCounter={() => setChangeCounter(getChanges().length)}
+          />
+        )) :
 
         <h4>The project does not have any data yet...</h4>
       }
-
-      {/* <div className={styles.floatLeft}>
-          <div className={`${styles.square} ${styles.valid}`} />
-          <div className={`${styles.square} ${styles.modified}`} />
-          <div className={`${styles.square}`} />
-          </div> */}
 
       <div className={styles.floatRight}>
         {changeCounter !== 0 &&
