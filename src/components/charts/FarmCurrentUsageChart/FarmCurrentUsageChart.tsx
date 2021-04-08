@@ -86,8 +86,8 @@ const FarmCurrentUsage: React.FC = () => {
           dataKey="timestamp"
           domain={['dataMin', (dataMax: number) => dataMax + 86400000]}
           height={50}
-          tickCount={24}
-          tickFormatter={(i: number) => DateUtils.timestampToMMHH(i).slice(0, -2)}
+          scale="linear"
+          tickFormatter={(i: number) => `${DateUtils.timestampToMMHH(i)}${(new Date(i).getHours() === new Date().getHours()) ? " (now)" : ""}`}
         />
 
         <YAxis
