@@ -81,7 +81,7 @@ const Chart: React.FC<Props> = (props: Props) => {
 
 const ChartContainer: React.FC<Props> = (props: Props) => {
   return (
-    <TrackVisibility partialVisibility once>
+    <TrackVisibility offset={-300} partialVisibility once>
       {({ isVisible }) => {
         return (
           <FadeIn transitionDuration={1500} visible={isVisible}>
