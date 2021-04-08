@@ -39,8 +39,6 @@ const FarmCurrentUsage: React.FC = () => {
       });
 
       setData(onlyBusy);
-
-      console.log(onlyBusy);
     }).catch((error) => {
       setData(undefined);
     });
