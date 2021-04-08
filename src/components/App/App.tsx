@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
 
 import styles from "./App.module.scss";
 
@@ -56,6 +56,9 @@ const App: React.FC = () => {
                 path={fullURL("/project/:projectName")} exact
                 render={(props: any) => (<ProjectPage {...props} />)}
               />
+
+              {/* Redirect to home when route not known */}
+              <Redirect to={fullURL("/")} />
 
             </Switch>
           </Suspense>
