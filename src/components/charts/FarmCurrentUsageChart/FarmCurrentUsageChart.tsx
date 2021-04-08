@@ -105,7 +105,7 @@ const FarmCurrentUsage: React.FC = () => {
 
         {/* Line for today */}
         <ReferenceLine
-          x={new Date().getHours() + new Date().getMinutes() / 60.0}
+          x={Date.now()}
           stroke="rgba(255, 0, 0, 0.3)"
         />
 
