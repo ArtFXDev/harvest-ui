@@ -51,10 +51,12 @@ const FarmCurrentUsage: React.FC = () => {
     fetchData();
   }, [startDate, endDate]);
 
-  return (
+  const lastHoursUsage = data ? Math.floor((data.map(d => d.busy).reduce((a: number, b: number) => a + b, 0) / data.length)) : 0;
 
+  return (
     <ChartContainer
-      title={`Farm current usage (${(data && data.length !== 0) ? Math.floor(data[data.length - 1].busy) : "?"}%)`}
+      title={`Farm current usage : ${(data && data.length !== 0) ? Math.floor(data[data.length - 1].busy) : "?"}%`}
+      titleParenthesis={`${lastHoursUsage}% for the last 24h`}
       height={300}
       color="white"
       backgroundColor={PROJECTS[1].color}

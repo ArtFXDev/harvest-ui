@@ -7,6 +7,8 @@ import styles from './ChartContainer.module.scss';
 
 interface Props {
   title: string;
+  titleParenthesis?: string;
+
   children: ReactNode;
 
   color?: string;
@@ -44,7 +46,8 @@ const Chart: React.FC<Props> = (props: Props) => {
         <div className={styles.containerLeft}>
           <h2 style={style}
             className={`${styles.projectTitle} ${(props.backgroundColor || props.gradient) ? styles.shadow : ''}`}>
-            {`${props.title}`}
+            {props.title}
+            {props.titleParenthesis && <span className={styles.small}>({props.titleParenthesis})</span>}
           </h2>
         </div>
 

@@ -17,6 +17,11 @@
             padding: 0.5em;
             border-radius: 10px;
 
+            .small {
+                font-size: 0.8em;
+                margin-left: 20px;
+            }
+
             &.shadow {
                 box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
             }
