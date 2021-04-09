@@ -84,10 +84,10 @@ const ChartContainer: React.FC<Props> = (props: Props) => {
     <TrackVisibility offset={-300} partialVisibility once>
       {({ isVisible }) => (
         isVisible ? (
-          <FadeIn transitionDuration={1500} visible={isVisible}>
+          <FadeIn transitionDuration={1700} visible={isVisible}>
             <Chart {...props} isVisible={isVisible} />
           </FadeIn>
-        ) : undefined
+        ) : <div className={styles.chartContainer} style={{ ...props.height && { height: props.height } }} />
       )}
     </TrackVisibility>
   );

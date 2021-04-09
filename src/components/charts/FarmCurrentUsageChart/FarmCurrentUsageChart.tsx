@@ -99,6 +99,7 @@ const FarmCurrentUsage: React.FC = () => {
         <Area
           dataKey="busy"
           type="monotone"
+          animationDuration={1500}
           stroke={PROJECTS[1].color}
           fill={PROJECTS[1].color}
         />
