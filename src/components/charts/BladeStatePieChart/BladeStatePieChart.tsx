@@ -17,7 +17,7 @@ const PCStatePieChart: React.FC = () => {
   const [data, setData] = useState<Array<Data> | undefined>([]);
 
   const fetchData = async () => {
-    await fetch(process.env.REACT_APP_API_URL + '/stats/blades-status').then((response) => {
+    fetch(process.env.REACT_APP_API_URL + '/stats/blades-status').then((response) => {
       return response.json();
     }).then((json) => {
       setData(json);

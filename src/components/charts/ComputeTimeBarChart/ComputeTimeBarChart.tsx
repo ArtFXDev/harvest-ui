@@ -13,7 +13,7 @@ const ComputeTimeBarChart: React.FC = () => {
   const [data, setData] = useState<Array<any> | undefined>([]);
 
   const fetchData = async () => {
-    await fetch(process.env.REACT_APP_API_URL + '/frame-computetime').then((response) => {
+    fetch(process.env.REACT_APP_API_URL + '/frame-computetime').then((response) => {
       return response.json();
     }).then((json) => {
       setData(json);

@@ -24,7 +24,7 @@ const FarmUsageHistoryChart: React.FC = () => {
     const parameters: string = `start=${startDate!.getTime()}&end=${endDate!.getTime()}`;
     const url: string = `${baseRoute}?${parameters}`;
 
-    await fetch(url).then((response) => {
+    fetch(url).then((response) => {
       return response.json();
     }).then((json) => {
       json = json.filter((d: any) => d.timestamp > (+ new Date(2021, 2, 26)));
