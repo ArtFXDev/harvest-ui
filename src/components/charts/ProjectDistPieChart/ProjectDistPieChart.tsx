@@ -22,6 +22,7 @@ const ProjectDistPieChart: React.FC = () => {
     }).then((json) => {
       // Sort the list by project name alphabetically
       setData(json.sort((a: any, b: any) => (a.name > b.name) ? 1 : -1));
+      console.log(json);
     }).catch((error) => {
       setData(undefined);
     });
@@ -64,8 +65,9 @@ const ProjectDistPieChart: React.FC = () => {
             isAnimationActive={true}
           >
 
-            {data &&
+            {data && data.length !== 0 &&
               data.map((el, i) => {
+                if (el.name === "TEST_PIPE") return undefined;
                 const project = getProjectFromName(el.name);
                 return <Cell key={`pcstate-${i}`} fill={project.color} />;
               })

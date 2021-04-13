@@ -7,6 +7,9 @@ import styles from "./App.module.scss";
 import Header from 'components/Header/Header';
 import Footer from 'components/Footer/Footer';
 
+import Loader from 'components/Loader/Loader';
+
+
 // Import pages (use lazy loading)
 const HomePage = React.lazy(() => import('components/pages/HomePage/HomePage'));
 const ProjectsPage = React.lazy(() => import('components/pages/ProjectsPage/ProjectsPage'));
@@ -27,7 +30,7 @@ const App: React.FC = () => (
       <Header />
 
       <main className={styles.pageContent}>
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<Loader />}>
           <Switch>
 
             {/* Home page */}
