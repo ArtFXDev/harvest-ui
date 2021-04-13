@@ -27,7 +27,6 @@ const FarmUsageHistoryChart: React.FC = () => {
     await fetch(url).then((response) => {
       return response.json();
     }).then((json) => {
-
       json = json.filter((d: any) => d.timestamp > (+ new Date(2021, 2, 26)));
 
       json.forEach((d: any) => {
@@ -37,7 +36,6 @@ const FarmUsageHistoryChart: React.FC = () => {
       });
 
       setData(json);
-
     }).catch((error) => {
       setData(undefined);
     });

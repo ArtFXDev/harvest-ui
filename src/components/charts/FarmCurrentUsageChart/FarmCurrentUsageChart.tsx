@@ -26,9 +26,7 @@ const FarmCurrentUsage: React.FC = () => {
     const parameters: string = `start=${startDate!.getTime()}&end=${endDate!.getTime()}`;
     const url: string = `${baseRoute}?${parameters}`;
 
-    fetch(url).then((response) => {
-      return response.json();
-    }).then((json) => {
+    fetch(url).then(value => value.json()).then((json) => {
       // Sort the data
       json.sort((a: any, b: any) => a.time > b.time ? 1 : -1);
 
