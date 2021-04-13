@@ -7,14 +7,16 @@ import CheckBox from 'components/CheckBox/CheckBox';
 
 import styles from './DropDownItem.module.scss';
 
-interface Props {
+
+interface ItemProps {
   node: ItemNode;
   updateParent?: Function;
   updateChangeCounter: Function;
   index: number;
 }
 
-const DropDownItem: React.FC<Props> = (props) => {
+
+const DropDownItem: React.FC<ItemProps> = (props) => {
   const [node, setNode] = useState<ItemNode>(props.node);
   const [open, setOpen] = useState<boolean>(false);
   const [error, setError] = useState<string | undefined>(undefined);
@@ -76,6 +78,9 @@ const DropDownItem: React.FC<Props> = (props) => {
     return false;
   }
 
+  /**
+   * Return the number of valid childs recursively
+   */
   const getNumberOfValidChilds = (node: ItemNode): number => {
     if (!node.children) return node.totalValid;
 
@@ -88,7 +93,9 @@ const DropDownItem: React.FC<Props> = (props) => {
     }).reduce((a: number, b: number) => a + b, 0);
   }
 
-  // Return CSS class according to state
+  /**
+   * Return CSS class according to state
+   */
   const getStatusClass = (): string => {
     if (node.modified || isChildModified(node)) {
       return styles.modified;
@@ -99,12 +106,18 @@ const DropDownItem: React.FC<Props> = (props) => {
     return "";
   }
 
+  /**
+   * Return item text
+   */
   const getText = (): string => {
     const zeroFill = (n: number, pad: number) => ('0000' + n).slice(-pad);
     const number = (node.depth <= 1) ? zeroFill(node.index, 3) : zeroFill(node.index, 4);
     return ["s", "p", "frame ", "Layer "][node.depth] + number;
   }
 
+  /**
+   * Recursively check nodes from this one
+   */
   const recursiveCheck = (node: ItemNode, targetState: boolean) => {
     if (isNodeValid(node) !== targetState) {
       node.modified = !node.modified;
@@ -115,6 +128,9 @@ const DropDownItem: React.FC<Props> = (props) => {
     }
   }
 
+  /**
+   * TODO: again we should not do this
+   */
   const updateParent = () => {
     if (!node.parent || !node.parent.children) return;
 
@@ -128,6 +144,10 @@ const DropDownItem: React.FC<Props> = (props) => {
     if (props.updateParent) props.updateParent();
   }
 
+  /**
+   * Called when item is checked by the user
+   * check the subtree, update parent and notify change
+   */
   const onChecked = () => {
     const targetState = !node.modified !== node.valid;
     recursiveCheck(node, targetState);
@@ -142,23 +162,27 @@ const DropDownItem: React.FC<Props> = (props) => {
     setOpen(!open);
   }
 
-  // Callback when enter is pressed on the expression
+  /**
+   * Parse and check items according to expression
+   */
   const onSubmitExpression = (e: React.KeyboardEvent<HTMLInputElement>) => {
     // If the key pressed is not enter, do nothing
-    if (e.code !== "Enter" && e.code !== "NumpadEnter") { return; }
+    if (e.code !== "Enter" && e.code !== "NumpadEnter") return;
 
     // Get the expression
     const expression = e.currentTarget.value;
 
     // Initialize the list of child to toogle
-    const childList: number[] = [];
+    const childList: Array<number> = [];
 
-    const splits = expression.split(",", 10)
+    const splits = expression.split(",", 10);
+
     for (let split of splits) {
       // Initialise the step, start, end
       let step = 1;
       let start = 0;
       let end = 0;
+
       // If the expression is a range
       if (split.indexOf("-") > -1) {
         // If the expression specifies a step
@@ -166,6 +190,7 @@ const DropDownItem: React.FC<Props> = (props) => {
           step = (+split.split("x")[1] > 0) ? +split.split("x")[1] : 1;
           split = split.split("x")[0]
         }
+
         start = +split.split("-")[0]
         end = +split.split("-")[1]
       }
@@ -173,6 +198,7 @@ const DropDownItem: React.FC<Props> = (props) => {
       else {
         start = end = +split
       }
+
       // Gather all the matching frames
       for (let i = start; i <= end; i += step) {
         childList.push(i)
@@ -196,6 +222,7 @@ const DropDownItem: React.FC<Props> = (props) => {
     if (props.updateParent) props.updateParent();
   }
 
+  // Compute useful info at render time for styling
   const currentlyValid = getNumberOfValidChilds(node);
   const validPercent: number = isNodeValid(node) ? 100 : Math.floor((currentlyValid / node.total) * 100);
 
@@ -243,21 +270,18 @@ const DropDownItem: React.FC<Props> = (props) => {
       </div>
 
       {/* Display children */}
-
       <div className={styles.children}>
         <FadeIn transitionDuration={1000} delay={20}>
           {node.children && open &&
-            node.children.map((child: ItemNode, index: number) => {
-              return (
-                <DropDownItem
-                  key={`node-${child.depth}-${child.index}`}
-                  node={child}
-                  updateParent={() => { forceUpdate(); if (props.updateParent) updateParent() }}
-                  updateChangeCounter={props.updateChangeCounter}
-                  index={index}
-                />
-              )
-            })
+            node.children.map((child: ItemNode, index: number) => (
+              <DropDownItem
+                key={`node-${child.depth}-${child.index}`}
+                node={child}
+                updateParent={() => { forceUpdate(); if (props.updateParent) updateParent() }}
+                updateChangeCounter={props.updateChangeCounter}
+                index={index}
+              />
+            ))
           }
         </FadeIn>
       </div>

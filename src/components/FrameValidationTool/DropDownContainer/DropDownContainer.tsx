@@ -37,9 +37,14 @@ export const createNodeItem = (index: number, url: string, valid: boolean, depth
   }
 };
 
+
+/**
+ * Return true if the node is valid
+ */
 export const isNodeValid = (node: ItemNode): boolean => {
   return node.modified !== node.valid;
 }
+
 
 const DropDownContainer: React.FC<Props> = (props) => {
   const [listItemTree, setListItemTree] = useState<Array<ItemNode>>([]);
@@ -56,6 +61,9 @@ const DropDownContainer: React.FC<Props> = (props) => {
     }).catch((error) => setRequestStatus({ status: false, message: "ERROR (fetch data): " + error }));
   }
 
+  /**
+   * Reset the list, useful when switching route
+   */
   const resetList = () => {
     setListItemTree([]);
     setChangeCounter(0);
@@ -63,6 +71,10 @@ const DropDownContainer: React.FC<Props> = (props) => {
     setRequestStatus(undefined);
   }
 
+  /**
+   * Return an array of requests with boolean valid
+   * Recursively check the tree and stop if item is modified
+   */
   const getChanges = () => {
     const requests: Array<{ url: string, valid: boolean }> = [];
 
@@ -81,7 +93,9 @@ const DropDownContainer: React.FC<Props> = (props) => {
     return requests;
   }
 
-  // Called when clicking on Confirm button
+  /**
+   * On user confirm, ask for confirmation and send requests
+   */
   const onConfirm = () => {
     const changes = getChanges();
 

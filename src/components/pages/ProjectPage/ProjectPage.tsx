@@ -5,15 +5,18 @@ import { match } from 'react-router';
 import ProjectProgressChart from 'components/charts/ProjectProgressChart/ProjectProgressChart';
 import FrameValidationTool from 'components/FrameValidationTool/FrameValidationTool';
 
+
 export interface ProjectRouteParams {
   projectName: string;
 }
 
-interface Props {
+
+interface ProjectPageProps {
   match: match<ProjectRouteParams>;
 }
 
-const ProjectPage: React.FC<Props> = (props) => (
+
+const ProjectPage: React.FC<ProjectPageProps> = (props) => (
   <>
     <ProjectProgressChart projectName={props.match.params.projectName} />
     <hr />

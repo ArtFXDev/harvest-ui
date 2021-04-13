@@ -4,6 +4,10 @@ import { useMediaQuery } from "react-responsive";
 import styles from "./DarkModeToggle.module.scss";
 
 
+/**
+ * Dark mode toggle button
+ * Saves theme preference to local storage
+ */
 const DarkModeToggle: React.FC = () => {
   // Get user system dark mode
   const systemPrefersDark = useMediaQuery(

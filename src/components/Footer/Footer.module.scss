@@ -1,0 +1,31 @@
+.footer {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+
+    font-size: 0.8em;
+
+    margin-bottom: 30px;
+
+    p {
+        margin: 5px;
+    }
+
+    hr {
+        width: 20%;
+    }
+
+    .bugReport {
+        $color: rgb(66, 82, 99);
+
+        color: $color;
+
+        &:hover {
+            color: lighten($color, 10);
+        }
+    }
+
+    .githubLogo {
+        width: 35px;
+    }
+}

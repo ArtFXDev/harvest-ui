@@ -3,11 +3,9 @@ import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-d
 
 import styles from "./App.module.scss";
 
-// Import header components and assets
-import artfxLogo from 'assets/images/ArtFx---Logo-generique-noir.png';
-import githubLogo from 'assets/images/github-logo.png';
-import Navigation from 'components/Navigation/Navigation';
-import DarkModeToggle from 'components/DarkModeToggle/DarkModeToggle';
+// Import header and footer
+import Header from 'components/Header/Header';
+import Footer from 'components/Footer/Footer';
 
 // Import pages (use lazy loading)
 const HomePage = React.lazy(() => import('components/pages/HomePage/HomePage'));
@@ -15,69 +13,52 @@ const ProjectsPage = React.lazy(() => import('components/pages/ProjectsPage/Proj
 const ProjectPage = React.lazy(() => import('components/pages/ProjectPage/ProjectPage'));
 
 
+// Return the full url with website url
+const fullURL = (path: string): string => `${process.env.PUBLIC_URL}${path}`;
+
+
 /**
  * Main application component, contains the router, the routes and the pages
  */
-const App: React.FC = () => {
+const App: React.FC = () => (
+  <>
+    <Router>
 
-  // Return the full url with website url
-  const fullURL = (path: string): string => `${process.env.PUBLIC_URL}${path}`;
+      <Header />
 
-  return (
-    <>
-      <Router>
+      <main className={styles.pageContent}>
+        <Suspense fallback={<div>Loading...</div>}>
+          <Switch>
 
-        <header className={styles.header}>
-          <h1>Harvest 👨‍🌾🌾</h1>
-          <img src={artfxLogo} alt="ArtFX Logo" className={styles.artfxLogo} />
-          <Navigation />
-          <DarkModeToggle />
-        </header>
+            {/* Home page */}
+            <Route
+              path={fullURL("/")} exact
+              component={HomePage}
+            />
 
-        <main className={styles.pageContent}>
+            {/* Projects page */}
+            <Route
+              path={fullURL("/projects")} exact
+              component={ProjectsPage}
+            />
 
-          <Suspense fallback={<div>Loading...</div>}>
-            <Switch>
+            {/* Project page */}
+            <Route
+              path={fullURL("/project/:projectName")} exact
+              render={(props: any) => (<ProjectPage {...props} />)}
+            />
 
-              {/* Home page */}
-              <Route
-                path={fullURL("/")} exact
-                component={HomePage}
-              />
+            {/* Redirect to home when route not known */}
+            <Redirect to={fullURL("/")} />
 
-              {/* Projects page */}
-              <Route
-                path={fullURL("/projects")} exact
-                component={ProjectsPage}
-              />
+          </Switch>
+        </Suspense>
+      </main>
 
-              {/* Project page */}
-              <Route
-                path={fullURL("/project/:projectName")} exact
-                render={(props: any) => (<ProjectPage {...props} />)}
-              />
+    </Router>
 
-              {/* Redirect to home when route not known */}
-              <Redirect to={fullURL("/")} />
-
-            </Switch>
-          </Suspense>
-
-        </main>
-
-      </Router>
-
-      <footer className={styles.footer}>
-        <hr />
-        <p>{`© ${new Date().getFullYear()} ArtFX`}</p>
-        <p><a href="https://github.com/ArtFXDev/harvest-ui/issues" target="_blank" rel="noopener noreferrer" className={styles.bugReport}>Report a bug</a></p>
-
-        <a href="https://github.com/ArtFXDev/harvest-ui" target="_blank" rel="noopener noreferrer">
-          <img src={githubLogo} alt="GitHub" className={styles.githubLogo} title="source code" />
-        </a>
-      </footer>
-    </>
-  );
-};
+    <Footer />
+  </>
+);
 
 export default App;

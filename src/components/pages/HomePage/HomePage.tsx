@@ -10,6 +10,7 @@ import ProjectDistPieChart from 'components/charts/ProjectDistPieChart/ProjectDi
 import FarmUsageHistoryChart from 'components/charts/FarmUsageHistoryChart/FarmUsageHistoryChart';
 import FarmCurrentUsageChart from 'components/charts/FarmCurrentUsageChart/FarmCurrentUsageChart';
 
+
 const HomePage: React.FC = () => (
   <>
     <FadeIn className={styles.pieCharts} transitionDuration={1500}>

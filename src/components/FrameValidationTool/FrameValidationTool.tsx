@@ -2,17 +2,20 @@ import React, { useState, useEffect } from 'react';
 
 import { Project, getProjectFromName, projectNameToUpperCase } from 'global.d';
 
-import styles from "./FrameValidationTool.module.scss";
-
-// Drop down components
 import DropDownContainer from "./DropDownContainer/DropDownContainer";
 
+import styles from "./FrameValidationTool.module.scss";
 
-interface Props {
+
+interface ValidationToolProps {
   projectName: string;
 }
 
-const FrameValidationTool: React.FC<Props> = (props) => {
+
+/**
+ * Root component of the frame validation tool
+ */
+const FrameValidationTool: React.FC<ValidationToolProps> = (props) => {
   const [project, setProject] = useState<Project | undefined>(undefined);
 
   const baseAPIUrl: string = process.env.REACT_APP_API_URL + '/validation/validated-progression/' + props.projectName;

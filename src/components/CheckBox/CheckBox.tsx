@@ -1,16 +1,20 @@
 import React from 'react';
 
-import styles from './CheckBox.module.scss';
 
-interface Props {
+interface CheckBoxProps {
   checked: boolean;
   onChange: any;
+
   label?: string;
   className?: string;
   title?: string;
 }
 
-const CheckBox: React.FC<Props> = (props: Props) => {
+
+/**
+ * Simple reusable checkbox component
+ */
+const CheckBox: React.FC<CheckBoxProps> = (props) => {
   return (
     <div className={`pretty p-svg p-curve ${props.className}`}>
 
