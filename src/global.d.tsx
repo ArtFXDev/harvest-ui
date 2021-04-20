@@ -37,7 +37,7 @@ export const PROJECTS: Array<Project> = [
     id: 4,
     name: "DREAMBLOWER",
     color: "rgb(249, 177, 34)",
-    totalFrames: 6702
+    totalFrames: 4096
   },
   {
     id: 5,
