@@ -27,9 +27,6 @@ const FarmCurrentUsage: React.FC = () => {
     const url: string = `${baseRoute}?${parameters}`;
 
     fetch(url).then(value => value.json()).then((json) => {
-      // Sort the data
-      json.sort((a: any, b: any) => a.time > b.time ? 1 : -1);
-
       // Only keep busy computers / busy + free so we have a better idea
       const onlyBusy = json.map((d: any) => {
         const totalComputers: number = Math.floor(d.busy + d.free);
@@ -112,7 +109,7 @@ const FarmCurrentUsage: React.FC = () => {
           formatter={(percent: number, _key: string, sample: any) => {
             return `${Math.round((percent / 100) * sample.payload.totalComputers)} / ${sample.payload.totalComputers} available computers`;
           }}
-          labelFormatter={(i: number) => `${DateUtils.timestampToMMDDYYYY(i)} at ${DateUtils.timestampToMMHH(i)}`}
+          labelFormatter={(t: number) => `${DateUtils.timestampToMMDDYYYY(t)} at ${DateUtils.timestampToMMHH(t)}`}
         />
 
         <Legend />

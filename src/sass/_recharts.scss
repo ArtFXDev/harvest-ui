@@ -38,10 +38,22 @@
 
 // Tooltip
 .recharts-default-tooltip {
+    border-radius: 10px;
+
+    filter: drop-shadow( 3px 3px 2px rgba(0, 0, 0, .2));
+
     @include whenDarkGlobal {
         fill: $background-color !important;
         background-color: darken(#353B48, 10%) !important;
+        border-color: lighten(#353B48, 2%) !important;
     }
+}
+
+// Custom tooltip for pie chart
+.recharts-pie-tooltip-override {
+    border: 1px solid rgb(204, 204, 204);
+    padding: 15px 10px;
+    background-color: $background-color;
 }
 
 // Rectangle tooltip on bar chart
@@ -51,6 +63,7 @@
     }
 }
 
+// Drop shadow on pie char sectors
 .recharts-sector {
     @include whenDarkGlobal {
         stroke: #353B48 !important;
@@ -58,9 +71,9 @@
 
     stroke: none;
     filter: drop-shadow( 3px 3px 2px rgba(0, 0, 0, .2));
-
 }
 
+// Pie chart center text font size
 .recharts-pie-label-text {
     font-size: 0.8rem !important;
 }

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Area, AreaChart, CartesianGrid, Legend, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
 import { PROJECTS, STATES } from 'global.d';
+import DataUtils from 'utils/data-utils';
 
 import ChartContainer from 'components/charts/ChartContainer/ChartContainer';
 
@@ -9,8 +10,6 @@ import styles from './FarmUsageChart.module.scss';
 
 import DateSelector from '../DateSelector/DateSelector';
 
-
-// All possible states of a computer
 
 interface UsageProps {
   data: any;
@@ -123,18 +122,7 @@ const FarmUsageChart: React.FC = () => {
     fetch(url).then((response) => {
       return response.json();
     }).then((json) => {
-      // Sort the data
-      json.sort((a: any, b: any) => a.time > b.time ? 1 : -1);
-
-      // The number of total computers may vary over a day
-      // Se compute the percentage relative to that value
-      json.forEach((d: any) => {
-        const totalComputers = STATES.map(state => d[state]).reduce((e, acc) => acc + e, 0);
-        d.totalComputers = totalComputers;
-        STATES.forEach(state => d[state] = (d[state] / totalComputers) * 100);
-      });
-
-      setData(json);
+      setData(DataUtils.normalizeDataToPercent(DataUtils.sortByKey(json, "time"), STATES));
     }).catch((error) => {
       setData(undefined);
     });

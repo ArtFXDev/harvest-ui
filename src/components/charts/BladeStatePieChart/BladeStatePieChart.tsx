@@ -4,6 +4,7 @@ import { Cell, Label, Pie, PieChart, ResponsiveContainer, Tooltip } from 'rechar
 import styles from "./BladeStatePieChart.module.scss";
 
 import { PROJECTS } from 'global.d';
+import ChartUtils from 'utils/chart-utils';
 
 interface Data {
   name: string;
@@ -77,9 +78,7 @@ const PCStatePieChart: React.FC = () => {
 
           </Pie>
 
-          <Tooltip
-            formatter={(e: any) => `${e} computers`}
-          />
+          <Tooltip content={ChartUtils.renderPieChartTooltipContent} />
 
         </PieChart>
       </ResponsiveContainer>

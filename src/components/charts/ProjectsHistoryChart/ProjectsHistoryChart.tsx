@@ -73,7 +73,7 @@ const ProjectsHistoryChart: React.FC = () => {
         <XAxis
           type="number"
           dataKey="time"
-          domain={['minData', 'maxData']}
+          domain={['dataMin', 'dataMax']}
           tickFormatter={DateUtils.timestampToMMDDYYYY}
           height={50}
           label={{
@@ -84,10 +84,11 @@ const ProjectsHistoryChart: React.FC = () => {
 
         <YAxis
           type="number"
+          domain={[0, 100]}
           tickFormatter={value => `${value} computers`}
         />
 
-        {/* Project data curve */}
+        {/* Curve for each project */}
         {data && (data.length !== 0) &&
           PROJECTS.map(project => {
             return <Line
@@ -102,7 +103,7 @@ const ProjectsHistoryChart: React.FC = () => {
         }
 
         <Tooltip
-          labelFormatter={t => new Date(t).toString()}
+          labelFormatter={(t: number) => `${DateUtils.timestampToMMDDYYYY(t)} at ${DateUtils.timestampToMMHH(t)}`}
         />
 
         <Legend />

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { CartesianGrid, Legend, Line, LineChart, Tooltip, XAxis, YAxis } from 'recharts';
+import { Area, AreaChart, CartesianGrid, Legend, Tooltip, XAxis, YAxis } from 'recharts';
 
 // Global import
 import { PROJECTS, STATES } from 'global.d';
@@ -28,7 +28,7 @@ const FarmUsageHistoryChart: React.FC = () => {
     fetch(url).then((response) => {
       return response.json();
     }).then((json) => {
-      setData(DataUtils.normalizeDataToPercent(json.filter((d: any) => d.timestamp > (+ new Date(2021, 2, 26))), STATES));
+      setData(DataUtils.normalizeDataToPercent(DataUtils.sortByKey(json, "time"), STATES));
     }).catch((error) => {
       setData(undefined);
     });
@@ -52,7 +52,7 @@ const FarmUsageHistoryChart: React.FC = () => {
       }
     >
 
-      <LineChart
+      <AreaChart
         width={800}
         height={500}
         data={data}
@@ -84,15 +84,17 @@ const FarmUsageHistoryChart: React.FC = () => {
           domain={[0, 100]}
         />
 
-        {/* Line for each computer state */}
         {data && (data.length !== 0) &&
-          ["free", "busy", "nimby", "off"].map((e, i) => {
-            return <Line
-              type="linear"
+          ["off", "nimby", "free", "busy"].map((e, i) => {
+            const stateIndex = STATES.indexOf(e);
+            return <Area
+              type="monotone"
               dataKey={e}
+              stackId="1"
               key={`blade-history-${i}`}
               strokeWidth={3}
-              stroke={PROJECTS[i].color}
+              stroke={PROJECTS[stateIndex].color}
+              fill={PROJECTS[stateIndex].color}
               dot={false}
             />
           })
@@ -107,7 +109,7 @@ const FarmUsageHistoryChart: React.FC = () => {
 
         <Legend />
 
-      </LineChart>
+      </AreaChart>
 
     </ChartContainer>
   )

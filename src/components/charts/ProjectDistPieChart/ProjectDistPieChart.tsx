@@ -4,6 +4,7 @@ import { Cell, Label, Pie, PieChart, ResponsiveContainer, Tooltip } from 'rechar
 import styles from "./ProjectDistPieChart.module.scss";
 
 import { getProjectFromName } from 'global.d';
+import ChartUtils from 'utils/chart-utils';
 
 interface Data {
   name: string;
@@ -81,9 +82,7 @@ const ProjectDistPieChart: React.FC = () => {
 
           </Pie>
 
-          <Tooltip
-            formatter={(e: any) => `${e} computers`}
-          />
+          <Tooltip content={ChartUtils.renderPieChartTooltipContent} />
 
         </PieChart>
       </ResponsiveContainer>
