@@ -26,7 +26,16 @@ const FarmCurrentUsage: React.FC = () => {
     const parameters: string = `start=${startDate!.getTime()}&end=${endDate!.getTime()}`;
     const url: string = `${baseRoute}?${parameters}`;
 
-    fetch(url).then(value => value.json()).then((json) => {
+    // Get current computer repartition data
+    let lastData: any;
+    await fetch(process.env.REACT_APP_API_URL + '/stats/blades-status').then(response => response.json()).then((json) => {
+      lastData = json;
+    });
+
+    fetch(url).then(response => response.json()).then((json) => {
+      // Add current data to dataset
+      json.push({ free: lastData[0].value!, busy: lastData[1].value!, timestamp: Date.now() })
+
       // Only keep busy computers / busy + free so we have a better idea
       const onlyBusy = json.map((d: any) => {
         const total: number = Math.floor(d.busy + d.free);
