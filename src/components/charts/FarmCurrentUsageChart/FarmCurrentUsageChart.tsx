@@ -29,8 +29,8 @@ const FarmCurrentUsage: React.FC = () => {
     fetch(url).then(value => value.json()).then((json) => {
       // Only keep busy computers / busy + free so we have a better idea
       const onlyBusy = json.map((d: any) => {
-        const totalComputers: number = Math.floor(d.busy + d.free);
-        return { busy: (d.busy / totalComputers) * 100, totalComputers: totalComputers, timestamp: d.timestamp };
+        const total: number = Math.floor(d.busy + d.free);
+        return { busy: (d.busy / total) * 100, total: total, timestamp: d.timestamp };
       });
 
       setData(onlyBusy);
@@ -107,7 +107,7 @@ const FarmCurrentUsage: React.FC = () => {
 
         <Tooltip
           formatter={(percent: number, _key: string, sample: any) => {
-            return `${Math.round((percent / 100) * sample.payload.totalComputers)} / ${sample.payload.totalComputers} available computers`;
+            return `${Math.round((percent / 100) * sample.payload.total)} / ${sample.payload.total} available computers`;
           }}
           labelFormatter={(t: number) => `${DateUtils.timestampToMMDDYYYY(t)} at ${DateUtils.timestampToMMHH(t)}`}
         />

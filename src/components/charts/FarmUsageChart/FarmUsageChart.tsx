@@ -89,7 +89,7 @@ const AreaChartUsage: React.FC<UsageProps> = (props: UsageProps) => {
 
         <Tooltip
           formatter={(percent: number, _key: string, sample: any) => {
-            return `${Math.round((percent / 100) * sample.payload.totalComputers)} computers`;
+            return `${Math.round((percent / 100) * sample.payload.total)} computers`;
           }}
           labelFormatter={getDataText}
         />

@@ -102,7 +102,7 @@ const FarmUsageHistoryChart: React.FC = () => {
 
         <Tooltip
           formatter={(percent: number, _key: string, sample: any) => {
-            return `${Math.round((percent / 100) * sample.payload.totalComputers)} computers`;
+            return `${Math.round((percent / 100) * sample.payload.total)} computers`;
           }}
           labelFormatter={(t: number) => `${DateUtils.timestampToMMDDYYYY(t)} at ${DateUtils.timestampToMMHH(t)}`}
         />
