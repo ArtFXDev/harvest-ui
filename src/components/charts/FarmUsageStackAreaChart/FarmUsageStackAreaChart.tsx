@@ -80,7 +80,8 @@ const FarmUsageHistoryChart: React.FC = () => {
 
         <YAxis
           type="number"
-          tickFormatter={(p: number) => `${p}%`}
+          tickFormatter={(p: number) => `${Math.floor(p)}%`}
+          tickCount={6}
           domain={[0, 100]}
         />
 
