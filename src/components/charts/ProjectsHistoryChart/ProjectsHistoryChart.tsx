@@ -84,7 +84,7 @@ const ProjectsHistoryChart: React.FC = () => {
 
         <YAxis
           type="number"
-          domain={[0, 100]}
+          domain={[0, 50]}
           tickFormatter={value => `${value} computers`}
         />
 

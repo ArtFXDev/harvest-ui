@@ -116,9 +116,9 @@ const DropDownContainer: React.FC<Props> = (props) => {
       }).then((response) => {
         if (response.ok) {
           resetList();
-          setRequestStatus({ status: true, message: "Validation successful!" + response.status });
+          setRequestStatus({ status: true, message: `Validation successful! (Code: ${response.status})\nChanges: ${changes}` });
         } else {
-          setRequestStatus({ status: false, message: "ERROR (request failed): " + response.status });
+          setRequestStatus({ status: false, message: `ERROR, request failed (Code: ${response.status})` });
         }
       })
     }

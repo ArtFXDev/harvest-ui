@@ -20,6 +20,8 @@ const ProjectPage: React.FC<ProjectPageProps> = (props) => (
   <>
     <ProjectProgressChart projectName={props.match.params.projectName} />
     <hr />
+
+    {/* <p>The validation tool is under maintenance, please retry later...</p> */}
     <FrameValidationTool projectName={props.match.params.projectName} />
   </>
 );
