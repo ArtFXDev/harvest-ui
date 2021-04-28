@@ -14,7 +14,7 @@ import DateSelector from '../DateSelector/DateSelector';
 const FarmUsageHistoryChart: React.FC = () => {
   const [data, setData] = useState<Array<any> | undefined>([]);
 
-  const [startDate, setStartDate] = useState<Date>(new Date(Date.now() - 604800000));
+  const [startDate, setStartDate] = useState<Date>(new Date(Date.now() - 604800000 / 2.0));
   const [endDate, setEndDate] = useState<Date>(new Date());
 
   /**

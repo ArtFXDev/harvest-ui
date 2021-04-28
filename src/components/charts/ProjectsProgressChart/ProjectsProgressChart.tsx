@@ -123,7 +123,7 @@ const ProjectsProgressChart: React.FC = () => {
           PROJECTS.map(project => {
             return <Line
               key={project.name}
-              type="monotone"
+              type="linear"
               dataKey={project.name}
               strokeWidth={3}
               stroke={project.color}
