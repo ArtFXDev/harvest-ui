@@ -69,7 +69,7 @@ const ProjectDistPieChart: React.FC = () => {
               data.map((el, i) => {
                 if (el.name !== "TEST_PIPE") {
                   const project = getProjectFromName(el.name);
-                  return <Cell key={`pcstate-${i}`} fill={project.color} />;
+                  return <Cell key={`pcstate-${i}`} fill={el.name === 'artfx' ? "#ff6a00" : project.color} />;
                 }
               })
             }

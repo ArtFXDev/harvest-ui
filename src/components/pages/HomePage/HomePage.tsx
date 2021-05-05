@@ -10,6 +10,7 @@ import ProjectDistPieChart from 'components/charts/ProjectDistPieChart/ProjectDi
 /* import FarmUsageHistoryChart from 'components/charts/FarmUsageHistoryChart/FarmUsageHistoryChart'; */
 import FarmCurrentUsageChart from 'components/charts/FarmCurrentUsageChart/FarmCurrentUsageChart';
 import FarmUsageStackAreaChart from 'components/charts/FarmUsageStackAreaChart/FarmUsageStackAreaChart';
+import NumberStats from 'components/NumberStats/NumberStats';
 
 
 const HomePage: React.FC = () => (
@@ -20,12 +21,21 @@ const HomePage: React.FC = () => (
     </FadeIn>
 
     <hr />
+
+    <NumberStats />
+    <hr />
+
     <FarmCurrentUsageChart />
+
     <hr />
+
     <FarmUsageStackAreaChart />
-    {/* <hr />
-        <FarmUsageHistoryChart /> */}
+
+    {/* <hr /> */}
+    {/* <FarmUsageHistoryChart /> */}
+
     <hr />
+
     <FarmUsageChart />
   </>
 );

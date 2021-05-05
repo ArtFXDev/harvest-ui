@@ -10,6 +10,7 @@
     "@types/react-dom": "^17.0.1",
     "@types/react-router-dom": "^5.1.7",
     "@types/recharts": "^1.8.19",
+    "animated-number-react": "^0.1.2",
     "node-sass": "^5.0.0",
     "pretty-checkbox": "^3.0.3",
     "react": "^17.0.1",

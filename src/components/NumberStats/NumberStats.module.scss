@@ -1,0 +1,13 @@
+.counterContainer {
+    display: flex;
+    align-items: baseline;
+
+    .counter {
+        font-size: 40px;
+        margin-right: 10px;
+    }
+
+    .label {
+        font-size: 20px;
+    }
+}
