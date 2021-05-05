@@ -59,7 +59,7 @@ const FarmCurrentUsage: React.FC = () => {
     <ChartContainer
       title={`Farm current usage : ${(data && data.length !== 0) ? Math.floor(data[data.length - 1].busy) : "?"}%`}
       titleParenthesis={`${lastHoursUsage}% for the last 24h`}
-      height={300}
+      height={320}
       color="white"
       backgroundColor={PROJECTS[1].color}
       right={

@@ -3,6 +3,8 @@ import TrackVisibility from 'react-on-screen';
 import FadeIn from 'react-fade-in';
 import AnimatedNumber from "animated-number-react";
 
+import DateUtils from 'utils/date-utils';
+
 import styles from "./NumberStats.module.scss";
 
 interface CounterProps {
@@ -13,6 +15,7 @@ interface CounterProps {
   color: string;
   refresh?: boolean;
   refreshTime?: number;
+  info?: string;
 }
 
 const Counter: React.FC<CounterProps> = (props) => {
@@ -60,6 +63,8 @@ const Counter: React.FC<CounterProps> = (props) => {
 
       <p style={{ color: props.color }} className={styles.label}>{props.label}</p>
 
+      {props.info && <p className={styles.info}>({props.info})</p>}
+
     </div>
   );
 };
@@ -98,7 +103,8 @@ const NumberStats: React.FC = () => {
                 route="total-computetime"
                 routeParams={[{ key: "start", value: yesterday.getTime() }, { key: "end", value: yesterday.getTime() }]}
                 dataTransform={(json: any) => json.find((e: any) => e.project === "TOTAL").minutes}
-                label="minutes of render time (last 24h)"
+                label={"minutes of render time since 24h"}
+                info={`${yesterday.getDate()} ${DateUtils.getMonthName(yesterday)} 00h00 - ${now.getDate()} ${DateUtils.getMonthName(now)} 00h00`}
                 color="#009bd9"
               />
             </div>
