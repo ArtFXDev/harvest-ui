@@ -7,29 +7,40 @@ import styles from "./NumberStats.module.scss";
 
 interface CounterProps {
   route: string;
+  routeParams?: Array<{ key: string, value: string | number }>;
   dataTransform?: Function;
   label: string;
   color: string;
   refresh?: boolean;
+  refreshTime?: number;
 }
 
 const Counter: React.FC<CounterProps> = (props) => {
   const [value, setValue] = useState<number>();
 
   const fetchData = async () => {
-    const response = await fetch(`${process.env.REACT_APP_API_URL}/stats/${props.route}`);
+    let route = `${process.env.REACT_APP_API_URL}/stats/${props.route}`;
+
+    // Add route params
+    if (props.routeParams) {
+      const params = props.routeParams.map(param => `${param.key}=${param.value}`).join('&');
+      route = `${route}?${params}`;
+    }
+
+    const response = await fetch(route);
     const json = await response.json();
 
     setValue(props.dataTransform ? props.dataTransform(json) : json.value);
   }
 
+  // Fetch data and refresh
   useEffect(() => {
     if (props.refresh) {
       const interval = setInterval(async () => {
         if (document.visibilityState === "visible") {
           fetchData();
         }
-      }, 10000);
+      }, props.refreshTime ? (props.refreshTime * 1000) : 10000);
 
       fetchData();
 
@@ -53,7 +64,13 @@ const Counter: React.FC<CounterProps> = (props) => {
   );
 };
 
+
 const NumberStats: React.FC = () => {
+  const now = new Date();
+  const yesterday = new Date(now.getTime());
+  yesterday.setDate(now.getDate() - 1);
+  yesterday.setHours(0, 0, 0, 0);
+
   return (
     <TrackVisibility offset={-100} partialVisibility once>
       {({ isVisible }) => (
@@ -67,6 +84,24 @@ const NumberStats: React.FC = () => {
               color="#e8423b"
               refresh
             />
+
+            <div className={styles.time}>
+              <Counter
+                route="total-computetime"
+                routeParams={[{ key: "start", value: yesterday.getTime() }, { key: "end", value: yesterday.getTime() }]}
+                dataTransform={(json: any) => json.find((e: any) => e.project === "TOTAL").hours}
+                label="hours"
+                color="#009bd9"
+              />
+
+              <Counter
+                route="total-computetime"
+                routeParams={[{ key: "start", value: yesterday.getTime() }, { key: "end", value: yesterday.getTime() }]}
+                dataTransform={(json: any) => json.find((e: any) => e.project === "TOTAL").minutes}
+                label="minutes of render time (last 24h)"
+                color="#009bd9"
+              />
+            </div>
 
           </FadeIn>
         ) : <div>...</div>
