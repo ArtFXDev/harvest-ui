@@ -31,9 +31,9 @@ const HomePage: React.FC = () => (
 
     <hr />
 
-    {/* <FarmTotalComputeTime />
+    <FarmTotalComputeTime />
 
-        <hr /> */}
+    <hr />
 
     <FarmUsageStackAreaChart />
 
