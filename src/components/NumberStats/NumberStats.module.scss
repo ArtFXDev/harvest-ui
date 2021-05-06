@@ -5,8 +5,13 @@
     align-items: baseline;
     justify-content: center;
 
+    color: rgb(150, 150, 150);
+
+    @include whenDark {
+        color: rgb(130, 130, 130);
+    }
+
     .counter {
-        font-size: 40px;
         margin-right: 10px;
     }
 

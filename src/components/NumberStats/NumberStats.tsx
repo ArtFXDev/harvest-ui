@@ -16,6 +16,7 @@ interface CounterProps {
   refresh?: boolean;
   refreshTime?: number;
   info?: string;
+  fontSize?: string;
 }
 
 const Counter: React.FC<CounterProps> = (props) => {
@@ -57,7 +58,14 @@ const Counter: React.FC<CounterProps> = (props) => {
     <div className={styles.counterContainer}>
 
       {value ?
-        <AnimatedNumber value={value} delay={0.4} className={styles.counter} formatValue={(value: any) => value.toFixed(0)} />
+        <div style={{ fontSize: props.fontSize || 40 }}>
+          <AnimatedNumber
+            value={value}
+            delay={200}
+            className={styles.counter}
+            formatValue={(value: number) => value.toFixed(0)}
+          />
+        </div>
         : <div className={styles.counter}>...</div>
       }
 
@@ -103,9 +111,10 @@ const NumberStats: React.FC = () => {
                 route="total-computetime"
                 routeParams={[{ key: "start", value: yesterday.getTime() }, { key: "end", value: yesterday.getTime() }]}
                 dataTransform={(json: any) => json.find((e: any) => e.project === "TOTAL").minutes}
-                label={"minutes of render time since 24h"}
+                label={"minutes of render time in the last 24h"}
                 info={`${yesterday.getDate()} ${DateUtils.getMonthName(yesterday)} 00h00 - ${now.getDate()} ${DateUtils.getMonthName(now)} 00h00`}
                 color="#009bd9"
+                fontSize="35px"
               />
             </div>
 

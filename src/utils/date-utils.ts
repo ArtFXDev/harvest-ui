@@ -47,6 +47,13 @@ namespace DateUtils {
   export const getMonthName = (date: Date): string => {
     return date.toLocaleString('default', { month: 'long' });
   }
+
+  /**
+   * Get difference in days between two dates
+   */
+  export const dateDiffDays = (date1: Date, date2: Date): number => {
+    return Math.ceil((Math.abs(date2.getTime() - date1.getTime()) / (1000 * 60 * 60 * 24)));
+  }
 }
 
 export default DateUtils;

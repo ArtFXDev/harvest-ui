@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { CartesianGrid, Line, LineChart, Tooltip, XAxis, YAxis, ReferenceLine } from 'recharts';
+import AnimatedNumber from "animated-number-react";
 
 // Global import
 import { Project, getProjectFromName, startTime, deadline } from 'global.d';
@@ -92,7 +93,12 @@ const ProjectProgressChart: React.FC<Props> = (props) => {
                 className={styles.totalFrames}
                 style={{ backgroundColor: project.color }}
               >
-                {(data.length !== 0) ? `${getTotalValidatedFrames()} / ${project.totalFrames}` : "No frames validated!"}
+                {(data.length !== 0) ? (
+                  <>
+                    <AnimatedNumber value={getTotalValidatedFrames()} delay={100} formatValue={(value: number) => value.toFixed(0)} />
+                    <span>{` / ${project.totalFrames}`}</span>
+                  </>
+                ) : "No frames validated!"}
               </span>
             </p>
           }

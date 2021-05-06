@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { CartesianGrid, Legend, Line, LineChart, Tooltip, XAxis, YAxis, ReferenceLine } from 'recharts';
+import AnimatedNumber from "animated-number-react";
 
 import ChartContainer from 'components/charts/ChartContainer/ChartContainer';
 
@@ -62,7 +63,7 @@ const ProjectsProgressChart: React.FC = () => {
       right={
         <>
           {/* End date info */}
-          <p>Deadline : <span className={styles.deadline}>{DateUtils.dateToMMDDYYYY(deadline)}</span></p>
+          <p>Deadline : <span className={styles.deadline}>{DateUtils.dateToMMDDYYYY(deadline)} ({DateUtils.dateDiffDays(new Date(), deadline)}d left)</span></p>
 
           {/* Total frames */}
           {data && (data.length !== 0) &&
@@ -71,7 +72,8 @@ const ProjectsProgressChart: React.FC = () => {
              <span
                 className={styles.totalFrames}
               >
-                {`${getTotalValidatedFrames()} / ${getTotalFrames()}`}
+                <AnimatedNumber value={getTotalValidatedFrames()} delay={100} formatValue={(value: number) => value.toFixed(0)} />
+                {` / ${getTotalFrames()}`}
               </span>
             </p>
           }

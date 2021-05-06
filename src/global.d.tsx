@@ -13,7 +13,7 @@ export const PROJECTS: Array<Project> = [
     id: 0,
     name: "BARNEY",
     color: "rgb(21, 175, 151)",
-    totalFrames: 7390
+    totalFrames: 7007
   },
   {
     id: 1,
@@ -31,55 +31,55 @@ export const PROJECTS: Array<Project> = [
     id: 3,
     name: "DIVE",
     color: "rgb(176, 53, 139)",
-    totalFrames: 5559
+    totalFrames: 7738
   },
   {
     id: 4,
     name: "DREAMBLOWER",
     color: "rgb(249, 177, 34)",
-    totalFrames: 4096
+    totalFrames: 4294
   },
   {
     id: 5,
     name: "FROM_ABOVE",
     color: "rgb(255, 206, 68)",
-    totalFrames: 6974
+    totalFrames: 7439
   },
   {
     id: 6,
     name: "GOOD_MORNING_KITTY",
     color: "#fd8b7c",
-    totalFrames: 5013
+    totalFrames: 5020
   },
   {
     id: 7,
     name: "GREEN",
     color: "#00c9a7",
-    totalFrames: 3367
+    totalFrames: 3624
   },
   {
     id: 8,
     name: "HAKAM",
     color: "#af0069",
-    totalFrames: 9893
+    totalFrames: 7293
   },
   {
     id: 9,
     name: "HOSTILE",
     color: "#db6400",
-    totalFrames: 1912
+    totalFrames: 1808
   },
   {
     id: 10,
     name: "PIR_HEARTH",
     color: "#96bb7c",
-    totalFrames: 6371
+    totalFrames: 5904
   },
   {
     id: 11,
     name: "RELATIVITY",
     color: "#7868e6",
-    totalFrames: 6990
+    totalFrames: 6549
   },
   /*{
     id: 12,
