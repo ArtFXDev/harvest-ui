@@ -1,10 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import { Bar, BarChart, CartesianGrid, Legend, Tooltip, XAxis, YAxis } from 'recharts';
+import React, { useEffect, useState } from "react";
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Legend,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 
-import DateUtils from 'utils/date-utils';
+import DateUtils from "utils/date-utils";
 
-import ChartContainer from 'components/charts/ChartContainer/ChartContainer';
-
+import ChartContainer from "components/charts/ChartContainer/ChartContainer";
 
 /**
  * Average frame computation time / computer type / project
@@ -13,14 +20,17 @@ const ComputeTimeBarChart: React.FC = () => {
   const [data, setData] = useState<Array<any> | undefined>([]);
 
   const fetchData = async () => {
-    fetch(process.env.REACT_APP_API_URL + '/frame-computetime').then((response) => {
-      return response.json();
-    }).then((json) => {
-      setData(json);
-    }).catch((error) => {
-      setData(undefined);
-    });
-  }
+    fetch(process.env.REACT_APP_API_URL + "/frame-computetime")
+      .then((response) => {
+        return response.json();
+      })
+      .then((json) => {
+        setData(json);
+      })
+      .catch((error) => {
+        setData(undefined);
+      });
+  };
 
   // Fetch data at component mount
   useEffect(() => {
@@ -32,7 +42,9 @@ const ComputeTimeBarChart: React.FC = () => {
 
   // Create bars
   for (let i: number = 4; i <= 11; i++) {
-    bars.push(<Bar key={i} dataKey={`MK${i}`} fill={`rgb(${i * 20}, 50, 200)`} />);
+    bars.push(
+      <Bar key={i} dataKey={`MK${i}`} fill={`rgb(${i * 20}, 50, 200)`} />
+    );
   }
 
   return (
@@ -41,7 +53,6 @@ const ComputeTimeBarChart: React.FC = () => {
       color="white"
       gradient={["#a032c8", "#5032c8"]}
     >
-
       <BarChart
         data={data}
         className="chart"
@@ -52,7 +63,6 @@ const ComputeTimeBarChart: React.FC = () => {
           bottom: 20,
         }}
       >
-
         <CartesianGrid strokeDasharray="3 3" />
 
         <XAxis dataKey="name" />
@@ -60,12 +70,12 @@ const ComputeTimeBarChart: React.FC = () => {
         <YAxis
           type="number"
           domain={[0, 3600]}
-          tickFormatter={sec => `${Math.floor(sec / 60)} min`}
+          tickFormatter={(sec) => `${Math.floor(sec / 60)} min`}
           label={{
             value: "Computation time (minutes)",
             angle: "-90",
             position: "insideLeft",
-            textAnchor: "middle"
+            textAnchor: "middle",
           }}
         />
 
@@ -73,11 +83,9 @@ const ComputeTimeBarChart: React.FC = () => {
         <Legend />
 
         {bars}
-
       </BarChart>
-
-    </ChartContainer >
-  )
+    </ChartContainer>
+  );
 };
 
 export default ComputeTimeBarChart;

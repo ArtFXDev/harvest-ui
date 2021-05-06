@@ -1,10 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import { Bar, BarChart, CartesianGrid, Legend, Tooltip, XAxis, YAxis } from 'recharts';
+import React, { useEffect, useState } from "react";
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Legend,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 
-import { PROJECTS } from 'global.d';
+import { PROJECTS } from "global.d";
 
-import ChartContainer from 'components/charts/ChartContainer/ChartContainer';
-
+import ChartContainer from "components/charts/ChartContainer/ChartContainer";
 
 /**
  * Average frame computation time / computer type / project
@@ -13,14 +20,17 @@ const ProjectsFrameRatioBarChart: React.FC = () => {
   const [data, setData] = useState<Array<any> | undefined>([]);
 
   const fetchData = async () => {
-    fetch(process.env.REACT_APP_API_URL + '/graphics/frame-computed').then((response) => {
-      return response.json();
-    }).then((json) => {
-      setData(json);
-    }).catch((error) => {
-      setData(undefined);
-    });
-  }
+    fetch(process.env.REACT_APP_API_URL + "/graphics/frame-computed")
+      .then((response) => {
+        return response.json();
+      })
+      .then((json) => {
+        setData(json);
+      })
+      .catch((error) => {
+        setData(undefined);
+      });
+  };
 
   // Fetch data at component mount
   useEffect(() => {
@@ -33,7 +43,6 @@ const ProjectsFrameRatioBarChart: React.FC = () => {
       color="white"
       gradient={[PROJECTS[2].color, PROJECTS[0].color]}
     >
-
       <BarChart
         data={data}
         className="chart"
@@ -44,7 +53,6 @@ const ProjectsFrameRatioBarChart: React.FC = () => {
           bottom: 20,
         }}
       >
-
         <CartesianGrid strokeDasharray="3 3" />
 
         <XAxis dataKey="project" />
@@ -55,7 +63,7 @@ const ProjectsFrameRatioBarChart: React.FC = () => {
             value: "Frames",
             angle: "-90",
             position: "insideLeft",
-            textAnchor: "middle"
+            textAnchor: "middle",
           }}
         />
 
@@ -64,11 +72,9 @@ const ProjectsFrameRatioBarChart: React.FC = () => {
 
         <Bar dataKey="valid" stackId="a" fill={PROJECTS[0].color} />
         <Bar dataKey="rendered" stackId="a" fill={PROJECTS[2].color} />
-
       </BarChart>
-
-    </ChartContainer >
-  )
+    </ChartContainer>
+  );
 };
 
 export default ProjectsFrameRatioBarChart;

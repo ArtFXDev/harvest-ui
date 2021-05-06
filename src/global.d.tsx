@@ -31,7 +31,7 @@ export const PROJECTS: Array<Project> = [
     id: 3,
     name: "DIVE",
     color: "rgb(176, 53, 139)",
-    totalFrames: 7738
+    totalFrames: 4738
   },
   {
     id: 4,

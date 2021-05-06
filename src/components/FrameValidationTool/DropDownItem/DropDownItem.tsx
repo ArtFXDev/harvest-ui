@@ -1,12 +1,15 @@
-import React, { useState, useEffect, useReducer } from 'react';
-import FadeIn from 'react-fade-in';
+import React, { useState, useEffect, useReducer } from "react";
+import FadeIn from "react-fade-in";
 
-import { ItemNode, createNodeItem, isNodeValid } from '../DropDownContainer/DropDownContainer';
+import {
+  ItemNode,
+  createNodeItem,
+  isNodeValid,
+} from "../DropDownContainer/DropDownContainer";
 
-import CheckBox from 'components/CheckBox/CheckBox';
+import CheckBox from "components/CheckBox/CheckBox";
 
-import styles from './DropDownItem.module.scss';
-
+import styles from "./DropDownItem.module.scss";
 
 interface ItemProps {
   node: ItemNode;
@@ -15,7 +18,6 @@ interface ItemProps {
   index: number;
 }
 
-
 const DropDownItem: React.FC<ItemProps> = (props) => {
   const [node, setNode] = useState<ItemNode>(props.node);
   const [open, setOpen] = useState<boolean>(false);
@@ -23,28 +25,41 @@ const DropDownItem: React.FC<ItemProps> = (props) => {
 
   // Hack to force the update of the component
   // TODO: In the future change this
-  const [, forceUpdate] = useReducer(x => x + 1, 0);
+  const [, forceUpdate] = useReducer((x) => x + 1, 0);
 
   const fetchData = async () => {
     const nextUrl = `${node.url}/${node.index}`;
 
-    await fetch(nextUrl).then((response) => {
-      return response.json();
-    }).then((json) => {
-
-      // Add children to the node
-      props.node.children = json.sort((a: any, b: any) => a.index > b.index ? 1 : -1)
-        .map((e: any) => createNodeItem(e.index, nextUrl, e.total === e.valid, node.depth + 1, node.modified, node, e.total, e.valid));
-
-    }).catch((err) => setError(String(err)));
-  }
+    await fetch(nextUrl)
+      .then((response) => {
+        return response.json();
+      })
+      .then((json) => {
+        // Add children to the node
+        props.node.children = json
+          .sort((a: any, b: any) => (a.index > b.index ? 1 : -1))
+          .map((e: any) =>
+            createNodeItem(
+              e.index,
+              nextUrl,
+              e.total === e.valid,
+              node.depth + 1,
+              node.modified,
+              node,
+              e.total,
+              e.valid
+            )
+          );
+      })
+      .catch((err) => setError(String(err)));
+  };
 
   // Fetch data when opened
   useEffect(() => {
     const fetchIfNotCached = async () => {
       await fetchData();
       forceUpdate();
-    }
+    };
 
     if (open && !node.children) {
       fetchIfNotCached();
@@ -76,7 +91,7 @@ const DropDownItem: React.FC<ItemProps> = (props) => {
     }
 
     return false;
-  }
+  };
 
   /**
    * Return the number of valid childs recursively
@@ -84,14 +99,16 @@ const DropDownItem: React.FC<ItemProps> = (props) => {
   const getNumberOfValidChilds = (node: ItemNode): number => {
     if (!node.children) return node.totalValid;
 
-    return node.children.map(child => {
-      if (isNodeValid(child)) {
-        return child.total;
-      } else {
-        return getNumberOfValidChilds(child);
-      }
-    }).reduce((a: number, b: number) => a + b, 0);
-  }
+    return node.children
+      .map((child) => {
+        if (isNodeValid(child)) {
+          return child.total;
+        } else {
+          return getNumberOfValidChilds(child);
+        }
+      })
+      .reduce((a: number, b: number) => a + b, 0);
+  };
 
   /**
    * Return CSS class according to state
@@ -104,16 +121,17 @@ const DropDownItem: React.FC<ItemProps> = (props) => {
     }
 
     return "";
-  }
+  };
 
   /**
    * Return item text
    */
   const getText = (): string => {
-    const zeroFill = (n: number, pad: number) => ('0000' + n).slice(-pad);
-    const number = (node.depth <= 1) ? zeroFill(node.index, 3) : zeroFill(node.index, 4);
+    const zeroFill = (n: number, pad: number) => ("0000" + n).slice(-pad);
+    const number =
+      node.depth <= 1 ? zeroFill(node.index, 3) : zeroFill(node.index, 4);
     return ["s", "p", "frame ", "Layer "][node.depth] + number;
-  }
+  };
 
   /**
    * Recursively check nodes from this one
@@ -124,9 +142,9 @@ const DropDownItem: React.FC<ItemProps> = (props) => {
     }
 
     if (node.children) {
-      node.children.forEach(child => recursiveCheck(child, targetState));
+      node.children.forEach((child) => recursiveCheck(child, targetState));
     }
-  }
+  };
 
   /**
    * TODO: again we should not do this
@@ -134,7 +152,9 @@ const DropDownItem: React.FC<ItemProps> = (props) => {
   const updateParent = () => {
     if (!node.parent || !node.parent.children) return;
 
-    const nValid = node.parent.children.map(n => isNodeValid(n)).filter(x => x === true).length;
+    const nValid = node.parent.children
+      .map((n) => isNodeValid(n))
+      .filter((x) => x === true).length;
 
     if ((nValid === node.parent.children.length) !== isNodeValid(node.parent)) {
       node.parent.modified = !node.parent.modified;
@@ -142,7 +162,7 @@ const DropDownItem: React.FC<ItemProps> = (props) => {
 
     // Recursively update parents
     if (props.updateParent) props.updateParent();
-  }
+  };
 
   /**
    * Called when item is checked by the user
@@ -156,11 +176,11 @@ const DropDownItem: React.FC<ItemProps> = (props) => {
 
     forceUpdate();
     props.updateChangeCounter();
-  }
+  };
 
   const onDropDownClicked = () => {
     setOpen(!open);
-  }
+  };
 
   /**
    * Parse and check items according to expression
@@ -187,21 +207,21 @@ const DropDownItem: React.FC<ItemProps> = (props) => {
       if (split.indexOf("-") > -1) {
         // If the expression specifies a step
         if (split.indexOf("x") > -1) {
-          step = (+split.split("x")[1] > 0) ? +split.split("x")[1] : 1;
-          split = split.split("x")[0]
+          step = +split.split("x")[1] > 0 ? +split.split("x")[1] : 1;
+          split = split.split("x")[0];
         }
 
-        start = +split.split("-")[0]
-        end = +split.split("-")[1]
+        start = +split.split("-")[0];
+        end = +split.split("-")[1];
       }
       // If the expression is just a single index
       else {
-        start = end = +split
+        start = end = +split;
       }
 
       // Gather all the matching frames
       for (let i = start; i <= end; i += step) {
-        childList.push(i)
+        childList.push(i);
       }
     }
 
@@ -220,30 +240,39 @@ const DropDownItem: React.FC<ItemProps> = (props) => {
     // Update the children to see the modifications
     forceUpdate();
     if (props.updateParent) props.updateParent();
-  }
+  };
 
   // Compute useful info at render time for styling
   const currentlyValid = getNumberOfValidChilds(node);
-  const validPercent: number = isNodeValid(node) ? 100 : Math.floor((currentlyValid / node.total) * 100);
+  const validPercent: number = isNodeValid(node)
+    ? 100
+    : Math.floor((currentlyValid / node.total) * 100);
 
   const statusClass = getStatusClass();
 
   return (
     <div className={`${styles.container} ${styles["item-depth" + node.depth]}`}>
-
       {/* Item */}
-      <div className={`${styles.item}`} title={`${validPercent}% valid ${statusClass === styles.modified ? "(modified)" : ""}`}>
-
+      <div
+        className={`${styles.item}`}
+        title={`${validPercent}% valid ${
+          statusClass === styles.modified ? "(modified)" : ""
+        }`}
+      >
         {/* Progress bar with CSS animation */}
         <div
           className={styles.progressBarContainer}
           style={{ width: `${validPercent}%` }}
         >
-          <div className={`${styles.progressBar} ${statusClass}`} style={{ animationDelay: `${props.index * 100}ms` }} />
+          <div
+            className={`${styles.progressBar} ${statusClass}`}
+            style={{ animationDelay: `${props.index * 100}ms` }}
+          />
         </div>
 
         {/* Arrow */}
-        <div className={`${styles.arrow} ${open ? styles.open : styles.closed}`}
+        <div
+          className={`${styles.arrow} ${open ? styles.open : styles.closed}`}
           onClick={onDropDownClicked}
         />
 
@@ -251,14 +280,16 @@ const DropDownItem: React.FC<ItemProps> = (props) => {
         <p className={styles.text}>{getText()}</p>
 
         {/* Expression text input */}
-        {open &&
-          <input className={`${styles.expression}`} type="text" onKeyDown={onSubmitExpression} />
-        }
+        {open && (
+          <input
+            className={`${styles.expression}`}
+            type="text"
+            onKeyDown={onSubmitExpression}
+          />
+        )}
 
         {/* Conditional error message */}
-        {error &&
-          <p className={`${styles.text} ${styles.error}`}>{error}</p>
-        }
+        {error && <p className={`${styles.text} ${styles.error}`}>{error}</p>}
 
         {/* Checkbox */}
         <CheckBox
@@ -272,20 +303,22 @@ const DropDownItem: React.FC<ItemProps> = (props) => {
       {/* Display children */}
       <div className={styles.children}>
         <FadeIn transitionDuration={1000} delay={20}>
-          {node.children && open &&
+          {node.children &&
+            open &&
             node.children.map((child: ItemNode, index: number) => (
               <DropDownItem
                 key={`node-${child.depth}-${child.index}`}
                 node={child}
-                updateParent={() => { forceUpdate(); if (props.updateParent) updateParent() }}
+                updateParent={() => {
+                  forceUpdate();
+                  if (props.updateParent) updateParent();
+                }}
                 updateChangeCounter={props.updateChangeCounter}
                 index={index}
               />
-            ))
-          }
+            ))}
         </FadeIn>
       </div>
-
     </div>
   );
 };

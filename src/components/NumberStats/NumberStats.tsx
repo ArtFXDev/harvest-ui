@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
-import TrackVisibility from 'react-on-screen';
-import FadeIn from 'react-fade-in';
+import TrackVisibility from "react-on-screen";
+import FadeIn from "react-fade-in";
 import AnimatedNumber from "animated-number-react";
 
-import DateUtils from 'utils/date-utils';
+import DateUtils from "utils/date-utils";
 
 import styles from "./NumberStats.module.scss";
 
 interface CounterProps {
   route: string;
-  routeParams?: Array<{ key: string, value: string | number }>;
+  routeParams?: Array<{ key: string; value: string | number }>;
   dataTransform?: Function;
   label: string;
   color: string;
@@ -27,7 +27,9 @@ const Counter: React.FC<CounterProps> = (props) => {
 
     // Add route params
     if (props.routeParams) {
-      const params = props.routeParams.map(param => `${param.key}=${param.value}`).join('&');
+      const params = props.routeParams
+        .map((param) => `${param.key}=${param.value}`)
+        .join("&");
       route = `${route}?${params}`;
     }
 
@@ -35,16 +37,19 @@ const Counter: React.FC<CounterProps> = (props) => {
     const json = await response.json();
 
     setValue(props.dataTransform ? props.dataTransform(json) : json.value);
-  }
+  };
 
   // Fetch data and refresh
   useEffect(() => {
     if (props.refresh) {
-      const interval = setInterval(async () => {
-        if (document.visibilityState === "visible") {
-          fetchData();
-        }
-      }, props.refreshTime ? (props.refreshTime * 1000) : 10000);
+      const interval = setInterval(
+        async () => {
+          if (document.visibilityState === "visible") {
+            fetchData();
+          }
+        },
+        props.refreshTime ? props.refreshTime * 1000 : 10000
+      );
 
       fetchData();
 
@@ -56,8 +61,7 @@ const Counter: React.FC<CounterProps> = (props) => {
 
   return (
     <div className={styles.counterContainer}>
-
-      {value ?
+      {value ? (
         <div style={{ fontSize: props.fontSize || 40 }}>
           <AnimatedNumber
             value={value}
@@ -66,17 +70,18 @@ const Counter: React.FC<CounterProps> = (props) => {
             formatValue={(value: number) => value.toFixed(0)}
           />
         </div>
-        : <div className={styles.counter}>...</div>
-      }
+      ) : (
+        <div className={styles.counter}>...</div>
+      )}
 
-      <p style={{ color: props.color }} className={styles.label}>{props.label}</p>
+      <p style={{ color: props.color }} className={styles.label}>
+        {props.label}
+      </p>
 
       {props.info && <p className={styles.info}>({props.info})</p>}
-
     </div>
   );
 };
-
 
 const NumberStats: React.FC = () => {
   const now = new Date();
@@ -86,13 +91,14 @@ const NumberStats: React.FC = () => {
 
   return (
     <TrackVisibility offset={-100} partialVisibility once>
-      {({ isVisible }) => (
+      {({ isVisible }) =>
         isVisible ? (
           <FadeIn transitionDuration={1700} visible={isVisible}>
-
             <Counter
               route="blades-status"
-              dataTransform={(json: any) => json.find((e: any) => e.name === "Busy").value}
+              dataTransform={(json: any) =>
+                json.find((e: any) => e.name === "Busy").value
+              }
               label="active tasks"
               color="#e8423b"
               refresh
@@ -101,26 +107,41 @@ const NumberStats: React.FC = () => {
             <div className={styles.time}>
               <Counter
                 route="total-computetime"
-                routeParams={[{ key: "start", value: yesterday.getTime() }, { key: "end", value: yesterday.getTime() }]}
-                dataTransform={(json: any) => json.find((e: any) => e.project === "TOTAL").hours}
+                routeParams={[
+                  { key: "start", value: yesterday.getTime() },
+                  { key: "end", value: yesterday.getTime() },
+                ]}
+                dataTransform={(json: any) =>
+                  json.find((e: any) => e.project === "TOTAL").hours
+                }
                 label="hours"
                 color="#009bd9"
               />
 
               <Counter
                 route="total-computetime"
-                routeParams={[{ key: "start", value: yesterday.getTime() }, { key: "end", value: yesterday.getTime() }]}
-                dataTransform={(json: any) => json.find((e: any) => e.project === "TOTAL").minutes}
+                routeParams={[
+                  { key: "start", value: yesterday.getTime() },
+                  { key: "end", value: yesterday.getTime() },
+                ]}
+                dataTransform={(json: any) =>
+                  json.find((e: any) => e.project === "TOTAL").minutes
+                }
                 label={"minutes of render time in the last 24h"}
-                info={`${yesterday.getDate()} ${DateUtils.getMonthName(yesterday)} 00h00 - ${now.getDate()} ${DateUtils.getMonthName(now)} 00h00`}
+                info={`${yesterday.getDate()} ${DateUtils.getMonthName(
+                  yesterday
+                )} 00h00 - ${now.getDate()} ${DateUtils.getMonthName(
+                  now
+                )} 00h00`}
                 color="#009bd9"
                 fontSize="35px"
               />
             </div>
-
           </FadeIn>
-        ) : <div>...</div>
-      )}
+        ) : (
+          <div>...</div>
+        )
+      }
     </TrackVisibility>
   );
 };

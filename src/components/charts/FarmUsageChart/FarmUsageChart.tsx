@@ -1,15 +1,24 @@
-import React, { useEffect, useState } from 'react';
-import { Area, AreaChart, CartesianGrid, Legend, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+import React, { useEffect, useState } from "react";
+import {
+  Area,
+  AreaChart,
+  CartesianGrid,
+  Legend,
+  ReferenceLine,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 
-import { PROJECTS, STATES } from 'global.d';
-import DataUtils from 'utils/data-utils';
+import { PROJECTS, STATES } from "global.d";
+import DataUtils from "utils/data-utils";
 
-import ChartContainer from 'components/charts/ChartContainer/ChartContainer';
+import ChartContainer from "components/charts/ChartContainer/ChartContainer";
 
-import styles from './FarmUsageChart.module.scss';
+import styles from "./FarmUsageChart.module.scss";
 
-import DateSelector from '../DateSelector/DateSelector';
-
+import DateSelector from "../DateSelector/DateSelector";
 
 interface UsageProps {
   data: any;
@@ -29,13 +38,21 @@ const AreaChartUsage: React.FC<UsageProps> = (props: UsageProps) => {
     if (props.maxValue === 24) {
       return `${i}h`;
     } else {
-      return ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'][i];
+      return [
+        "monday",
+        "tuesday",
+        "wednesday",
+        "thursday",
+        "friday",
+        "saturday",
+        "sunday",
+      ][i];
     }
-  }
+  };
 
   /**
-  * Return the current value for the hour or day
-  */
+   * Return the current value for the hour or day
+   */
   const getReferenceLineValue = () => {
     const now = new Date();
 
@@ -44,7 +61,7 @@ const AreaChartUsage: React.FC<UsageProps> = (props: UsageProps) => {
     } else {
       return now.getDay() - 1 + now.getHours() / 24.0;
     }
-  }
+  };
 
   return (
     <ResponsiveContainer width="99%">
@@ -59,7 +76,6 @@ const AreaChartUsage: React.FC<UsageProps> = (props: UsageProps) => {
           bottom: 20,
         }}
       >
-
         <CartesianGrid vertical={false} strokeDasharray="4 3" />
 
         <XAxis
@@ -85,22 +101,25 @@ const AreaChartUsage: React.FC<UsageProps> = (props: UsageProps) => {
         />
 
         {/* Line for today */}
-        <ReferenceLine x={getReferenceLineValue()} stroke="rgba(255, 0, 0, 0.3)" />
+        <ReferenceLine
+          x={getReferenceLineValue()}
+          stroke="rgba(255, 0, 0, 0.3)"
+        />
 
         <Tooltip
           formatter={(percent: number, _key: string, sample: any) => {
-            return `${Math.round((percent / 100) * sample.payload.total)} computers`;
+            return `${Math.round(
+              (percent / 100) * sample.payload.total
+            )} computers`;
           }}
           labelFormatter={getDataText}
         />
 
         <Legend />
-
       </AreaChart>
     </ResponsiveContainer>
   );
 };
-
 
 /**
  * Average values of the usage of the farm over a day
@@ -116,17 +135,27 @@ const FarmUsageChart: React.FC = () => {
 
   const fetchData = async () => {
     const baseRoute: string = `${process.env.REACT_APP_API_URL}/stats/farm-history/${period}`;
-    const parameters: string = `start=${startDate!.getTime()}&end=${endDate!.getTime()}&${!includeWE ? 'ignore-we=1' : ''}`;
+    const parameters: string = `start=${startDate!.getTime()}&end=${endDate!.getTime()}&${
+      !includeWE ? "ignore-we=1" : ""
+    }`;
     const url: string = `${baseRoute}?${parameters}`;
 
-    fetch(url).then((response) => {
-      return response.json();
-    }).then((json) => {
-      setData(DataUtils.normalizeDataToPercent(DataUtils.sortByKey(json, "time"), STATES));
-    }).catch((error) => {
-      setData(undefined);
-    });
-  }
+    fetch(url)
+      .then((response) => {
+        return response.json();
+      })
+      .then((json) => {
+        setData(
+          DataUtils.normalizeDataToPercent(
+            DataUtils.sortByKey(json, "time"),
+            STATES
+          )
+        );
+      })
+      .catch((error) => {
+        setData(undefined);
+      });
+  };
 
   // Fetch data when modifying selection options
   useEffect(() => {
@@ -135,7 +164,7 @@ const FarmUsageChart: React.FC = () => {
 
   return (
     <ChartContainer
-      title={`Farm average usage over a ${period === 'hours' ? 'day' : 'week'}`}
+      title={`Farm average usage over a ${period === "hours" ? "day" : "week"}`}
       responsive={false}
       right={
         <DateSelector
@@ -150,25 +179,25 @@ const FarmUsageChart: React.FC = () => {
         />
       }
     >
-
       {/* Display four charts */}
       <div className={styles.chartGrid}>
-        {data && data.length !== 0 &&
+        {data &&
+          data.length !== 0 &&
           STATES.map((dataKey: string, i: number) => {
-            return <div className={styles.chartUsage} key={`farm-usage-${i}`}>
-              <AreaChartUsage
-                data={data}
-                dataKey={dataKey}
-                fillColor={PROJECTS[i].color}
-                maxValue={period === "hours" ? 24 : 7}
-              />
-            </div>
-          })
-        }
+            return (
+              <div className={styles.chartUsage} key={`farm-usage-${i}`}>
+                <AreaChartUsage
+                  data={data}
+                  dataKey={dataKey}
+                  fillColor={PROJECTS[i].color}
+                  maxValue={period === "hours" ? 24 : 7}
+                />
+              </div>
+            );
+          })}
       </div>
-
     </ChartContainer>
-  )
+  );
 };
 
 export default FarmUsageChart;

@@ -1,10 +1,9 @@
-import React from 'react';
+import React from "react";
 
 // Components
-import ProjectsProgressChart from 'components/charts/ProjectsProgressChart/ProjectsProgressChart';
-import ProjectsHistoryChart from 'components/charts/ProjectsHistoryChart/ProjectsHistoryChart';
-import ProjectsFrameRatioBarChart from 'components/charts/ProjectsFrameRatioBarChart/ProjectsFrameRatioBarChart';
-
+import ProjectsProgressChart from "components/charts/ProjectsProgressChart/ProjectsProgressChart";
+import ProjectsHistoryChart from "components/charts/ProjectsHistoryChart/ProjectsHistoryChart";
+import ProjectsFrameRatioBarChart from "components/charts/ProjectsFrameRatioBarChart/ProjectsFrameRatioBarChart";
 
 const ProjectsPage: React.FC = () => (
   <>

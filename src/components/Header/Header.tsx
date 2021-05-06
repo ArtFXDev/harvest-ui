@@ -1,11 +1,11 @@
-import React from 'react';
+import React from "react";
 
-import Navigation from 'components/Navigation/Navigation';
-import DarkModeToggle from 'components/DarkModeToggle/DarkModeToggle';
+import Navigation from "components/Navigation/Navigation";
+import DarkModeToggle from "components/DarkModeToggle/DarkModeToggle";
 
-import artfxLogo from 'assets/images/ArtFx---Logo-generique-noir.png';
+import artfxLogo from "assets/images/ArtFx---Logo-generique-noir.png";
 
-import styles from './Header.module.scss';
+import styles from "./Header.module.scss";
 
 const Header: React.FC = () => (
   <header className={styles.header}>

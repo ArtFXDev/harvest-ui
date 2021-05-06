@@ -1,10 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import { Cell, Label, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts';
+import React, { useEffect, useState } from "react";
+import {
+  Cell,
+  Label,
+  Pie,
+  PieChart,
+  ResponsiveContainer,
+  Tooltip,
+} from "recharts";
 
 import styles from "./BladeStatePieChart.module.scss";
 
-import { PROJECTS } from 'global.d';
-import ChartUtils from 'utils/chart-utils';
+import { PROJECTS } from "global.d";
+import ChartUtils from "utils/chart-utils";
 
 interface Data {
   name: string;
@@ -18,14 +25,17 @@ const PCStatePieChart: React.FC = () => {
   const [data, setData] = useState<Array<Data> | undefined>([]);
 
   const fetchData = async () => {
-    fetch(process.env.REACT_APP_API_URL + '/stats/blades-status').then((response) => {
-      return response.json();
-    }).then((json) => {
-      setData(json);
-    }).catch((error) => {
-      setData(undefined);
-    });
-  }
+    fetch(process.env.REACT_APP_API_URL + "/stats/blades-status")
+      .then((response) => {
+        return response.json();
+      })
+      .then((json) => {
+        setData(json);
+      })
+      .catch((error) => {
+        setData(undefined);
+      });
+  };
 
   // Fetch data at component mount
   useEffect(() => {
@@ -42,14 +52,8 @@ const PCStatePieChart: React.FC = () => {
 
   return (
     <div className="chartContainerSmall">
-
       <ResponsiveContainer width="99%" minWidth="0">
-        <PieChart
-          width={250}
-          height={250}
-          className="chart"
-        >
-
+        <PieChart width={250} height={250} className="chart">
           <Pie
             data={data}
             dataKey="value"
@@ -57,33 +61,35 @@ const PCStatePieChart: React.FC = () => {
             outerRadius="80%"
             labelLine={false}
             label={({ percent, index }) => {
-              return (data === undefined) ? "" : `${data[index].name}: ${Math.round(percent * 100)}%`
+              return data === undefined
+                ? ""
+                : `${data[index].name}: ${Math.round(percent * 100)}%`;
             }}
             animationDuration={800}
             paddingAngle={5}
             isAnimationActive={true}
           >
-
             {data &&
               data.map((el, i) => (
-                <Cell key={`pcstate-${i}`} fill={PROJECTS[i].color} color={PROJECTS[i].color} />
-              ))
-            }
+                <Cell
+                  key={`pcstate-${i}`}
+                  fill={PROJECTS[i].color}
+                  color={PROJECTS[i].color}
+                />
+              ))}
 
             <Label
               value="Computer state"
               position="center"
               className={styles.centeredLabel}
             />
-
           </Pie>
 
           <Tooltip content={ChartUtils.renderPieChartTooltipContent} />
-
         </PieChart>
       </ResponsiveContainer>
     </div>
-  )
+  );
 };
 
 export default PCStatePieChart;

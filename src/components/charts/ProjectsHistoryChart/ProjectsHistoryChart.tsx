@@ -1,20 +1,29 @@
-import React, { useState, useEffect } from 'react';
-import { CartesianGrid, Legend, Line, LineChart, Tooltip, XAxis, YAxis } from 'recharts';
+import React, { useState, useEffect } from "react";
+import {
+  CartesianGrid,
+  Legend,
+  Line,
+  LineChart,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 
 // Global import
-import { PROJECTS } from 'global.d';
+import { PROJECTS } from "global.d";
 
 // Utility
-import ChartContainer from 'components/charts/ChartContainer/ChartContainer';
+import ChartContainer from "components/charts/ChartContainer/ChartContainer";
 import DateUtils from "utils/date-utils";
-import DateSelector from '../DateSelector/DateSelector';
-
+import DateSelector from "../DateSelector/DateSelector";
 
 const ProjectsHistoryChart: React.FC = () => {
   const [data, setData] = useState<Array<any> | undefined>([]);
 
   // Start date one day ago
-  const [startDate, setStartDate] = useState<Date>(new Date(Date.now() - 86400000));
+  const [startDate, setStartDate] = useState<Date>(
+    new Date(Date.now() - 86400000)
+  );
 
   // Until now
   const [endDate, setEndDate] = useState<Date>(new Date());
@@ -27,16 +36,17 @@ const ProjectsHistoryChart: React.FC = () => {
     const parameters: string = `start=${startDate!.getTime()}&end=${endDate!.getTime()}`;
     const url: string = `${baseRoute}?${parameters}`;
 
-    fetch(url).then((response) => {
-      return response.json();
-    }).then((json) => {
-
-      setData(json.filter((d: any) => d.time > (+ new Date(2021, 2, 24))));
-
-    }).catch((error) => {
-      setData(undefined);
-    });
-  }
+    fetch(url)
+      .then((response) => {
+        return response.json();
+      })
+      .then((json) => {
+        setData(json.filter((d: any) => d.time > +new Date(2021, 2, 24)));
+      })
+      .catch((error) => {
+        setData(undefined);
+      });
+  };
 
   // Fetch data when the project changes
   useEffect(() => {
@@ -55,7 +65,6 @@ const ProjectsHistoryChart: React.FC = () => {
         />
       }
     >
-
       <LineChart
         width={800}
         height={500}
@@ -66,14 +75,14 @@ const ProjectsHistoryChart: React.FC = () => {
           right: 20,
           left: 20,
           bottom: 20,
-        }}>
-
+        }}
+      >
         <CartesianGrid strokeDasharray="3 3" />
 
         <XAxis
           type="number"
           dataKey="time"
-          domain={['dataMin', 'dataMax']}
+          domain={["dataMin", "dataMax"]}
           tickFormatter={DateUtils.timestampToMMDDYYYY}
           height={50}
           label={{
@@ -85,32 +94,37 @@ const ProjectsHistoryChart: React.FC = () => {
         <YAxis
           type="number"
           domain={[0, 50]}
-          tickFormatter={value => `${value} computers`}
+          tickFormatter={(value) => `${value} computers`}
         />
 
         {/* Curve for each project */}
-        {data && (data.length !== 0) &&
-          PROJECTS.map(project => {
-            return <Line
-              key={project.name}
-              type="monotone"
-              dataKey={project.name}
-              strokeWidth={3}
-              stroke={project.color}
-              dot={false}
-            />
-          })
-        }
+        {data &&
+          data.length !== 0 &&
+          PROJECTS.map((project) => {
+            return (
+              <Line
+                key={project.name}
+                type="monotone"
+                dataKey={project.name}
+                strokeWidth={3}
+                stroke={project.color}
+                dot={false}
+              />
+            );
+          })}
 
         <Tooltip
-          labelFormatter={(t: number) => `${DateUtils.timestampToMMDDYYYY(t)} at ${DateUtils.timestampToMMHH(t)}`}
+          labelFormatter={(t: number) =>
+            `${DateUtils.timestampToMMDDYYYY(t)} at ${DateUtils.timestampToMMHH(
+              t
+            )}`
+          }
         />
 
         <Legend />
       </LineChart>
-
     </ChartContainer>
-  )
+  );
 };
 
 export default ProjectsHistoryChart;

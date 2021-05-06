@@ -1,18 +1,18 @@
 @import "sass/global";
 
 .header {
-    text-align: center;
-    padding: 1em;
-    margin-bottom: 5em;
+  text-align: center;
+  padding: 1em;
+  margin-bottom: 5em;
 
-    .artfxLogo {
-        position: absolute;
-        left: 1em;
-        top: 0.5em;
-        width: 100px;
+  .artfxLogo {
+    position: absolute;
+    left: 1em;
+    top: 0.5em;
+    width: 100px;
 
-        @include whenDark {
-            filter: invert(1);
-        }
+    @include whenDark {
+      filter: invert(1);
     }
+  }
 }

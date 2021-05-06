@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
 import DropDownItem from "../DropDownItem/DropDownItem";
 
@@ -23,7 +23,16 @@ export interface ItemNode {
 /**
  * Create a node object
  */
-export const createNodeItem = (index: number, url: string, valid: boolean, depth: number, modified: boolean, parent: ItemNode | undefined, total: number, totalValid: number): ItemNode => {
+export const createNodeItem = (
+  index: number,
+  url: string,
+  valid: boolean,
+  depth: number,
+  modified: boolean,
+  parent: ItemNode | undefined,
+  total: number,
+  totalValid: number
+): ItemNode => {
   return {
     parent: parent,
     depth: depth,
@@ -33,33 +42,54 @@ export const createNodeItem = (index: number, url: string, valid: boolean, depth
     modified: modified,
     children: undefined,
     total: total,
-    totalValid: totalValid
-  }
+    totalValid: totalValid,
+  };
 };
-
 
 /**
  * Return true if the node is valid
  */
 export const isNodeValid = (node: ItemNode): boolean => {
   return node.modified !== node.valid;
-}
-
+};
 
 const DropDownContainer: React.FC<Props> = (props) => {
   const [listItemTree, setListItemTree] = useState<Array<ItemNode>>([]);
   const [changeCounter, setChangeCounter] = useState<number>(0);
-  const [requestStatus, setRequestStatus] = useState<{ status: boolean, message: string } | undefined>(undefined);
+  const [requestStatus, setRequestStatus] = useState<
+    { status: boolean; message: string } | undefined
+  >(undefined);
 
   const fetchSequences = async () => {
-    fetch(props.baseAPIUrl).then((response) => {
-      return response.json();
-    }).then((json) => {
-      json.sort((a: any, b: any) => a.index > b.index ? 1 : -1);
+    fetch(props.baseAPIUrl)
+      .then((response) => {
+        return response.json();
+      })
+      .then((json) => {
+        json.sort((a: any, b: any) => (a.index > b.index ? 1 : -1));
 
-      setListItemTree(json.map((e: any) => createNodeItem(e.index, props.baseAPIUrl, e.total === e.valid, 0, false, undefined, e.total, e.valid)));
-    }).catch((error) => setRequestStatus({ status: false, message: "ERROR (fetch data): " + error }));
-  }
+        setListItemTree(
+          json.map((e: any) =>
+            createNodeItem(
+              e.index,
+              props.baseAPIUrl,
+              e.total === e.valid,
+              0,
+              false,
+              undefined,
+              e.total,
+              e.valid
+            )
+          )
+        );
+      })
+      .catch((error) =>
+        setRequestStatus({
+          status: false,
+          message: "ERROR (fetch data): " + error,
+        })
+      );
+  };
 
   /**
    * Reset the list, useful when switching route
@@ -69,29 +99,36 @@ const DropDownContainer: React.FC<Props> = (props) => {
     setChangeCounter(0);
     fetchSequences();
     setRequestStatus(undefined);
-  }
+  };
 
   /**
    * Return an array of requests with boolean valid
    * Recursively check the tree and stop if item is modified
    */
   const getChanges = () => {
-    const requests: Array<{ url: string, valid: boolean }> = [];
+    const requests: Array<{ url: string; valid: boolean }> = [];
 
     const checkForModification = (node: ItemNode, url: string) => {
-      if ((node.modified && !node.children) || (node.modified && isNodeValid(node))) {
+      if (
+        (node.modified && !node.children) ||
+        (node.modified && isNodeValid(node))
+      ) {
         requests.push({ url: url, valid: isNodeValid(node) });
       } else {
         if (node.children) {
-          node.children.forEach(child => checkForModification(child, url + "/" + child.index));
+          node.children.forEach((child) =>
+            checkForModification(child, url + "/" + child.index)
+          );
         }
       }
-    }
+    };
 
-    listItemTree.forEach(child => checkForModification(child, "/" + child.index));
+    listItemTree.forEach((child) =>
+      checkForModification(child, "/" + child.index)
+    );
 
     return requests;
-  }
+  };
 
   /**
    * On user confirm, ask for confirmation and send requests
@@ -103,38 +140,47 @@ const DropDownContainer: React.FC<Props> = (props) => {
       return window.alert("There are no modifications!");
     }
 
-    const userConfirm = window.confirm("Do you really want to modify " + changes.length + " elements?");
+    const userConfirm = window.confirm(
+      "Do you really want to modify " + changes.length + " elements?"
+    );
 
     if (userConfirm) {
       fetch(props.baseAPIUrl.replace("validated", "validate"), {
         headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
+          Accept: "application/json",
+          "Content-Type": "application/json",
         },
         method: "POST",
-        body: JSON.stringify(changes)
+        body: JSON.stringify(changes),
       }).then((response) => {
         if (response.ok) {
           resetList();
-          setRequestStatus({ status: true, message: `Validation successful! (Code: ${response.status})\nChanges: ${changes}` });
+          setRequestStatus({
+            status: true,
+            message: `Validation successful! (Code: ${response.status})\nChanges: ${changes}`,
+          });
         } else {
-          setRequestStatus({ status: false, message: `ERROR, request failed (Code: ${response.status})` });
+          setRequestStatus({
+            status: false,
+            message: `ERROR, request failed (Code: ${response.status})`,
+          });
         }
-      })
+      });
     }
-  }
+  };
 
   const onReset = () => {
     const resetRecursive = (node: ItemNode) => {
       node.modified = false;
 
-      if (node.children) node.children.forEach(child => resetRecursive(child));
-    }
+      if (node.children)
+        node.children.forEach((child) => resetRecursive(child));
+    };
 
-    listItemTree.forEach(child => resetRecursive(child));
+    listItemTree.forEach((child) => resetRecursive(child));
 
     setChangeCounter(0);
-  }
+  };
 
   // Fetch data on component mount
   useEffect(() => {
@@ -146,11 +192,9 @@ const DropDownContainer: React.FC<Props> = (props) => {
     resetList();
   }, [props.baseAPIUrl]);
 
-
   return (
     <div className={styles.container}>
-
-      {(listItemTree && listItemTree.length !== 0) ?
+      {listItemTree && listItemTree.length !== 0 ? (
         listItemTree.map((node: ItemNode, index: number) => (
           <DropDownItem
             key={`node-${node.depth}-${node.index}`}
@@ -158,24 +202,37 @@ const DropDownContainer: React.FC<Props> = (props) => {
             index={index}
             updateChangeCounter={() => setChangeCounter(getChanges().length)}
           />
-        )) :
-
+        ))
+      ) : (
         <h4>The project does not have any data yet...</h4>
-      }
+      )}
 
       <div className={styles.floatRight}>
-        {changeCounter !== 0 &&
+        {changeCounter !== 0 && (
           <p className={styles.changes}>{changeCounter} changes</p>
-        }
-        <div className={`${styles.button} ${styles.confirm}`} onClick={onConfirm}>Confirm</div>
-        <div className={`${styles.button} ${styles.reset}`} onClick={onReset}>Reset</div>
+        )}
+        <div
+          className={`${styles.button} ${styles.confirm}`}
+          onClick={onConfirm}
+        >
+          Confirm
+        </div>
+        <div className={`${styles.button} ${styles.reset}`} onClick={onReset}>
+          Reset
+        </div>
       </div>
 
-      {requestStatus &&
-        <p className={`${styles.requestStatus} ${requestStatus.status ? styles.success : styles.error}`}>{requestStatus.message}</p>
-      }
+      {requestStatus && (
+        <p
+          className={`${styles.requestStatus} ${
+            requestStatus.status ? styles.success : styles.error
+          }`}
+        >
+          {requestStatus.message}
+        </p>
+      )}
     </div>
   );
-}
+};
 
 export default DropDownContainer;

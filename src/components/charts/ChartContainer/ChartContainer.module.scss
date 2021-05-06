@@ -1,67 +1,67 @@
 @import "sass/global";
 
 .infos {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+
+  width: 100%;
+
+  .containerLeft {
     display: flex;
-    justify-content: flex-end;
+    margin-right: auto;
+
+    .projectTitle {
+      display: inline-block;
+      margin-left: 50px;
+      padding: 0.5em;
+      border-radius: 10px;
+
+      .small {
+        font-size: 0.8em;
+        margin-left: 20px;
+      }
+
+      &.shadow {
+        box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+      }
+    }
+  }
+
+  .containerRight {
+    $border-color: rgba(0.2, 0.2, 0.2, 0.2);
+
+    display: flex;
     align-items: center;
 
-    width: 100%;
+    padding: 0 10px;
+    margin-right: 20px;
 
-    .containerLeft {
-        display: flex;
-        margin-right: auto;
+    border: 1px solid $border-color;
+    border-radius: 10px;
 
-        .projectTitle {
-            display: inline-block;
-            margin-left: 50px;
-            padding: 0.5em;
-            border-radius: 10px;
-
-            .small {
-                font-size: 0.8em;
-                margin-left: 20px;
-            }
-
-            &.shadow {
-                box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
-            }
-        }
+    @include whenDark {
+      border-color: invert($border-color);
     }
 
-    .containerRight {
-        $border-color: rgba(0.2, 0.2, 0.2, 0.2);
+    .deadline {
+      margin-right: 20px;
+      color: rgba(255, 0, 0, 0.8);
 
-        display: flex;
-        align-items: center;
-
-        padding: 0 10px;
-        margin-right: 20px;
-
-        border: 1px solid $border-color;
-        border-radius: 10px;
-
-        @include whenDark {
-            border-color: invert($border-color);
-        }
-
-        .deadline {
-            margin-right: 20px;
-            color: rgba(255, 0, 0, 0.8);
-
-            border-radius: 5px;
-        }
-
-        .totalFrames {
-            border-radius: 7px;
-            padding: 5px;
-            margin-left: 5px;
-
-            color: white;
-        }
+      border-radius: 5px;
     }
+
+    .totalFrames {
+      border-radius: 7px;
+      padding: 5px;
+      margin-left: 5px;
+
+      color: white;
+    }
+  }
 }
 
 .chartContainer {
-    width: 80vw;
-    height: 550px;
+  width: 80vw;
+  height: 550px;
 }

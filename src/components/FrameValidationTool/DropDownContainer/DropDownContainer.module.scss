@@ -1,95 +1,95 @@
 @import "../colors";
 
 .floatRight {
-    display: flex;
+  display: flex;
 
-    justify-content: flex-end;
+  justify-content: flex-end;
 
-    .changes {
-        display: inline-block;
-        color: $color-confirm;
+  .changes {
+    display: inline-block;
+    color: $color-confirm;
+  }
+
+  .button {
+    color: white;
+    display: inline-block;
+    height: 15px;
+
+    padding: 10px 20px;
+    margin: 10px;
+
+    font-family: monospace;
+
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+
+    cursor: pointer;
+    transition: ease 0.3s;
+    border-radius: 5px;
+
+    &:hover {
+      transform: scale(1.1);
     }
 
-    .button {
-        color: white;
-        display: inline-block;
-        height: 15px;
-
-        padding: 10px 20px;
-        margin: 10px;
-
-        font-family: monospace;
-
-        box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
-
-        cursor: pointer;
-        transition: ease 0.3s;
-        border-radius: 5px;
-
-        &:hover {
-            transform: scale(1.1);
-        }
-
-        &.confirm {
-            background-color: $color-confirm;
-        }
-
-        &.reset {
-            background-color: $color-reset;
-        }
+    &.confirm {
+      background-color: $color-confirm;
     }
+
+    &.reset {
+      background-color: $color-reset;
+    }
+  }
 }
 
 .floatLeft {
+  display: inline-block;
+
+  .square {
+    width: 30px;
+    height: 30px;
+
+    background-color: $color-notRendered-light;
+    border: 2px solid $color-notRendered-light;
+    border-radius: 10px;
+
     display: inline-block;
+    margin: 10px;
 
-    .square {
-        width: 30px;
-        height: 30px;
-
-        background-color: $color-notRendered-light;
-        border: 2px solid $color-notRendered-light;
-        border-radius: 10px;
-
-        display: inline-block;
-        margin: 10px;
-
-        &.valid {
-            background-color: $color-valid-light;
-        }
-
-        &.modified {
-            background-color: $color-modified-light;
-        }
-
-        @include whenDark {
-            background-color: $color-notRendered-dark;
-
-            &.valid {
-                background-color: $color-valid-dark;
-            }
-
-            &.modified {
-                background-color: $color-modified-dark;
-            }
-        }
+    &.valid {
+      background-color: $color-valid-light;
     }
+
+    &.modified {
+      background-color: $color-modified-light;
+    }
+
+    @include whenDark {
+      background-color: $color-notRendered-dark;
+
+      &.valid {
+        background-color: $color-valid-dark;
+      }
+
+      &.modified {
+        background-color: $color-modified-dark;
+      }
+    }
+  }
 }
 
 .requestStatus {
-    margin: 10px;
-    padding: 10px;
-    display: inline-block;
-    border-radius: 5px;
-    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+  margin: 10px;
+  padding: 10px;
+  display: inline-block;
+  border-radius: 5px;
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
 }
 
 .error {
-    background-color: rgba(255, 0, 0, 0.7);
-    color: white;
+  background-color: rgba(255, 0, 0, 0.7);
+  color: white;
 }
 
 .success {
-    background-color: green;
-    color: white;
+  background-color: green;
+  color: white;
 }

@@ -1,10 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import { Area, AreaChart, CartesianGrid, Legend, ReferenceLine, Tooltip, XAxis, YAxis } from 'recharts';
+import React, { useEffect, useState } from "react";
+import {
+  Area,
+  AreaChart,
+  CartesianGrid,
+  Legend,
+  ReferenceLine,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 
-import DateUtils from 'utils/date-utils';
+import DateUtils from "utils/date-utils";
 
-import ChartContainer from '../ChartContainer/ChartContainer';
-import DateSelector from '../DateSelector/DateSelector';
+import ChartContainer from "../ChartContainer/ChartContainer";
+import DateSelector from "../DateSelector/DateSelector";
 
 /**
  * A chart showing the farm usage in a more explicit way
@@ -14,7 +23,9 @@ const FarmTotalComputeTime: React.FC = () => {
   const [data, setData] = useState<Array<any> | undefined>([]);
 
   // Initialize at today midnight
-  const [startDate, setStartDate] = useState<Date>(new Date(Date.now() - 86400000 * 7));
+  const [startDate, setStartDate] = useState<Date>(
+    new Date(Date.now() - 86400000 * 7)
+  );
 
   // End now
   const [endDate, setEndDate] = useState<Date>(new Date());
@@ -24,24 +35,27 @@ const FarmTotalComputeTime: React.FC = () => {
     const parameters: string = `start=${startDate!.getTime()}&end=${endDate!.getTime()}`;
     const url: string = `${baseRoute}?${parameters}`;
 
-    fetch(url).then(response => response.json()).then((json) => {
-      // Only keep busy computers / busy + free so we have a better idea
-      /* const onlyBusy = json.map((d: any) => {
-       *   const total: number = Math.floor(d.busy + d.free);
-       *   return { busy: (d.busy / total) * 100, total: total, timestamp: d.timestamp };
-       * }); */
+    fetch(url)
+      .then((response) => response.json())
+      .then((json) => {
+        // Only keep busy computers / busy + free so we have a better idea
+        /* const onlyBusy = json.map((d: any) => {
+         *   const total: number = Math.floor(d.busy + d.free);
+         *   return { busy: (d.busy / total) * 100, total: total, timestamp: d.timestamp };
+         * }); */
 
-      setData(json);
-    }).catch((error) => {
-      setData(undefined);
-    });
-  }
+        setData(json);
+      })
+      .catch((error) => {
+        setData(undefined);
+      });
+  };
 
   const formatMinutes = (minutes: number): string => {
     const hours = Math.floor(minutes / 60);
     const rest = minutes % 60;
     return `${hours} hours ${rest} minutes`;
-  }
+  };
 
   // Fetch data when modifying selection options
   useEffect(() => {
@@ -64,7 +78,6 @@ const FarmTotalComputeTime: React.FC = () => {
         />
       }
     >
-
       <AreaChart
         data={data}
         className="chart"
@@ -75,13 +88,12 @@ const FarmTotalComputeTime: React.FC = () => {
           bottom: 20,
         }}
       >
-
         <CartesianGrid vertical={false} strokeDasharray="4 3" />
 
         <XAxis
           type="number"
           dataKey="timestamp"
-          domain={['dataMin', (dataMax: number) => dataMax + 86400000]}
+          domain={["dataMin", (dataMax: number) => dataMax + 86400000]}
           height={50}
           scale="linear"
           tickFormatter={(i: number) => {
@@ -105,24 +117,25 @@ const FarmTotalComputeTime: React.FC = () => {
         />
 
         {/* Line for today */}
-        <ReferenceLine
-          x={Date.now()}
-          stroke="rgba(255, 0, 0, 0.3)"
-        />
+        <ReferenceLine x={Date.now()} stroke="rgba(255, 0, 0, 0.3)" />
 
         <Tooltip
           formatter={(minutes: number) => {
             return `${formatMinutes(minutes)} of render time`;
           }}
-          labelFormatter={(t: number) => `${DateUtils.timestampToMMDDYYYY(t)} ${DateUtils.timestampToMMHH(t)} - ${DateUtils.timestampToMMDDYYYY(t + 86400000)} ${DateUtils.timestampToMMHH(t)}`}
+          labelFormatter={(t: number) =>
+            `${DateUtils.timestampToMMDDYYYY(t)} ${DateUtils.timestampToMMHH(
+              t
+            )} - ${DateUtils.timestampToMMDDYYYY(
+              t + 86400000
+            )} ${DateUtils.timestampToMMHH(t)}`
+          }
         />
 
         <Legend />
-
       </AreaChart>
-
     </ChartContainer>
-  )
+  );
 };
 
 export default FarmTotalComputeTime;

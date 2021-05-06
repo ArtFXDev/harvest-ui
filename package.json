@@ -50,6 +50,7 @@
   },
   "devDependencies": {
     "@types/react-responsive": "^8.0.2",
-    "@types/react-transition-group": "^4.4.1"
+    "@types/react-transition-group": "^4.4.1",
+    "prettier": "^2.2.1"
   }
 }

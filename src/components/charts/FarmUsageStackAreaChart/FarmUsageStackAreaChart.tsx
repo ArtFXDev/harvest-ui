@@ -1,20 +1,29 @@
-import React, { useState, useEffect } from 'react';
-import { Area, AreaChart, CartesianGrid, Legend, Tooltip, XAxis, YAxis } from 'recharts';
+import React, { useState, useEffect } from "react";
+import {
+  Area,
+  AreaChart,
+  CartesianGrid,
+  Legend,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 
 // Global import
-import { PROJECTS, STATES } from 'global.d';
-import DataUtils from 'utils/data-utils';
+import { PROJECTS, STATES } from "global.d";
+import DataUtils from "utils/data-utils";
 
 // Utility
-import ChartContainer from 'components/charts/ChartContainer/ChartContainer';
+import ChartContainer from "components/charts/ChartContainer/ChartContainer";
 import DateUtils from "utils/date-utils";
-import DateSelector from '../DateSelector/DateSelector';
-
+import DateSelector from "../DateSelector/DateSelector";
 
 const FarmUsageHistoryChart: React.FC = () => {
   const [data, setData] = useState<Array<any> | undefined>([]);
 
-  const [startDate, setStartDate] = useState<Date>(new Date(Date.now() - 604800000 / 2.0));
+  const [startDate, setStartDate] = useState<Date>(
+    new Date(Date.now() - 604800000 / 2.0)
+  );
   const [endDate, setEndDate] = useState<Date>(new Date());
 
   /**
@@ -25,14 +34,22 @@ const FarmUsageHistoryChart: React.FC = () => {
     const parameters: string = `start=${startDate!.getTime()}&end=${endDate!.getTime()}`;
     const url: string = `${baseRoute}?${parameters}`;
 
-    fetch(url).then((response) => {
-      return response.json();
-    }).then((json) => {
-      setData(DataUtils.normalizeDataToPercent(DataUtils.sortByKey(json, "time"), STATES));
-    }).catch((error) => {
-      setData(undefined);
-    });
-  }
+    fetch(url)
+      .then((response) => {
+        return response.json();
+      })
+      .then((json) => {
+        setData(
+          DataUtils.normalizeDataToPercent(
+            DataUtils.sortByKey(json, "time"),
+            STATES
+          )
+        );
+      })
+      .catch((error) => {
+        setData(undefined);
+      });
+  };
 
   // Fetch data when changing date selection
   useEffect(() => {
@@ -51,7 +68,6 @@ const FarmUsageHistoryChart: React.FC = () => {
         />
       }
     >
-
       <AreaChart
         width={800}
         height={500}
@@ -62,14 +78,14 @@ const FarmUsageHistoryChart: React.FC = () => {
           right: 20,
           left: 20,
           bottom: 20,
-        }}>
-
+        }}
+      >
         <CartesianGrid strokeDasharray="3 3" />
 
         <XAxis
           type="number"
           dataKey="timestamp"
-          domain={['dataMin', 'dataMax']}
+          domain={["dataMin", "dataMax"]}
           tickFormatter={DateUtils.timestampToMMDDYYYY}
           height={50}
           label={{
@@ -85,35 +101,41 @@ const FarmUsageHistoryChart: React.FC = () => {
           domain={[0, 100]}
         />
 
-        {data && (data.length !== 0) &&
+        {data &&
+          data.length !== 0 &&
           ["off", "nimby", "free", "busy"].map((e, i) => {
             const stateIndex = STATES.indexOf(e);
-            return <Area
-              type="monotone"
-              dataKey={e}
-              stackId="1"
-              key={`blade-history-${i}`}
-              strokeWidth={3}
-              stroke={PROJECTS[stateIndex].color}
-              fill={PROJECTS[stateIndex].color}
-              dot={false}
-            />
-          })
-        }
+            return (
+              <Area
+                type="monotone"
+                dataKey={e}
+                stackId="1"
+                key={`blade-history-${i}`}
+                strokeWidth={3}
+                stroke={PROJECTS[stateIndex].color}
+                fill={PROJECTS[stateIndex].color}
+                dot={false}
+              />
+            );
+          })}
 
         <Tooltip
           formatter={(percent: number, _key: string, sample: any) => {
-            return `${Math.round((percent / 100) * sample.payload.total)} computers`;
+            return `${Math.round(
+              (percent / 100) * sample.payload.total
+            )} computers`;
           }}
-          labelFormatter={(t: number) => `${DateUtils.timestampToMMDDYYYY(t)} at ${DateUtils.timestampToMMHH(t)}`}
+          labelFormatter={(t: number) =>
+            `${DateUtils.timestampToMMDDYYYY(t)} at ${DateUtils.timestampToMMHH(
+              t
+            )}`
+          }
         />
 
         <Legend />
-
       </AreaChart>
-
     </ChartContainer>
-  )
+  );
 };
 
 export default FarmUsageHistoryChart;
