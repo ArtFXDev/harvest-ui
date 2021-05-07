@@ -100,7 +100,7 @@ export const getTotalFrames = (): number => {
 }
 
 export const startTime: Date = new Date(2021, 2, 1);
-export const deadline: Date = new Date(2021, 4, 7);
+export const deadline: Date = new Date(2021, 4, 27);
 
 /**
  * Get a project object from it's name
