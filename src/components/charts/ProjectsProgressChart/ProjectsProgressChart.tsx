@@ -78,6 +78,8 @@ const ProjectsProgressChart: React.FC = () => {
     fetchData();
   }, []);
 
+  const daysFromDeadline = DateUtils.dateDiffDays(new Date(), deadline);
+
   return (
     <ChartContainer
       title="Global project progression"
@@ -87,8 +89,7 @@ const ProjectsProgressChart: React.FC = () => {
           <p>
             Deadline :{" "}
             <span className={styles.deadline}>
-              {DateUtils.dateToMMDDYYYY(deadline)} (
-              {DateUtils.dateDiffDays(new Date(), deadline)}d left)
+              {DateUtils.dateToMMDDYYYY(deadline)} ({daysFromDeadline}d {daysFromDeadline >= 0 ? "left" : "late"})
             </span>
           </p>
 

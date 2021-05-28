@@ -52,7 +52,7 @@ namespace DateUtils {
    * Get difference in days between two dates
    */
   export const dateDiffDays = (date1: Date, date2: Date): number => {
-    return Math.ceil((Math.abs(date2.getTime() - date1.getTime()) / (1000 * 60 * 60 * 24)));
+    return Math.ceil((date2.getTime() - date1.getTime()) / (1000 * 60 * 60 * 24));
   }
 }
 
