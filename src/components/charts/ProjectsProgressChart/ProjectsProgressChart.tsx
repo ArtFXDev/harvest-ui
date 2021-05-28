@@ -179,6 +179,8 @@ const ProjectsProgressChart: React.FC = () => {
 
         <Legend />
 
+        <ReferenceLine x={deadline.getTime()} stroke="rgba(255, 0, 0)" strokeDasharray="3 3" />
+
         <ReferenceLine
           label="Goal"
           stroke="red"
