@@ -41,9 +41,6 @@ button, select, input {
     border-radius: 5px;
     cursor: pointer;
 
-    &[type="checkbox"] {
-    }
-
     @include whenDarkGlobal {
         background-color: $text-color;
         color: $background-color;

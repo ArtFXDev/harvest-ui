@@ -27,6 +27,8 @@ const DarkModeToggle: React.FC = () => {
     if (!currentTheme) {
       localStorage.setItem("theme", systemPrefersDark);
       console.log("set it to system preference: " + systemPrefersDark);
+    } else {
+      console.log("Theme " + currentTheme);
     }
 
     return localStorage.getItem("theme")!;
