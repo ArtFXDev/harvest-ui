@@ -44,11 +44,14 @@ const Navigation: React.FC = () => {
 
   const getCrown = (projectName: string) => {
     if (!data) return;
-    const foundIndex = data.findIndex((p: any) => p.name === projectName);
-    const scale = 1 + (foundIndex / data.length) * 0.5;
 
-    if (foundIndex >= 0 && data[foundIndex].progression === 1) {
-      return <span className={styles.crown} style={{ fontSize: `${scale}em` }}>👑</span>
+    const finishedProjects = data.filter((p: any) => p.progression === 1);
+    const foundIndex = finishedProjects.findIndex((p: any) => p.name === projectName);
+
+    const scale = (1 - (foundIndex / finishedProjects.length));
+
+    if (foundIndex >= 0) {
+      return <span className={styles.crown} style={{ fontSize: `${1 + scale * 0.5}em` }}>👑</span>
     }
   }
 
