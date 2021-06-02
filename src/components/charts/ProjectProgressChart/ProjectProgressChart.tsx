@@ -174,8 +174,8 @@ const ProjectProgressChart: React.FC<Props> = (props) => {
           }}
         />
 
-        {/* Line for today */}
-        <ReferenceLine x={Date.now()} stroke="rgba(255, 0, 0, 0.3)" />
+        {/* Deadline */}
+        <ReferenceLine x={deadline.getTime()} stroke="rgba(255, 0, 0, 0.3)" />
 
         {/* Project data curve */}
         {data && data.length !== 0 && (
