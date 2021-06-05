@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 
-import { Project, getProjectFromName, projectNameToUpperCase } from "global.d";
+import { Project, getProjectFromName, } from "global.d";
+import ProjectUtils from "utils/project-utils";
 
 import DropDownContainer from "./DropDownContainer/DropDownContainer";
 
@@ -23,7 +24,7 @@ const FrameValidationTool: React.FC<ValidationToolProps> = (props) => {
 
   // Update state when switching between project routes
   useEffect(() => {
-    const upperCaseName: string = projectNameToUpperCase(props.projectName);
+    const upperCaseName: string = ProjectUtils.projectNameToUpperCase(props.projectName);
     setProject(getProjectFromName(upperCaseName));
   }, [props.projectName]);
 

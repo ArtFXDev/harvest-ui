@@ -92,7 +92,6 @@ export const PROJECTS: Array<Project> = [
 
 export const STATES: Array<string> = ["free", "busy", "nimby", "off"];
 
-
 // Return the total number of frames of all projects
 export const getTotalFrames = (): number => {
   return PROJECTS.map((project: Project) => project.totalFrames)
@@ -107,25 +106,4 @@ export const deadline: Date = new Date(2021, 4, 27);
  */
 export const getProjectFromName = (name: string): Project => {
   return PROJECTS.filter(project => project.name === name)[0];
-}
-
-/**
- * "hello-kitty" -> "HELLO_KITTY"
- */
-export const projectNameToUpperCase = (name: string): string => {
-  return name.toUpperCase().replaceAll('-', '_');
-}
-
-/**
- * "HELLO_KITTY" -> "hello-kitty"
- */
-export const projectNameToLowerHyphen = (name: string): string => {
-  return name.toLowerCase().replaceAll('_', '-');
-}
-
-/**
- * "HELLO_KITTY" -> "Hello Kitty"
- */
-export const projectNameToReadable = (name: string): string => {
-  return name.split('_').map(e => e[0] + e.slice(1).toLowerCase()).join(' ');
 }
