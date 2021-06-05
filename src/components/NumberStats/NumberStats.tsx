@@ -23,7 +23,7 @@ const Counter: React.FC<CounterProps> = (props) => {
   const [value, setValue] = useState<number>();
 
   const fetchData = async () => {
-    let route = `${process.env.REACT_APP_API_URL}/stats/${props.route}`;
+    let route = `${process.env.REACT_APP_API_URL}/${props.route}`;
 
     // Add route params
     if (props.routeParams) {
@@ -94,48 +94,68 @@ const NumberStats: React.FC = () => {
       {({ isVisible }) =>
         isVisible ? (
           <FadeIn transitionDuration={1700} visible={isVisible}>
-            <Counter
-              route="blades-status"
-              dataTransform={(json: any) =>
-                json.find((e: any) => e.name === "Busy").value
-              }
-              label="active tasks"
-              color="#e8423b"
-              refresh
-            />
 
-            <div className={styles.time}>
-              <Counter
-                route="total-computetime"
-                routeParams={[
-                  { key: "start", value: yesterday.getTime() },
-                  { key: "end", value: yesterday.getTime() },
-                ]}
-                dataTransform={(json: any) =>
-                  json.find((e: any) => e.project === "TOTAL").hours
-                }
-                label="hours"
-                color="#009bd9"
-              />
+            <div className={styles.inlineStats}>
+              <div className={styles.inline}>
+                <Counter
+                  route="stats/blades-status"
+                  dataTransform={(json: any) =>
+                    json.find((e: any) => e.name === "Busy").value
+                  }
+                  label="active tasks"
+                  color="#e8423b"
+                  refresh
+                />
 
-              <Counter
-                route="total-computetime"
-                routeParams={[
-                  { key: "start", value: yesterday.getTime() },
-                  { key: "end", value: yesterday.getTime() },
-                ]}
-                dataTransform={(json: any) =>
-                  json.find((e: any) => e.project === "TOTAL").minutes
-                }
-                label={"minutes of render time in the last 24h"}
-                info={`${yesterday.getDate()} ${DateUtils.getMonthName(
-                  yesterday
-                )} 00h00 - ${now.getDate()} ${DateUtils.getMonthName(
-                  now
-                )} 00h00`}
-                color="#009bd9"
-                fontSize="35px"
-              />
+                <Counter
+                  route="stats/blades-status"
+                  dataTransform={(json: any) => json.map((e: any) => e.value).reduce((a: number, b: number) => a + b, 0)}
+                  label="computers"
+                  color="#b0358b"
+                />
+
+                <Counter
+                  route="infos/projects"
+                  dataTransform={(json: any) => json.length}
+                  label="projects"
+                  color="rgb(21, 175, 151)"
+                />
+              </div>
+
+              <div className={styles.time}>
+                <Counter
+                  route="stats/total-computetime"
+                  routeParams={[
+                    { key: "start", value: yesterday.getTime() },
+                    { key: "end", value: yesterday.getTime() },
+                  ]}
+                  dataTransform={(json: any) =>
+                    json.find((e: any) => e.project === "TOTAL").hours
+                  }
+                  label="hours"
+                  color="#009bd9"
+                />
+
+                <Counter
+                  route="stats/total-computetime"
+                  routeParams={[
+                    { key: "start", value: yesterday.getTime() },
+                    { key: "end", value: yesterday.getTime() },
+                  ]}
+                  dataTransform={(json: any) =>
+                    json.find((e: any) => e.project === "TOTAL").minutes
+                  }
+                  label={"minutes of render time in the last 24h"}
+                  info={`${yesterday.getDate()} ${DateUtils.getMonthName(
+                    yesterday
+                  )} 00h00 - ${now.getDate()} ${DateUtils.getMonthName(
+                    now
+                  )} 00h00`}
+                  color="#009bd9"
+                  fontSize="35px"
+                />
+              </div>
+
             </div>
           </FadeIn>
         ) : (
