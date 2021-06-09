@@ -116,7 +116,7 @@ const NumberStats: React.FC = () => {
 
                 <Counter
                   route="infos/projects"
-                  dataTransform={(json: any) => json.length}
+                  dataTransform={(json: any) => json.length - 1}
                   label="projects"
                   color="rgb(21, 175, 151)"
                 />

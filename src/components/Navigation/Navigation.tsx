@@ -3,6 +3,7 @@ import { NavLink } from "react-router-dom";
 
 import { PROJECTS } from "global.d";
 import ProjectUtils from "utils/project-utils";
+import CrownSketch from './CrownSketch/CrownSketch';
 
 import styles from "./Navigation.module.scss";
 
@@ -16,7 +17,6 @@ const Link: React.FC<{ route: string; text: string }> = (props) => (
     {props.text}
   </NavLink>
 );
-
 
 /**
  * Navbar component
@@ -42,6 +42,17 @@ const Navigation: React.FC = () => {
     fetchData();
   }, []);
 
+
+  const allProjectsFinished = (): boolean => {
+    if (data) {
+      for (const project of data) {
+        if (project.progression !== 1) return false;
+      }
+      return true;
+    }
+    return false;
+  }
+
   const getCrown = (projectName: string) => {
     if (!data) return;
 
@@ -56,40 +67,44 @@ const Navigation: React.FC = () => {
   }
 
   return (
-    <nav className={styles.mainNav}>
-      {/* Main links */}
-      <ul>
-        <li>
-          <Link route="/" text="Farm" />
-        </li>
-        <li>
-          <Link route="/projects" text="Projects" />
-        </li>
-      </ul>
-
-      {/* List of projects */}
-      <ul className={styles.projectsList}>
-
-        {PROJECTS.map((project, index) => (
-          <li key={`project-${index}`}>
-            <NavLink
-              to={`${process.env.PUBLIC_URL
-                }/project/${ProjectUtils.projectNameToLowerHyphen(project.name)}`}
-              activeClassName={styles.activeLink}
-              style={{
-                color: `${PROJECTS[index].color}`,
-              }}
-            >
-              {ProjectUtils.projectNameToReadable(project.name)}
-            </NavLink>
-
-            {/* Display crown */}
-            {data && getCrown(project.name)}
+    <>
+      <nav className={styles.mainNav}>
+        {/* Main links */}
+        <ul>
+          <li>
+            <Link route="/" text="Farm" />
           </li>
-        ))}
+          <li>
+            <Link route="/projects" text="Projects" />
+          </li>
+        </ul>
 
-      </ul>
-    </nav>
+        {/* List of projects */}
+        <ul className={styles.projectsList}>
+
+          {PROJECTS.map((project, index) => (
+            <li key={`project-${index}`}>
+              <NavLink
+                to={`${process.env.PUBLIC_URL
+                  }/project/${ProjectUtils.projectNameToLowerHyphen(project.name)}`}
+                activeClassName={styles.activeLink}
+                style={{
+                  color: `${PROJECTS[index].color}`,
+                }}
+              >
+                {ProjectUtils.projectNameToReadable(project.name)}
+              </NavLink>
+
+              {/* Display crown */}
+              {data && getCrown(project.name)}
+            </li>
+          ))}
+
+        </ul>
+      </nav>
+
+      {allProjectsFinished() ? <CrownSketch /> : null}
+    </>
   );
 };
 
