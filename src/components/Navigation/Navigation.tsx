@@ -45,8 +45,9 @@ const Navigation: React.FC = () => {
 
   const allProjectsFinished = (): boolean => {
     if (data) {
-      for (const project of data) {
-        if (project.progression !== 1) return false;
+      for (let i = 0; i < data.length; i++) {
+        const project = data[i];
+        if (project.name !== "TEST_PIPE" && project.progression !== 1) return false;
       }
       return true;
     }
@@ -103,7 +104,7 @@ const Navigation: React.FC = () => {
         </ul>
       </nav>
 
-      {allProjectsFinished() ? <CrownSketch /> : null}
+      {data && allProjectsFinished() ? <CrownSketch /> : null}
     </>
   );
 };
