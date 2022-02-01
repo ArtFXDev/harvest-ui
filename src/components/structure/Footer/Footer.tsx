@@ -1,10 +1,9 @@
-import React from "react";
-
 import githubLogo from "assets/images/github-logo.png";
+import React from "react";
 
 import styles from "./Footer.module.scss";
 
-const Footer: React.FC = () => (
+const Footer = (): JSX.Element => (
   <footer className={styles.footer}>
     <hr />
     <p>{`© ${new Date().getFullYear()} ArtFX`}</p>

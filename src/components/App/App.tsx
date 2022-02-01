@@ -1,3 +1,7 @@
+import Loader from "components/common/Loader/Loader";
+import Footer from "components/structure/Footer/Footer";
+// Import header and footer
+import Header from "components/structure/Header/Header";
 import React, { Suspense } from "react";
 import {
   BrowserRouter as Router,
@@ -7,12 +11,6 @@ import {
 } from "react-router-dom";
 
 import styles from "./App.module.scss";
-
-// Import header and footer
-import Header from "components/structure/Header/Header";
-import Footer from "components/structure/Footer/Footer";
-
-import Loader from "components/common/Loader/Loader";
 
 // Import pages (use lazy loading)
 const HomePage = React.lazy(() => import("components/pages/HomePage/HomePage"));
@@ -28,7 +26,7 @@ const ProjectPage = React.lazy(
 /**
  * Main application component, contains the router, the routes and the pages
  */
-const App: React.FC = () => (
+const App = (): JSX.Element => (
   <>
     <Router>
       <Header />

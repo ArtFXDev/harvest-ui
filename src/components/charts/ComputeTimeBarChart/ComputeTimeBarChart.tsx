@@ -1,3 +1,4 @@
+import ChartContainer from "components/charts/ChartContainer/ChartContainer";
 import React, { useEffect, useState } from "react";
 import {
   Bar,
@@ -8,15 +9,12 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-
-import DateUtils from "utils/date-utils";
-
-import ChartContainer from "components/charts/ChartContainer/ChartContainer";
+import * as DateUtils from "utils/date-utils";
 
 /**
  * Average frame computation time / computer type / project
  */
-const ComputeTimeBarChart: React.FC = () => {
+const ComputeTimeBarChart = (): JSX.Element => {
   const [data, setData] = useState<Array<any> | undefined>([]);
 
   const fetchData = async () => {
@@ -41,7 +39,7 @@ const ComputeTimeBarChart: React.FC = () => {
   const bars: Array<any> = [];
 
   // Create bars
-  for (let i: number = 4; i <= 11; i++) {
+  for (let i = 4; i <= 11; i++) {
     bars.push(
       <Bar key={i} dataKey={`MK${i}`} fill={`rgb(${i * 20}, 50, 200)`} />
     );

@@ -1,25 +1,24 @@
+import CheckBox from "components/CheckBox/CheckBox";
 import React from "react";
+import * as DateUtils from "utils/date-utils";
 
 import styles from "./DateSelector.module.scss";
 
-import DateUtils from "utils/date-utils";
-import CheckBox from "components/CheckBox/CheckBox";
-
 interface DateSelectorProps {
   startDate: Date;
-  setStartDate: Function;
+  setStartDate: (date: Date) => void;
 
   endDate: Date;
-  setEndDate: Function;
+  setEndDate: (date: Date) => void;
 
   period?: string;
-  setPeriod?: Function;
+  setPeriod?: (period: string) => void;
 
   includeWE?: boolean;
-  setIncludeWE?: Function;
+  setIncludeWE?: (includeWE: boolean) => void;
 }
 
-const DateSelector: React.FC<DateSelectorProps> = (props) => {
+const DateSelector = (props: DateSelectorProps): JSX.Element => {
   return (
     <>
       {/* Start date input */}
@@ -34,7 +33,11 @@ const DateSelector: React.FC<DateSelectorProps> = (props) => {
           value={
             props.startDate ? DateUtils.dateToYYYYMMDD(props.startDate) : ""
           }
-          onChange={(d) => props.setStartDate(d.target.valueAsDate!)}
+          onChange={(d) => {
+            if (d.target.valueAsDate) {
+              props.setStartDate(d.target.valueAsDate);
+            }
+          }}
           required={true}
         />
       </p>
@@ -51,7 +54,11 @@ const DateSelector: React.FC<DateSelectorProps> = (props) => {
           value={DateUtils.dateToYYYYMMDD(props.endDate)}
           min={DateUtils.dateToYYYYMMDD(props.startDate)}
           max={DateUtils.dateToYYYYMMDD(new Date())}
-          onChange={(d) => props.setEndDate(d.target.valueAsDate!)}
+          onChange={(d) => {
+            if (d.target.valueAsDate) {
+              props.setEndDate(d.target.valueAsDate);
+            }
+          }}
           required={true}
         />
       </p>
@@ -68,7 +75,11 @@ const DateSelector: React.FC<DateSelectorProps> = (props) => {
             name="period"
             id="period-select"
             value={props.period}
-            onChange={(e) => props.setPeriod!(e.target.value)}
+            onChange={(e) => {
+              if (props.setPeriod) {
+                props.setPeriod(e.target.value);
+              }
+            }}
             className={styles.selector}
           >
             <option value="hours">day</option>
@@ -80,7 +91,11 @@ const DateSelector: React.FC<DateSelectorProps> = (props) => {
       {props.includeWE !== undefined && props.setIncludeWE && (
         <CheckBox
           checked={props.includeWE}
-          onChange={(e: any) => props.setIncludeWE!(e.target.checked)}
+          onChange={(e) => {
+            if (props.setIncludeWE) {
+              props.setIncludeWE(e.target.checked);
+            }
+          }}
           label="Week end"
           title="Include week end data into the average"
         />

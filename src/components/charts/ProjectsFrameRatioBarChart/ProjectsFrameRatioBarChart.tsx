@@ -1,3 +1,5 @@
+import ChartContainer from "components/charts/ChartContainer/ChartContainer";
+import { PROJECTS } from "global.d";
 import React, { useEffect, useState } from "react";
 import {
   Bar,
@@ -9,14 +11,10 @@ import {
   YAxis,
 } from "recharts";
 
-import { PROJECTS } from "global.d";
-
-import ChartContainer from "components/charts/ChartContainer/ChartContainer";
-
 /**
  * Average frame computation time / computer type / project
  */
-const ProjectsFrameRatioBarChart: React.FC = () => {
+const ProjectsFrameRatioBarChart = (): JSX.Element => {
   const [data, setData] = useState<Array<any> | undefined>([]);
 
   const fetchData = async () => {

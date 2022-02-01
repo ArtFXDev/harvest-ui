@@ -1,3 +1,5 @@
+import ChartContainer from "components/charts/ChartContainer/ChartContainer";
+import { PROJECTS, STATES } from "global.d";
 import React, { useEffect, useState } from "react";
 import {
   Area,
@@ -10,15 +12,10 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-
-import { PROJECTS, STATES } from "global.d";
-import DataUtils from "utils/data-utils";
-
-import ChartContainer from "components/charts/ChartContainer/ChartContainer";
-
-import styles from "./FarmUsageChart.module.scss";
+import * as DataUtils from "utils/data-utils";
 
 import DateSelector from "../DateSelector/DateSelector";
+import styles from "./FarmUsageChart.module.scss";
 
 interface UsageProps {
   data: any;
@@ -30,7 +27,7 @@ interface UsageProps {
 /**
  * Area chart component
  */
-const AreaChartUsage: React.FC<UsageProps> = (props: UsageProps) => {
+const AreaChartUsage = (props: UsageProps): JSX.Element => {
   /**
    * Return tooltip format for hour or day
    */
@@ -124,7 +121,7 @@ const AreaChartUsage: React.FC<UsageProps> = (props: UsageProps) => {
 /**
  * Average values of the usage of the farm over a day
  */
-const FarmUsageChart: React.FC = () => {
+const FarmUsageChart = (): JSX.Element => {
   const [data, setData] = useState<Array<any> | undefined>([]);
 
   const [startDate, setStartDate] = useState<Date>(new Date(2021, 2, 24));
@@ -134,11 +131,11 @@ const FarmUsageChart: React.FC = () => {
   const [endDate, setEndDate] = useState<Date>(new Date());
 
   const fetchData = async () => {
-    const baseRoute: string = `${process.env.REACT_APP_API_URL}/stats/farm-history/${period}`;
-    const parameters: string = `start=${startDate!.getTime()}&end=${endDate!.getTime()}&${
+    const baseRoute = `${process.env.REACT_APP_API_URL}/stats/farm-history/${period}`;
+    const parameters = `start=${startDate!.getTime()}&end=${endDate!.getTime()}&${
       !includeWE ? "ignore-we=1" : ""
     }`;
-    const url: string = `${baseRoute}?${parameters}`;
+    const url = `${baseRoute}?${parameters}`;
 
     fetch(url)
       .then((response) => {

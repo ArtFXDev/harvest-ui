@@ -2,7 +2,7 @@ import React from "react";
 
 import styles from "./Loader.module.scss";
 
-const Loader: React.FC = () => (
+const Loader = (): JSX.Element => (
   <div className={styles.ldsRipple}>
     <div></div>
     <div></div>

@@ -1,3 +1,4 @@
+import { PROJECTS } from "global.d";
 import React, { useEffect, useState } from "react";
 import {
   Area,
@@ -9,10 +10,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-
-import { PROJECTS } from "global.d";
-
-import DateUtils from "utils/date-utils";
+import * as DateUtils from "utils/date-utils";
 
 import ChartContainer from "../ChartContainer/ChartContainer";
 import DateSelector from "../DateSelector/DateSelector";
@@ -21,7 +19,7 @@ import DateSelector from "../DateSelector/DateSelector";
  * A chart showing the farm usage in a more explicit way
  * by not considering nimby and off computers
  */
-const FarmCurrentUsage: React.FC = () => {
+const FarmCurrentUsage = (): JSX.Element => {
   const [data, setData] = useState<Array<any> | undefined>([]);
 
   // Initialize at today midnight
@@ -35,12 +33,12 @@ const FarmCurrentUsage: React.FC = () => {
   // Fetch data when modifying selection options
   useEffect(() => {
     const fetchData = async () => {
-      const baseRoute: string = `${process.env.REACT_APP_API_URL}/graphics/blade-status`;
-      const parameters: string = `start=${startDate!.getTime()}&end=${endDate!.getTime()}`;
-      const url: string = `${baseRoute}?${parameters}`;
+      const baseRoute = `${process.env.REACT_APP_API_URL}/graphics/blade-status`;
+      const parameters = `start=${startDate!.getTime()}&end=${endDate!.getTime()}`;
+      const url = `${baseRoute}?${parameters}`;
 
       // Get current computer repartition data
-      let lastData = await fetch(
+      const lastData = await fetch(
         process.env.REACT_APP_API_URL + "/stats/blades-status"
       ).then((response) => response.json());
 

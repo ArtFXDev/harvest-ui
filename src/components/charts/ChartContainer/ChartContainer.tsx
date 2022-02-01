@@ -1,7 +1,7 @@
 import React, { ReactElement, ReactNode } from "react";
-import { ResponsiveContainer } from "recharts";
-import TrackVisibility from "react-on-screen";
 import FadeIn from "react-fade-in";
+import TrackVisibility from "react-on-screen";
+import { ResponsiveContainer } from "recharts";
 
 import styles from "./ChartContainer.module.scss";
 
@@ -23,7 +23,7 @@ interface Props {
   height?: number;
 }
 
-const Chart: React.FC<Props> = (props: Props) => {
+const Chart = (props: Props): JSX.Element => {
   // Expand style properties
   const style: {
     color?: string;
@@ -83,7 +83,7 @@ const Chart: React.FC<Props> = (props: Props) => {
   );
 };
 
-const ChartContainer: React.FC<Props> = (props: Props) => {
+const ChartContainer = (props: Props): JSX.Element => {
   return (
     <TrackVisibility offset={-300} partialVisibility once>
       {({ isVisible }) =>

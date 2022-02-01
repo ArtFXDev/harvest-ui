@@ -1,22 +1,20 @@
-import React, { useState, useEffect } from "react";
+import AnimatedNumber from "animated-number-react";
+// Utility
+import ChartContainer from "components/charts/ChartContainer/ChartContainer";
+// Global import
+import { deadline, getProjectFromName, Project, startTime } from "global.d";
+import React, { useEffect, useState } from "react";
 import {
   CartesianGrid,
   Line,
   LineChart,
+  ReferenceLine,
   Tooltip,
   XAxis,
   YAxis,
-  ReferenceLine,
 } from "recharts";
-import AnimatedNumber from "animated-number-react";
-
-// Global import
-import { Project, getProjectFromName, startTime, deadline } from "global.d";
-
-// Utility
-import ChartContainer from "components/charts/ChartContainer/ChartContainer";
-import ProjectUtils from "utils/project-utils";
-import DateUtils from "utils/date-utils";
+import * as DateUtils from "utils/date-utils";
+import * as ProjectUtils from "utils/project-utils";
 
 // Style
 import styles from "./ProjectProgressChart.module.scss";
@@ -33,7 +31,7 @@ interface Props {
 /**
  * Graph component : progression curve of a project with deadline
  */
-const ProjectProgressChart: React.FC<Props> = (props) => {
+const ProjectProgressChart = (props: Props): JSX.Element => {
   const [data, setData] = useState<Array<any> | undefined>([]);
   const [project, setProject] = useState<Project>(
     getProjectFromLowerCaseName(props.projectName)

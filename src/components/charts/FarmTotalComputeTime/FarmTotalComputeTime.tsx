@@ -9,8 +9,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-
-import DateUtils from "utils/date-utils";
+import * as DateUtils from "utils/date-utils";
 
 import ChartContainer from "../ChartContainer/ChartContainer";
 import DateSelector from "../DateSelector/DateSelector";
@@ -19,7 +18,7 @@ import DateSelector from "../DateSelector/DateSelector";
  * A chart showing the farm usage in a more explicit way
  * by not considering nimby and off computers
  */
-const FarmTotalComputeTime: React.FC = () => {
+const FarmTotalComputeTime = (): JSX.Element => {
   const [data, setData] = useState<Array<any> | undefined>([]);
 
   // Initialize at today midnight
@@ -31,9 +30,9 @@ const FarmTotalComputeTime: React.FC = () => {
   const [endDate, setEndDate] = useState<Date>(new Date());
 
   const fetchData = async () => {
-    const baseRoute: string = `${process.env.REACT_APP_API_URL}/stats/history-computetime`;
-    const parameters: string = `start=${startDate!.getTime()}&end=${endDate!.getTime()}`;
-    const url: string = `${baseRoute}?${parameters}`;
+    const baseRoute = `${process.env.REACT_APP_API_URL}/stats/history-computetime`;
+    const parameters = `start=${startDate!.getTime()}&end=${endDate!.getTime()}`;
+    const url = `${baseRoute}?${parameters}`;
 
     fetch(url)
       .then((response) => response.json())

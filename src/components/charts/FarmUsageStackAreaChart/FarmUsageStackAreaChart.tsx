@@ -1,4 +1,8 @@
-import React, { useState, useEffect } from "react";
+// Utility
+import ChartContainer from "components/charts/ChartContainer/ChartContainer";
+// Global import
+import { PROJECTS, STATES } from "global.d";
+import React, { useEffect, useState } from "react";
 import {
   Area,
   AreaChart,
@@ -8,17 +12,12 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import * as DataUtils from "utils/data-utils";
+import * as DateUtils from "utils/date-utils";
 
-// Global import
-import { PROJECTS, STATES } from "global.d";
-import DataUtils from "utils/data-utils";
-
-// Utility
-import ChartContainer from "components/charts/ChartContainer/ChartContainer";
-import DateUtils from "utils/date-utils";
 import DateSelector from "../DateSelector/DateSelector";
 
-const FarmUsageHistoryChart: React.FC = () => {
+const FarmUsageHistoryChart = (): JSX.Element => {
   const [data, setData] = useState<Array<any> | undefined>([]);
 
   const [startDate, setStartDate] = useState<Date>(
@@ -30,9 +29,9 @@ const FarmUsageHistoryChart: React.FC = () => {
    * Get data from api
    */
   const fetchData = async () => {
-    const baseRoute: string = `${process.env.REACT_APP_API_URL}/graphics/blade-status`;
-    const parameters: string = `start=${startDate!.getTime()}&end=${endDate!.getTime()}`;
-    const url: string = `${baseRoute}?${parameters}`;
+    const baseRoute = `${process.env.REACT_APP_API_URL}/graphics/blade-status`;
+    const parameters = `start=${startDate!.getTime()}&end=${endDate!.getTime()}`;
+    const url = `${baseRoute}?${parameters}`;
 
     fetch(url)
       .then((response) => {

@@ -2,7 +2,7 @@ import React from "react";
 
 interface CheckBoxProps {
   checked: boolean;
-  onChange: any;
+  onChange: React.ChangeEventHandler<HTMLInputElement>;
 
   label?: string;
   className?: string;
@@ -12,7 +12,7 @@ interface CheckBoxProps {
 /**
  * Simple reusable checkbox component
  */
-const CheckBox: React.FC<CheckBoxProps> = (props) => {
+const CheckBox = (props: CheckBoxProps): JSX.Element => {
   return (
     <div className={`pretty p-svg p-curve ${props.className}`}>
       <input

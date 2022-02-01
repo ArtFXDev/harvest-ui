@@ -1,31 +1,28 @@
-import React, { useState, useEffect } from "react";
+import AnimatedNumber from "animated-number-react";
+import ChartContainer from "components/charts/ChartContainer/ChartContainer";
+import {
+  deadline,
+  getTotalFrames,
+  Project,
+  PROJECTS,
+  startTime,
+} from "global.d";
+import React, { useEffect, useState } from "react";
 import {
   CartesianGrid,
   Legend,
   Line,
   LineChart,
+  ReferenceLine,
   Tooltip,
   XAxis,
   YAxis,
-  ReferenceLine,
 } from "recharts";
-import AnimatedNumber from "animated-number-react";
-
-import ChartContainer from "components/charts/ChartContainer/ChartContainer";
-
-import {
-  PROJECTS,
-  Project,
-  getTotalFrames,
-  startTime,
-  deadline,
-} from "global.d";
-
-import DateUtils from "utils/date-utils";
+import * as DateUtils from "utils/date-utils";
 
 import styles from "./ProjectsProgressChart.module.scss";
 
-const ProjectsProgressChart: React.FC = () => {
+const ProjectsProgressChart = (): JSX.Element => {
   const [data, setData] = useState<Array<any> | undefined>([]);
 
   /**

@@ -1,4 +1,8 @@
-import React, { useState, useEffect } from "react";
+// Utility
+import ChartContainer from "components/charts/ChartContainer/ChartContainer";
+// Global import
+import { PROJECTS } from "global.d";
+import React, { useEffect, useState } from "react";
 import {
   CartesianGrid,
   Legend,
@@ -8,16 +12,11 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import * as DateUtils from "utils/date-utils";
 
-// Global import
-import { PROJECTS } from "global.d";
-
-// Utility
-import ChartContainer from "components/charts/ChartContainer/ChartContainer";
-import DateUtils from "utils/date-utils";
 import DateSelector from "../DateSelector/DateSelector";
 
-const ProjectsHistoryChart: React.FC = () => {
+const ProjectsHistoryChart = (): JSX.Element => {
   const [data, setData] = useState<Array<any> | undefined>([]);
 
   // Start date one day ago
@@ -32,9 +31,9 @@ const ProjectsHistoryChart: React.FC = () => {
    * Get data from api
    */
   const fetchData = async () => {
-    const baseRoute: string = `${process.env.REACT_APP_API_URL}/stats/projects-history`;
-    const parameters: string = `start=${startDate!.getTime()}&end=${endDate!.getTime()}`;
-    const url: string = `${baseRoute}?${parameters}`;
+    const baseRoute = `${process.env.REACT_APP_API_URL}/stats/projects-history`;
+    const parameters = `start=${startDate!.getTime()}&end=${endDate!.getTime()}`;
+    const url = `${baseRoute}?${parameters}`;
 
     fetch(url)
       .then((response) => {

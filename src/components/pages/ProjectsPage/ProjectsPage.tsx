@@ -1,11 +1,10 @@
-import React from "react";
-
+import ProjectsFrameRatioBarChart from "components/charts/ProjectsFrameRatioBarChart/ProjectsFrameRatioBarChart";
+import ProjectsHistoryChart from "components/charts/ProjectsHistoryChart/ProjectsHistoryChart";
 // Components
 import ProjectsProgressChart from "components/charts/ProjectsProgressChart/ProjectsProgressChart";
-import ProjectsHistoryChart from "components/charts/ProjectsHistoryChart/ProjectsHistoryChart";
-import ProjectsFrameRatioBarChart from "components/charts/ProjectsFrameRatioBarChart/ProjectsFrameRatioBarChart";
+import React from "react";
 
-const ProjectsPage: React.FC = () => (
+const ProjectsPage = (): JSX.Element => (
   <>
     <ProjectsProgressChart />
     <hr />
