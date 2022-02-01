@@ -19,8 +19,6 @@
   color: white;
   background-color: $text-color;
 
-  @include whenDark {
-    color: $text-color;
-    background-color: $background-color;
-  }
+  color: $text-color;
+  background-color: $background-color;
 }

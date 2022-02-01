@@ -3,7 +3,5 @@
 .centeredLabel {
   font-family: $main-font;
 
-  @include whenDark {
-    fill: $background-color;
-  }
+  fill: $background-color;
 }

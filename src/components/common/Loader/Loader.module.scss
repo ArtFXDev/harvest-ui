@@ -16,9 +16,7 @@
   border-radius: 50%;
   animation: ldsRipple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
 
-  @include whenDark {
-    border: 4px solid $background-color;
-  }
+  border: 4px solid $background-color;
 }
 
 .ldsRipple div:nth-child(2) {

@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from "react";
 import {
   Cell,
   Label,
@@ -10,78 +9,43 @@ import {
 
 import styles from "./ProjectDistPieChart.module.scss";
 
-import { getProjectFromName } from "global.d";
 import ChartUtils from "utils/chart-utils";
-
-interface Data {
-  name: string;
-  value: number;
-}
+import { useFetchData } from "hooks/fetch";
+import { toNameValue } from "utils/api";
 
 /**
  * Distribution of free / busy and nimby on computers in real time on the farm
  */
 const ProjectDistPieChart: React.FC = () => {
-  const [data, setData] = useState<Array<Data> | undefined>([]);
-
-  const fetchData = async () => {
-    fetch(process.env.REACT_APP_API_URL + "/stats/projects-usage")
-      .then((response) => {
-        return response.json();
-      })
-      .then((json) => {
-        // Sort the list by project name alphabetically
-        setData(json.sort((a: any, b: any) => (a.name > b.name ? 1 : -1)));
-      })
-      .catch((error) => {
-        setData(undefined);
-      });
-  };
-
-  // Fetch data at component mount
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (document.visibilityState === "visible") {
-        fetchData();
-      }
-    }, 10000);
-
-    fetchData();
-
-    return () => clearInterval(interval);
-  }, []);
+  const data = useFetchData<{ [project: string]: number }>(
+    "stats/project-usage",
+    { interval: 10000 }
+  );
+  const pieData = toNameValue(data);
 
   return (
     <div className="chartContainerSmall">
       <ResponsiveContainer width="99%" minWidth="0">
         <PieChart width={250} height={250} className="chart">
           <Pie
-            data={data}
+            data={pieData}
             dataKey="value"
             innerRadius="60%"
             outerRadius="80%"
             labelLine={false}
-            label={({ percent, index }) => {
-              return data === undefined
-                ? ""
-                : `${data[index].name}: ${Math.round(percent * 100)}%`;
-            }}
+            label={({ percent, index }) =>
+              pieData
+                ? `${pieData[index].name}: ${Math.round(percent * 100)}%`
+                : ""
+            }
             animationDuration={800}
             paddingAngle={5}
             isAnimationActive={true}
           >
-            {data &&
-              data.length !== 0 &&
-              data.map((el, i) => {
-                if (el.name !== "TEST_PIPE") {
-                  const project = getProjectFromName(el.name);
-                  return (
-                    <Cell
-                      key={`pcstate-${i}`}
-                      fill={el.name === "artfx" ? "#ff6a00" : project.color}
-                    />
-                  );
-                }
+            {pieData &&
+              pieData.length !== 0 &&
+              pieData.map((project, i) => {
+                return <Cell key={`pcstate-${i}`} fill={"#ff6a00"} />;
               })}
 
             <Label

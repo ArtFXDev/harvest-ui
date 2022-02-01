@@ -45,8 +45,8 @@ const ProjectProgressChart: React.FC<Props> = (props) => {
   const fetchData = async () => {
     fetch(
       process.env.REACT_APP_API_URL +
-      "/graphics/progression/" +
-      props.projectName
+        "/graphics/progression/" +
+        props.projectName
     )
       .then((response) => {
         return response.json();
@@ -128,7 +128,9 @@ const ProjectProgressChart: React.FC<Props> = (props) => {
                 )}
               </span>
 
-              {(project.totalFrames === getTotalValidatedFrames()) && <span className={styles.crown}>👑</span>}
+              {project.totalFrames === getTotalValidatedFrames() && (
+                <span className={styles.crown}>👑</span>
+              )}
             </p>
           )}
         </>

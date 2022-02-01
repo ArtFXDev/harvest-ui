@@ -11,8 +11,6 @@
     top: 0.5em;
     width: 100px;
 
-    @include whenDark {
-      filter: invert(1);
-    }
+    filter: invert(1);
   }
 }

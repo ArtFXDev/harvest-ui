@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from "react";
 import {
   Cell,
   Label,
@@ -12,65 +11,39 @@ import styles from "./BladeStatePieChart.module.scss";
 
 import { PROJECTS } from "global.d";
 import ChartUtils from "utils/chart-utils";
-
-interface Data {
-  name: string;
-  value: number;
-}
+import { toNameValue } from "utils/api";
+import { useFetchData } from "hooks/fetch";
 
 /**
  * Distribution of free / busy and nimby on computers in real time on the farm
  */
-const PCStatePieChart: React.FC = () => {
-  const [data, setData] = useState<Array<Data> | undefined>([]);
+const PCStatePieChart = (): JSX.Element => {
+  const data = useFetchData<{ [status: string]: number }>(
+    "stats/blade-status",
+    { interval: 10000 }
+  );
 
-  const fetchData = async () => {
-    fetch(process.env.REACT_APP_API_URL + "/stats/blades-status")
-      .then((response) => {
-        return response.json();
-      })
-      .then((json) => {
-        setData(json);
-      })
-      .catch((error) => {
-        setData(undefined);
-      });
-  };
-
-  // Fetch data at component mount
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (document.visibilityState === "visible") {
-        fetchData();
-      }
-    }, 10000);
-
-    fetchData();
-
-    return () => clearInterval(interval);
-  }, []);
+  const pieData = toNameValue(data);
 
   return (
     <div className="chartContainerSmall">
       <ResponsiveContainer width="99%" minWidth="0">
         <PieChart width={250} height={250} className="chart">
           <Pie
-            data={data}
+            data={toNameValue(data)}
             dataKey="value"
             innerRadius="60%"
             outerRadius="80%"
             labelLine={false}
-            label={({ percent, index }) => {
-              return data === undefined
-                ? ""
-                : `${data[index].name}: ${Math.round(percent * 100)}%`;
-            }}
             animationDuration={800}
             paddingAngle={5}
             isAnimationActive={true}
+            label={({ percent, index }) =>
+              pieData && `${pieData[index].name}: ${Math.round(percent * 100)}%`
+            }
           >
-            {data &&
-              data.map((el, i) => (
+            {pieData &&
+              pieData.map((el, i) => (
                 <Cell
                   key={`pcstate-${i}`}
                   fill={PROJECTS[i].color}

@@ -6,6 +6,7 @@ import AnimatedNumber from "animated-number-react";
 import DateUtils from "utils/date-utils";
 
 import styles from "./NumberStats.module.scss";
+import { apiURL } from "utils/api";
 
 interface CounterProps {
   route: string;
@@ -22,42 +23,45 @@ interface CounterProps {
 const Counter: React.FC<CounterProps> = (props) => {
   const [value, setValue] = useState<number>();
 
-  const fetchData = async () => {
-    let route = `${process.env.REACT_APP_API_URL}/${props.route}`;
+  // const data =
 
-    // Add route params
-    if (props.routeParams) {
-      const params = props.routeParams
-        .map((param) => `${param.key}=${param.value}`)
-        .join("&");
-      route = `${route}?${params}`;
-    }
+  // // Fetch data and refresh
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     let route = apiURL(props.route);
 
-    const response = await fetch(route);
-    const json = await response.json();
+  //     // Add route params
+  //     if (props.routeParams) {
+  //       const params = props.routeParams
+  //         .map((param) => `${param.key}=${param.value}`)
+  //         .join("&");
+  //       route = `${route}?${params}`;
+  //     }
 
-    setValue(props.dataTransform ? props.dataTransform(json) : json.value);
-  };
+  //     const response = await fetch(route);
+  //     const json = await response.json();
+  //     console.log(json);
 
-  // Fetch data and refresh
-  useEffect(() => {
-    if (props.refresh) {
-      const interval = setInterval(
-        async () => {
-          if (document.visibilityState === "visible") {
-            fetchData();
-          }
-        },
-        props.refreshTime ? props.refreshTime * 1000 : 10000
-      );
+  //     setValue(props.dataTransform ? props.dataTransform(json) : json.value);
+  //   };
 
-      fetchData();
+  //   if (props.refresh) {
+  //     const interval = setInterval(
+  //       async () => {
+  //         if (document.visibilityState === "visible") {
+  //           fetchData();
+  //         }
+  //       },
+  //       props.refreshTime ? props.refreshTime * 1000 : 10000
+  //     );
 
-      return () => clearInterval(interval);
-    } else {
-      fetchData();
-    }
-  }, []);
+  //     fetchData();
+
+  //     return () => clearInterval(interval);
+  //   } else {
+  //     fetchData();
+  //   }
+  // }, [props]);
 
   return (
     <div className={styles.counterContainer}>
@@ -83,7 +87,7 @@ const Counter: React.FC<CounterProps> = (props) => {
   );
 };
 
-const NumberStats: React.FC = () => {
+const NumberStats = (): JSX.Element => {
   const now = new Date();
   const yesterday = new Date(now.getTime());
   yesterday.setDate(now.getDate() - 1);
@@ -94,35 +98,36 @@ const NumberStats: React.FC = () => {
       {({ isVisible }) =>
         isVisible ? (
           <FadeIn transitionDuration={1700} visible={isVisible}>
-
             <div className={styles.inlineStats}>
               <div className={styles.inline}>
                 <Counter
-                  route="stats/blades-status"
-                  dataTransform={(json: any) =>
-                    json.find((e: any) => e.name === "Busy").value
-                  }
+                  route="stats/blade-status"
+                  dataTransform={(statuses: any) => statuses.busy}
                   label="active tasks"
                   color="#e8423b"
                   refresh
                 />
 
-                <Counter
-                  route="stats/blades-status"
-                  dataTransform={(json: any) => json.map((e: any) => e.value).reduce((a: number, b: number) => a + b, 0)}
+                {/* <Counter
+                  route="stats/blade-status"
+                  dataTransform={(json: any) =>
+                    json
+                      .map((e: any) => e.value)
+                      .reduce((a: number, b: number) => a + b, 0)
+                  }
                   label="computers"
                   color="#b0358b"
                 />
 
                 <Counter
                   route="infos/projects"
-                  dataTransform={(json: any) => json.length - 1}
+                  dataTransform={(json: any) => json.length}
                   label="projects"
                   color="rgb(21, 175, 151)"
-                />
+                /> */}
               </div>
 
-              <div className={styles.time}>
+              {/* <div className={styles.time}>
                 <Counter
                   route="stats/total-computetime"
                   routeParams={[
@@ -154,8 +159,7 @@ const NumberStats: React.FC = () => {
                   color="#009bd9"
                   fontSize="35px"
                 />
-              </div>
-
+              </div> */}
             </div>
           </FadeIn>
         ) : (

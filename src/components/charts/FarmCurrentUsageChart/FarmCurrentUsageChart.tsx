@@ -32,48 +32,46 @@ const FarmCurrentUsage: React.FC = () => {
   // End now
   const [endDate, setEndDate] = useState<Date>(new Date());
 
-  const fetchData = async () => {
-    const baseRoute: string = `${process.env.REACT_APP_API_URL}/graphics/blade-status`;
-    const parameters: string = `start=${startDate!.getTime()}&end=${endDate!.getTime()}`;
-    const url: string = `${baseRoute}?${parameters}`;
-
-    // Get current computer repartition data
-    let lastData: any;
-    await fetch(process.env.REACT_APP_API_URL + "/stats/blades-status")
-      .then((response) => response.json())
-      .then((json) => {
-        lastData = json;
-      });
-
-    fetch(url)
-      .then((response) => response.json())
-      .then((json) => {
-        // Add current data to dataset
-        json.push({
-          free: lastData[0].value!,
-          busy: lastData[1].value!,
-          timestamp: Date.now(),
-        });
-
-        // Only keep busy computers / busy + free so we have a better idea
-        const onlyBusy = json.map((d: any) => {
-          const total: number = Math.floor(d.busy + d.free);
-          return {
-            busy: (d.busy / total) * 100,
-            total: total,
-            timestamp: d.timestamp,
-          };
-        });
-
-        setData(onlyBusy);
-      })
-      .catch((error) => {
-        setData(undefined);
-      });
-  };
-
   // Fetch data when modifying selection options
   useEffect(() => {
+    const fetchData = async () => {
+      const baseRoute: string = `${process.env.REACT_APP_API_URL}/graphics/blade-status`;
+      const parameters: string = `start=${startDate!.getTime()}&end=${endDate!.getTime()}`;
+      const url: string = `${baseRoute}?${parameters}`;
+
+      // Get current computer repartition data
+      let lastData = await fetch(
+        process.env.REACT_APP_API_URL + "/stats/blades-status"
+      ).then((response) => response.json());
+
+      fetch(url)
+        .then((response) => response.json())
+        .then((json) => {
+          // Add current data to dataset
+          json.push({
+            free: lastData[0].value!,
+            busy: lastData[1].value!,
+            timestamp: Date.now(),
+          });
+
+          // Only keep busy computers / busy + free so we have a better idea
+          const onlyBusy = json.map((d: any) => {
+            const total: number = Math.floor(d.busy + d.free);
+            console.log(d.busy, total);
+            return {
+              busy: (d.busy / total) * 100,
+              total: total,
+              timestamp: d.timestamp,
+            };
+          });
+
+          setData(onlyBusy);
+        })
+        .catch((error) => {
+          setData(undefined);
+        });
+    };
+
     fetchData();
   }, [startDate, endDate]);
 

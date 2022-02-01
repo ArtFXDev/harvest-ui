@@ -1,79 +1,67 @@
 @import "./global";
 
 .chartContainerWide {
-    width: 80vw;
-    height: 500px;
+  width: 80vw;
+  height: 500px;
 
-    margin-bottom: 4em;
+  margin-bottom: 4em;
 }
 
 .chartContainerSmall {
-    width: 500px;
-    height: 300px;
+  width: 500px;
+  height: 300px;
 }
 
 .chart {
-    font-family: Monospace;
+  font-family: CooperHewitt;
 }
 
 /** RECHARTS CUSTOM STYLE */
 
 // Labels
 .recharts-text.recharts-cartesian-axis-tick-value,
-.recharts-text.recharts-label
-{
-    @include whenDarkGlobal {
-        fill: darken($background-color, 20%) !important;
-    }
+.recharts-text.recharts-label {
+  fill: darken($background-color, 20%) !important;
 }
 
 // Cartesian grid
 .recharts-cartesian-grid-horizontal line,
-.recharts-cartesian-grid-vertical line
-{
-    @include whenDarkGlobal {
-        stroke: darken($background-color, 40%) !important;
-    }
+.recharts-cartesian-grid-vertical line {
+  stroke: darken($background-color, 40%) !important;
 }
 
 // Tooltip
 .recharts-default-tooltip {
-    border-radius: 10px;
+  border-radius: 10px;
 
-    filter: drop-shadow( 3px 3px 2px rgba(0, 0, 0, .2));
+  filter: drop-shadow(3px 3px 2px rgba(0, 0, 0, 0.2));
 
-    @include whenDarkGlobal {
-        fill: $background-color !important;
-        background-color: darken(#353B48, 10%) !important;
-        border-color: lighten(#353B48, 2%) !important;
-    }
+  fill: $background-color !important;
+  background-color: darken(#353b48, 10%) !important;
+  border-color: lighten(#353b48, 2%) !important;
 }
 
 // Custom tooltip for pie chart
 .recharts-pie-tooltip-override {
-    border: 1px solid rgb(204, 204, 204);
-    padding: 15px 10px;
-    background-color: $background-color;
+  border: 1px solid rgb(204, 204, 204);
+  padding: 15px 10px;
+  background-color: $background-color;
 }
 
 // Rectangle tooltip on bar chart
 .recharts-rectangle.recharts-tooltip-cursor {
-    @include whenDarkGlobal {
-        fill: #353B48 !important;
-    }
+  fill: #353b48 !important;
 }
 
 // Drop shadow on pie char sectors
 .recharts-sector {
-    @include whenDarkGlobal {
-        stroke: #353B48 !important;
-    }
+  stroke: #353b48 !important;
 
-    stroke: none;
-    filter: drop-shadow( 3px 3px 2px rgba(0, 0, 0, .2));
+  stroke: none;
+  filter: drop-shadow(3px 3px 2px rgba(0, 0, 0, 0.2));
 }
 
 // Pie chart center text font size
 .recharts-pie-label-text {
-    font-size: 0.8rem !important;
+  font-size: 0.8rem !important;
 }

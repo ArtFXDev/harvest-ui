@@ -1,7 +1,6 @@
 import React from "react";
 
-import Navigation from "components/Navigation/Navigation";
-import DarkModeToggle from "components/DarkModeToggle/DarkModeToggle";
+import Navigation from "components/structure/Navigation/Navigation";
 
 import artfxLogo from "assets/images/ArtFx---Logo-generique-noir.png";
 
@@ -12,7 +11,6 @@ const Header: React.FC = () => (
     <h1>Harvest 👨‍🌾🌾</h1>
     <img src={artfxLogo} alt="ArtFX Logo" className={styles.artfxLogo} />
     <Navigation />
-    <DarkModeToggle />
   </header>
 );
 

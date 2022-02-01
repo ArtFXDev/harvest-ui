@@ -89,7 +89,8 @@ const ProjectsProgressChart: React.FC = () => {
           <p>
             Deadline :{" "}
             <span className={styles.deadline}>
-              {DateUtils.dateToMMDDYYYY(deadline)} ({daysFromDeadline}d {daysFromDeadline >= 0 ? "left" : "late"})
+              {DateUtils.dateToMMDDYYYY(deadline)} ({daysFromDeadline}d{" "}
+              {daysFromDeadline >= 0 ? "left" : "late"})
             </span>
           </p>
 
@@ -179,7 +180,11 @@ const ProjectsProgressChart: React.FC = () => {
 
         <Legend />
 
-        <ReferenceLine x={deadline.getTime()} stroke="rgba(255, 0, 0)" strokeDasharray="3 3" />
+        <ReferenceLine
+          x={deadline.getTime()}
+          stroke="rgba(255, 0, 0)"
+          strokeDasharray="3 3"
+        />
 
         <ReferenceLine
           label="Goal"

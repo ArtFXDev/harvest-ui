@@ -13,7 +13,7 @@ import FarmUsageStackAreaChart from "components/charts/FarmUsageStackAreaChart/F
 import FarmTotalComputeTime from "components/charts/FarmTotalComputeTime/FarmTotalComputeTime";
 import NumberStats from "components/NumberStats/NumberStats";
 
-const HomePage: React.FC = () => (
+const HomePage = (): JSX.Element => (
   <>
     <FadeIn className={styles.pieCharts} transitionDuration={1500}>
       <BladeStatePieChart />
@@ -24,7 +24,7 @@ const HomePage: React.FC = () => (
 
     <NumberStats />
 
-    <hr />
+    {/* <hr />
 
     <FarmCurrentUsageChart />
 
@@ -38,7 +38,7 @@ const HomePage: React.FC = () => (
 
     <hr />
 
-    <FarmUsageChart />
+    <FarmUsageChart /> */}
   </>
 );
 
