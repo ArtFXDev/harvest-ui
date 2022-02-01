@@ -1,3 +1,5 @@
+import { PROJECTS } from "global.d";
+import { useFetchData } from "hooks/fetch";
 import {
   Cell,
   Label,
@@ -6,23 +8,16 @@ import {
   ResponsiveContainer,
   Tooltip,
 } from "recharts";
+import { toNameValue } from "utils/api";
+import ChartUtils from "utils/chart-utils";
 
 import styles from "./BladeStatePieChart.module.scss";
 
-import { PROJECTS } from "global.d";
-import ChartUtils from "utils/chart-utils";
-import { toNameValue } from "utils/api";
-import { useFetchData } from "hooks/fetch";
-
 /**
- * Distribution of free / busy and nimby on computers in real time on the farm
+ * Distribution of free/nimby/busy/off computers currently on the farm
  */
 const PCStatePieChart = (): JSX.Element => {
-  const data = useFetchData<{ [status: string]: number }>(
-    "stats/blade-status",
-    { interval: 10000 }
-  );
-
+  const data = useFetchData("current/blade-usage", { interval: 10000 });
   const pieData = toNameValue(data);
 
   return (

@@ -1,27 +1,33 @@
-import React, { useEffect, useState } from "react";
-import TrackVisibility from "react-on-screen";
-import FadeIn from "react-fade-in";
 import AnimatedNumber from "animated-number-react";
-
-import DateUtils from "utils/date-utils";
+import { useFetchData } from "hooks/fetch";
+import React from "react";
+import FadeIn from "react-fade-in";
+import TrackVisibility from "react-on-screen";
+import { GetRoute, GetRoutes } from "types/api";
 
 import styles from "./NumberStats.module.scss";
-import { apiURL } from "utils/api";
 
-interface CounterProps {
-  route: string;
+interface CounterProps<R extends GetRoute> {
+  /** The API route to fetch data from */
+  route: R;
   routeParams?: Array<{ key: string; value: string | number }>;
-  dataTransform?: Function;
+  /** Function to transform the incoming data into a single value */
+  dataTransform: (data: GetRoutes[R]) => number;
+
+  /** Label to be displayed */
   label: string;
+  /** Color of the text */
   color: string;
-  refresh?: boolean;
+
+  /** Interval in ms to refetch data */
+  refreshInterval?: number;
   refreshTime?: number;
   info?: string;
   fontSize?: string;
 }
 
-const Counter: React.FC<CounterProps> = (props) => {
-  const [value, setValue] = useState<number>();
+const Counter = <R extends GetRoute>(props: CounterProps<R>): JSX.Element => {
+  const data = useFetchData(props.route, { interval: props.refreshInterval });
 
   // const data =
 
@@ -65,10 +71,10 @@ const Counter: React.FC<CounterProps> = (props) => {
 
   return (
     <div className={styles.counterContainer}>
-      {value ? (
+      {data ? (
         <div style={{ fontSize: props.fontSize || 40 }}>
           <AnimatedNumber
-            value={value}
+            value={props.dataTransform(data)}
             delay={200}
             className={styles.counter}
             formatValue={(value: number) => value.toFixed(0)}
@@ -101,25 +107,26 @@ const NumberStats = (): JSX.Element => {
             <div className={styles.inlineStats}>
               <div className={styles.inline}>
                 <Counter
-                  route="stats/blade-status"
-                  dataTransform={(statuses: any) => statuses.busy}
+                  route="current/blade-usage"
                   label="active tasks"
                   color="#e8423b"
-                  refresh
-                />
-
-                {/* <Counter
-                  route="stats/blade-status"
-                  dataTransform={(json: any) =>
-                    json
-                      .map((e: any) => e.value)
-                      .reduce((a: number, b: number) => a + b, 0)
-                  }
-                  label="computers"
-                  color="#b0358b"
+                  dataTransform={(data) => data.busy}
+                  refreshInterval={10000}
                 />
 
                 <Counter
+                  route="current/blade-usage"
+                  label="computers"
+                  color="#b0358b"
+                  dataTransform={(data) =>
+                    Object.values(data).reduce(
+                      (a: number, b: number) => a + b,
+                      0
+                    )
+                  }
+                />
+
+                {/*<Counter
                   route="infos/projects"
                   dataTransform={(json: any) => json.length}
                   label="projects"

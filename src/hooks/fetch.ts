@@ -1,19 +1,26 @@
 import { useEffect, useState } from "react";
+import { GetRoute, GetRoutes } from "types/api";
 import { apiGet } from "utils/api";
 
 interface FetchConfig {
+  /** Interval in ms to refetch data */
   interval?: number;
 }
 
-export function useFetchData<T>(route: string, config: FetchConfig = {}) {
-  const [data, setData] = useState<T>();
+/**
+ * Custom React hook to fetch data from the Harvest API
+ */
+export function useFetchData(route: GetRoute, config: FetchConfig = {}) {
+  type Data = GetRoutes[typeof route];
+  const [data, setData] = useState<Data>();
 
   useEffect(() => {
     const fetchData = async () => {
-      let result = await apiGet<T>(route);
+      const result = await apiGet<Data>(route);
       setData(result);
     };
 
+    // Only fetch data when the window is visible
     const fetchIfVisible = () => {
       if (document.visibilityState === "visible") {
         fetchData();
@@ -28,8 +35,9 @@ export function useFetchData<T>(route: string, config: FetchConfig = {}) {
 
     fetchData();
 
+    // Clear the interval on unmount
     if (interval) {
-      return () => clearInterval();
+      return () => clearInterval(interval as NodeJS.Timeout);
     }
   }, [config.interval, route]);
 

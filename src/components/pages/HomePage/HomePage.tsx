@@ -6,7 +6,7 @@ import styles from "./HomePage.module.scss";
 // Components
 import FarmUsageChart from "components/charts/FarmUsageChart/FarmUsageChart";
 import BladeStatePieChart from "components/charts/BladeStatePieChart/BladeStatePieChart";
-import ProjectDistPieChart from "components/charts/ProjectDistPieChart/ProjectDistPieChart";
+import ProjectDistPieChart from "components/charts/CurrentProjectUsagePieChart/CurrentProjectUsagePieChart";
 /* import FarmUsageHistoryChart from 'components/charts/FarmUsageHistoryChart/FarmUsageHistoryChart'; */
 import FarmCurrentUsageChart from "components/charts/FarmCurrentUsageChart/FarmCurrentUsageChart";
 import FarmUsageStackAreaChart from "components/charts/FarmUsageStackAreaChart/FarmUsageStackAreaChart";

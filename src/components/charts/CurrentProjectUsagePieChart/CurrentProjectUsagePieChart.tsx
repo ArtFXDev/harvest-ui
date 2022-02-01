@@ -7,20 +7,17 @@ import {
   Tooltip,
 } from "recharts";
 
-import styles from "./ProjectDistPieChart.module.scss";
+import styles from "./CurrentProjectUsagePieChart.module.scss";
 
 import ChartUtils from "utils/chart-utils";
 import { useFetchData } from "hooks/fetch";
 import { toNameValue } from "utils/api";
 
 /**
- * Distribution of free / busy and nimby on computers in real time on the farm
+ * Current project distribution on the farm
  */
-const ProjectDistPieChart: React.FC = () => {
-  const data = useFetchData<{ [project: string]: number }>(
-    "stats/project-usage",
-    { interval: 10000 }
-  );
+const CurrentProjectUsagePieChart: React.FC = () => {
+  const data = useFetchData("current/project-usage", { interval: 10000 });
   const pieData = toNameValue(data);
 
   return (
@@ -62,4 +59,4 @@ const ProjectDistPieChart: React.FC = () => {
   );
 };
 
-export default ProjectDistPieChart;
+export default CurrentProjectUsagePieChart;
