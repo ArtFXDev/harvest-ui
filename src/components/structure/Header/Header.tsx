@@ -1,6 +1,5 @@
 import artfxLogo from "assets/images/ArtFx---Logo-generique-noir.png";
 import Navigation from "components/structure/Navigation/Navigation";
-import React from "react";
 
 import styles from "./Header.module.scss";
 

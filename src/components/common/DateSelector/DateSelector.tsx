@@ -1,5 +1,4 @@
-import CheckBox from "components/CheckBox/CheckBox";
-import React from "react";
+import CheckBox from "components/common/CheckBox/CheckBox";
 import * as DateUtils from "utils/date";
 
 import styles from "./DateSelector.module.scss";

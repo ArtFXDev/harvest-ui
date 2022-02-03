@@ -1,6 +1,5 @@
 // Components
 import ProjectProgressChart from "components/charts/ProjectProgressChart/ProjectProgressChart";
-import React from "react";
 import { match } from "react-router";
 
 export interface ProjectRouteParams {

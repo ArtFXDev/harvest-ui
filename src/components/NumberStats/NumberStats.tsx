@@ -1,6 +1,5 @@
 import AnimatedNumber from "animated-number-react";
 import { FetchConfig, useFetchData } from "hooks/fetch";
-import React from "react";
 import FadeIn from "react-fade-in";
 import TrackVisibility from "react-on-screen";
 import { GetParams, GetResponse, GetRoute } from "types/api";
