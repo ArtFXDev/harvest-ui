@@ -2,7 +2,7 @@ import CurrentBladeUsagePieChart from "components/charts/BladeStatePieChart/Blad
 import BladeUsageHistoryStackAreaChart from "components/charts/BladeUsageHistoryStackAreaChart/BladeUsageHistoryStackAreaChart";
 import CurrentProjectUsagePieChart from "components/charts/CurrentProjectUsagePieChart/CurrentProjectUsagePieChart";
 import FarmCurrentUsageChart from "components/charts/FarmBusyUsageHistoryChart/FarmBusyUsageHistoryChart";
-import NumberStats from "components/NumberStats/NumberStats";
+import NumberStats from "components/pages/HomePage/NumberStats/NumberStats";
 import FadeIn from "react-fade-in";
 
 import styles from "./HomePage.module.scss";

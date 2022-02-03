@@ -2,20 +2,7 @@ import { NavLink } from "react-router-dom";
 
 import styles from "./Navigation.module.scss";
 
-interface LinkProps {
-  route: string;
-  text: string;
-}
-
-const Link = (props: LinkProps): JSX.Element => (
-  <NavLink
-    to={`${process.env.PUBLIC_URL}${props.route}`}
-    activeClassName={styles.activeLink}
-    exact
-  >
-    {props.text}
-  </NavLink>
-);
+const links: { route: string; text: string }[] = [{ route: "/", text: "Farm" }];
 
 /**
  * Navbar component
@@ -25,12 +12,16 @@ const Navigation = (): JSX.Element => {
     <nav className={styles.mainNav}>
       {/* Main links */}
       <ul>
-        <li>
-          <Link route="/" text="Farm" />
-        </li>
-        <li>
-          <Link route="/projects" text="Projects" />
-        </li>
+        {links.map((link) => (
+          <li key={link.route}>
+            <NavLink
+              to={link.route}
+              className={({ isActive }) => (isActive ? styles.activeLink : "")}
+            >
+              {link.text}
+            </NavLink>
+          </li>
+        ))}
       </ul>
     </nav>
   );

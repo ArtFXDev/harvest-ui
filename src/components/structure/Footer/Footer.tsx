@@ -1,5 +1,4 @@
-import githubLogo from "assets/images/github-logo.png";
-import React from "react";
+import githubLogo from "assets/images/github.svg";
 
 import styles from "./Footer.module.scss";
 

@@ -1,4 +1,4 @@
-import artfxLogo from "assets/images/ArtFx---Logo-generique-noir.png";
+import artfxLogo from "assets/images/artfx_black_logo.png";
 import Navigation from "components/structure/Navigation/Navigation";
 
 import styles from "./Header.module.scss";

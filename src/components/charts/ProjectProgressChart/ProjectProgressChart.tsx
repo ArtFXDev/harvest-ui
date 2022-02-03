@@ -1,7 +1,5 @@
 import AnimatedNumber from "animated-number-react";
-// Utility
 import ChartContainer from "components/charts/ChartContainer/ChartContainer";
-// Global import
 import { deadline, getProjectFromName, Project, startTime } from "global.d";
 import { useEffect, useState } from "react";
 import {
