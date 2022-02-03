@@ -25,7 +25,7 @@ export interface GetRoutes {
     response: (BladeStatuses & {
       createdAt: string;
     })[];
-    params: undefined;
+    params: { start: number; end: number };
   };
 }
 

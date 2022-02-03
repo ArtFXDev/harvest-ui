@@ -8,7 +8,7 @@ import {
   Tooltip,
 } from "recharts";
 import { toNameValue } from "utils/api";
-import * as ChartUtils from "utils/chart-utils";
+import * as ChartUtils from "utils/chart";
 import { getColorFromString } from "utils/colors";
 
 import styles from "./CurrentProjectUsagePieChart.module.scss";

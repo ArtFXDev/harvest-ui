@@ -9,7 +9,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import * as DateUtils from "utils/date-utils";
+import * as DateUtils from "utils/date";
 
 /**
  * Average frame computation time / computer type / project

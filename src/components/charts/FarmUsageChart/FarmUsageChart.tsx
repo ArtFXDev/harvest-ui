@@ -12,7 +12,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import * as DataUtils from "utils/data-utils";
+import * as DataUtils from "utils/data";
 
 import DateSelector from "../../common/DateSelector/DateSelector";
 import styles from "./FarmUsageChart.module.scss";

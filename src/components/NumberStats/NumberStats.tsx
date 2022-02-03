@@ -6,7 +6,7 @@ import TrackVisibility from "react-on-screen";
 import { GetParams, GetResponse, GetRoute } from "types/api";
 import { sum } from "utils/array";
 import { COLORS } from "utils/colors";
-import * as DateUtils from "utils/date-utils";
+import * as DateUtils from "utils/date";
 
 import styles from "./NumberStats.module.scss";
 

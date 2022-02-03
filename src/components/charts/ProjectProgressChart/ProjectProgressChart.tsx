@@ -13,8 +13,8 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import * as DateUtils from "utils/date-utils";
-import * as ProjectUtils from "utils/project-utils";
+import * as DateUtils from "utils/date";
+import * as ProjectUtils from "utils/project";
 
 // Style
 import styles from "./ProjectProgressChart.module.scss";

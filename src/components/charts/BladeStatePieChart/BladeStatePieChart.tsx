@@ -9,7 +9,7 @@ import {
   Tooltip,
 } from "recharts";
 import { toNameValue } from "utils/api";
-import * as ChartUtils from "utils/chart-utils";
+import * as ChartUtils from "utils/chart";
 
 import styles from "./BladeStatePieChart.module.scss";
 

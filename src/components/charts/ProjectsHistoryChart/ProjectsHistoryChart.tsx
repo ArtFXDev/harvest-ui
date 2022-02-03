@@ -11,7 +11,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import * as DateUtils from "utils/date-utils";
+import * as DateUtils from "utils/date";
 
 const ProjectsHistoryChart = (): JSX.Element => {
   const [data, setData] = useState<Array<any> | undefined>([]);

@@ -13,7 +13,7 @@ import {
 } from "recharts";
 import { last, sum } from "utils/array";
 import { COLORS } from "utils/colors";
-import * as DateUtils from "utils/date-utils";
+import * as DateUtils from "utils/date";
 
 import ChartContainer from "../ChartContainer/ChartContainer";
 
@@ -46,7 +46,11 @@ const FarmCurrentUsage = (): JSX.Element => {
   );
   const [endDate, setEndDate] = useState<Date>(new Date());
 
-  const data = useFetchData("history/blade-usage");
+  const data = useFetchData(
+    "history/blade-usage",
+    {},
+    { start: startDate.getTime(), end: endDate.getTime() }
+  );
   const currentBladeUsage = useFetchData("current/blade-usage", {
     interval: 10000,
   });

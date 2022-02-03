@@ -12,8 +12,8 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import * as DataUtils from "utils/data-utils";
-import * as DateUtils from "utils/date-utils";
+import * as DataUtils from "utils/data";
+import * as DateUtils from "utils/date";
 
 import DateSelector from "../../common/DateSelector/DateSelector";
 
