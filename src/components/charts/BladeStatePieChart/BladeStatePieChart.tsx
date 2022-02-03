@@ -16,7 +16,7 @@ import styles from "./BladeStatePieChart.module.scss";
 /**
  * Distribution of free/nimby/busy/off computers currently on the farm
  */
-const PCStatePieChart = (): JSX.Element => {
+const CurrentBladeUsagePieChart = (): JSX.Element => {
   const data = useFetchData("current/blade-usage", { interval: 10000 });
   const pieData = toNameValue(data);
 
@@ -60,4 +60,4 @@ const PCStatePieChart = (): JSX.Element => {
   );
 };
 
-export default PCStatePieChart;
+export default CurrentBladeUsagePieChart;

@@ -3,7 +3,7 @@ import AnimatedNumber from "animated-number-react";
 import ChartContainer from "components/charts/ChartContainer/ChartContainer";
 // Global import
 import { deadline, getProjectFromName, Project, startTime } from "global.d";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   CartesianGrid,
   Line,

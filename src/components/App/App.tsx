@@ -2,7 +2,8 @@ import Loader from "components/common/Loader/Loader";
 import Footer from "components/structure/Footer/Footer";
 // Import header and footer
 import Header from "components/structure/Header/Header";
-import React, { Suspense } from "react";
+import React from "react";
+import { Suspense } from "react";
 import {
   BrowserRouter as Router,
   Redirect,
@@ -44,7 +45,7 @@ const App = (): JSX.Element => (
             <Route
               path="/project/:projectName"
               exact
-              render={(props: any) => <ProjectPage {...props} />}
+              render={(props) => <ProjectPage {...props} />}
             />
 
             {/* Redirect to home when route not known */}

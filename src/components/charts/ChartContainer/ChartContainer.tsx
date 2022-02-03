@@ -1,4 +1,4 @@
-import React, { ReactElement, ReactNode } from "react";
+import { ReactElement, ReactNode } from "react";
 import FadeIn from "react-fade-in";
 import TrackVisibility from "react-on-screen";
 import { ResponsiveContainer } from "recharts";

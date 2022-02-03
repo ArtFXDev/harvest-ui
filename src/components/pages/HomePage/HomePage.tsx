@@ -1,9 +1,7 @@
-import BladeStatePieChart from "components/charts/BladeStatePieChart/BladeStatePieChart";
-import ProjectDistPieChart from "components/charts/CurrentProjectUsagePieChart/CurrentProjectUsagePieChart";
-/* import FarmUsageHistoryChart from 'components/charts/FarmUsageHistoryChart/FarmUsageHistoryChart'; */
-// Components
+import CurrentBladeUsagePieChart from "components/charts/BladeStatePieChart/BladeStatePieChart";
+import CurrentProjectUsagePieChart from "components/charts/CurrentProjectUsagePieChart/CurrentProjectUsagePieChart";
+import FarmCurrentUsageChart from "components/charts/FarmCurrentUsageChart/FarmCurrentUsageChart";
 import NumberStats from "components/NumberStats/NumberStats";
-import React from "react";
 import FadeIn from "react-fade-in";
 
 import styles from "./HomePage.module.scss";
@@ -11,19 +9,19 @@ import styles from "./HomePage.module.scss";
 const HomePage = (): JSX.Element => (
   <>
     <FadeIn className={styles.pieCharts} transitionDuration={1500}>
-      <BladeStatePieChart />
-      <ProjectDistPieChart />
+      <CurrentBladeUsagePieChart />
+      <CurrentProjectUsagePieChart />
     </FadeIn>
 
     <hr />
 
     <NumberStats />
 
-    {/* <hr />
+    <hr />
 
     <FarmCurrentUsageChart />
 
-    <hr />
+    {/*<hr />
 
     <FarmTotalComputeTime />
 
@@ -33,7 +31,7 @@ const HomePage = (): JSX.Element => (
 
     <hr />
 
-    <FarmUsageChart /> */}
+    <FarmUsageChart />*/}
   </>
 );
 

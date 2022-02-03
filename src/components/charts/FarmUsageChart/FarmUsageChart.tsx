@@ -1,6 +1,6 @@
 import ChartContainer from "components/charts/ChartContainer/ChartContainer";
 import { PROJECTS, STATES } from "global.d";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Area,
   AreaChart,
@@ -14,7 +14,7 @@ import {
 } from "recharts";
 import * as DataUtils from "utils/data-utils";
 
-import DateSelector from "../DateSelector/DateSelector";
+import DateSelector from "../../common/DateSelector/DateSelector";
 import styles from "./FarmUsageChart.module.scss";
 
 interface UsageProps {

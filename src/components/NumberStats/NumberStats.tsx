@@ -1,73 +1,42 @@
 import AnimatedNumber from "animated-number-react";
-import { useFetchData } from "hooks/fetch";
+import { FetchConfig, useFetchData } from "hooks/fetch";
 import React from "react";
 import FadeIn from "react-fade-in";
 import TrackVisibility from "react-on-screen";
-import { GetRoute, GetRoutes } from "types/api";
+import { GetParams, GetResponse, GetRoute } from "types/api";
+import { sum } from "utils/array";
+import { COLORS } from "utils/colors";
+import * as DateUtils from "utils/date-utils";
 
 import styles from "./NumberStats.module.scss";
 
 interface CounterProps<R extends GetRoute> {
   /** The API route to fetch data from */
   route: R;
-  routeParams?: Array<{ key: string; value: string | number }>;
+
+  /** Optional route params */
+  routeParams?: Partial<GetParams<R>>;
+
+  fetchConfig?: FetchConfig;
+
   /** Function to transform the incoming data into a single value */
-  dataTransform: (data: GetRoutes[R]) => number;
+  dataTransform: (data: GetResponse<R>) => number;
 
   /** Label to be displayed */
   label: string;
+
   /** Color of the text */
   color: string;
 
-  /** Interval in ms to refetch data */
-  refreshInterval?: number;
-  refreshTime?: number;
+  /** Info text to display */
   info?: string;
-  fontSize?: string;
+
+  /**  */
+  fontSize?: number;
 }
 
 const Counter = <R extends GetRoute>(props: CounterProps<R>): JSX.Element => {
-  const data = useFetchData(props.route, { interval: props.refreshInterval });
-
-  // const data =
-
-  // // Fetch data and refresh
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     let route = apiURL(props.route);
-
-  //     // Add route params
-  //     if (props.routeParams) {
-  //       const params = props.routeParams
-  //         .map((param) => `${param.key}=${param.value}`)
-  //         .join("&");
-  //       route = `${route}?${params}`;
-  //     }
-
-  //     const response = await fetch(route);
-  //     const json = await response.json();
-  //     console.log(json);
-
-  //     setValue(props.dataTransform ? props.dataTransform(json) : json.value);
-  //   };
-
-  //   if (props.refresh) {
-  //     const interval = setInterval(
-  //       async () => {
-  //         if (document.visibilityState === "visible") {
-  //           fetchData();
-  //         }
-  //       },
-  //       props.refreshTime ? props.refreshTime * 1000 : 10000
-  //     );
-
-  //     fetchData();
-
-  //     return () => clearInterval(interval);
-  //   } else {
-  //     fetchData();
-  //   }
-  // }, [props]);
+  const data = useFetchData(props.route, props.fetchConfig, props.routeParams);
 
   return (
     <div className={styles.counterContainer}>
@@ -95,9 +64,7 @@ const Counter = <R extends GetRoute>(props: CounterProps<R>): JSX.Element => {
 
 const NumberStats = (): JSX.Element => {
   const now = new Date();
-  const yesterday = new Date(now.getTime());
-  yesterday.setDate(now.getDate() - 1);
-  yesterday.setHours(0, 0, 0, 0);
+  const yesterday = DateUtils.yesterday();
 
   return (
     <TrackVisibility offset={-100} partialVisibility once>
@@ -109,64 +76,55 @@ const NumberStats = (): JSX.Element => {
                 <Counter
                   route="current/blade-usage"
                   label="active tasks"
-                  color="#e8423b"
+                  color={COLORS.red}
                   dataTransform={(data) => data.busy}
-                  refreshInterval={10000}
+                  fetchConfig={{ interval: 10000 }}
                 />
 
                 <Counter
                   route="current/blade-usage"
                   label="computers"
-                  color="#b0358b"
-                  dataTransform={(data) =>
-                    Object.values(data).reduce(
-                      (a: number, b: number) => a + b,
-                      0
-                    )
-                  }
+                  color={COLORS.purple}
+                  dataTransform={(usage) => sum(Object.values(usage))}
                 />
 
-                {/*<Counter
-                  route="infos/projects"
-                  dataTransform={(json: any) => json.length}
+                <Counter
+                  route="info/projects"
+                  dataTransform={(projects) => projects.length}
                   label="projects"
-                  color="rgb(21, 175, 151)"
-                /> */}
+                  color={COLORS.green}
+                />
               </div>
 
-              {/* <div className={styles.time}>
+              <div className={styles.time}>
                 <Counter
-                  route="stats/total-computetime"
-                  routeParams={[
-                    { key: "start", value: yesterday.getTime() },
-                    { key: "end", value: yesterday.getTime() },
-                  ]}
-                  dataTransform={(json: any) =>
-                    json.find((e: any) => e.project === "TOTAL").hours
-                  }
+                  route="info/compute-time"
                   label="hours"
-                  color="#009bd9"
+                  color={COLORS.blue}
+                  dataTransform={(response) => response.hours}
+                  routeParams={{
+                    start: yesterday.getTime(),
+                    end: now.getTime(),
+                  }}
                 />
 
                 <Counter
-                  route="stats/total-computetime"
-                  routeParams={[
-                    { key: "start", value: yesterday.getTime() },
-                    { key: "end", value: yesterday.getTime() },
-                  ]}
-                  dataTransform={(json: any) =>
-                    json.find((e: any) => e.project === "TOTAL").minutes
-                  }
+                  route="info/compute-time"
+                  color={COLORS.blue}
+                  fontSize={35}
+                  routeParams={{
+                    start: yesterday.getTime(),
+                    end: now.getTime(),
+                  }}
+                  dataTransform={(response) => response.minutes}
                   label={"minutes of render time in the last 24h"}
                   info={`${yesterday.getDate()} ${DateUtils.getMonthName(
                     yesterday
                   )} 00h00 - ${now.getDate()} ${DateUtils.getMonthName(
                     now
                   )} 00h00`}
-                  color="#009bd9"
-                  fontSize="35px"
                 />
-              </div> */}
+              </div>
             </div>
           </FadeIn>
         ) : (

@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import DateSelector from "components/common/DateSelector/DateSelector";
+import { useEffect, useState } from "react";
 import {
   Area,
   AreaChart,
@@ -12,7 +13,6 @@ import {
 import * as DateUtils from "utils/date-utils";
 
 import ChartContainer from "../ChartContainer/ChartContainer";
-import DateSelector from "../DateSelector/DateSelector";
 
 /**
  * A chart showing the farm usage in a more explicit way

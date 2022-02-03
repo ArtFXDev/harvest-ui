@@ -3,8 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@types/color-hash": "^1.0.2",
     "animated-number-react": "^0.1.2",
     "axios": "^0.25.0",
+    "color-hash": "^2.0.1",
     "node-sass": "7.0.1",
     "pretty-checkbox": "^3.0.3",
     "react": "^17.0.1",

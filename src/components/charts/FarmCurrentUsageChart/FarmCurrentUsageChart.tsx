@@ -1,5 +1,6 @@
-import { PROJECTS } from "global.d";
-import React, { useEffect, useState } from "react";
+import DateSelector from "components/common/DateSelector/DateSelector";
+import { useFetchData } from "hooks/fetch";
+import { useState } from "react";
 import {
   Area,
   AreaChart,
@@ -10,85 +11,73 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import { last, sum } from "utils/array";
+import { COLORS } from "utils/colors";
 import * as DateUtils from "utils/date-utils";
 
 import ChartContainer from "../ChartContainer/ChartContainer";
-import DateSelector from "../DateSelector/DateSelector";
+
+/**
+ * Convert an object of statuses to a percent value
+ *
+ * Ex: {busy: 50, free: 50} -> {total: 100, busy: 50}
+ */
+function toBusyPercent(
+  entry: { busy: number; free: number },
+  timestamp: number
+) {
+  const total = entry.busy + entry.free;
+
+  return {
+    total,
+    busyPercent: (entry.busy / total) * 100,
+    createdAt: timestamp,
+  };
+}
 
 /**
  * A chart showing the farm usage in a more explicit way
  * by not considering nimby and off computers
  */
 const FarmCurrentUsage = (): JSX.Element => {
-  const [data, setData] = useState<Array<any> | undefined>([]);
-
   // Initialize at today midnight
   const [startDate, setStartDate] = useState<Date>(
     new Date(Date.now() - 86400000)
   );
-
-  // End now
   const [endDate, setEndDate] = useState<Date>(new Date());
 
-  // Fetch data when modifying selection options
-  useEffect(() => {
-    const fetchData = async () => {
-      const baseRoute = `${process.env.REACT_APP_API_URL}/graphics/blade-status`;
-      const parameters = `start=${startDate!.getTime()}&end=${endDate!.getTime()}`;
-      const url = `${baseRoute}?${parameters}`;
+  const data = useFetchData("history/blade-usage");
+  const currentBladeUsage = useFetchData("current/blade-usage", {
+    interval: 10000,
+  });
 
-      // Get current computer repartition data
-      const lastData = await fetch(
-        process.env.REACT_APP_API_URL + "/stats/blades-status"
-      ).then((response) => response.json());
+  const formattedData =
+    data &&
+    data.map((entry) =>
+      toBusyPercent(entry, new Date(entry.createdAt).getTime())
+    );
 
-      fetch(url)
-        .then((response) => response.json())
-        .then((json) => {
-          // Add current data to dataset
-          json.push({
-            free: lastData[0].value!,
-            busy: lastData[1].value!,
-            timestamp: Date.now(),
-          });
+  // Add the current farm usage
+  if (currentBladeUsage) {
+    formattedData?.push(toBusyPercent(currentBladeUsage, new Date().getTime()));
+  }
 
-          // Only keep busy computers / busy + free so we have a better idea
-          const onlyBusy = json.map((d: any) => {
-            const total: number = Math.floor(d.busy + d.free);
-            console.log(d.busy, total);
-            return {
-              busy: (d.busy / total) * 100,
-              total: total,
-              timestamp: d.timestamp,
-            };
-          });
-
-          setData(onlyBusy);
-        })
-        .catch((error) => {
-          setData(undefined);
-        });
-    };
-
-    fetchData();
-  }, [startDate, endDate]);
-
+  const currentHour = new Date().getHours();
   const lastHoursUsage = data
-    ? Math.floor(
-        data.map((d) => d.busy).reduce((a: number, b: number) => a + b, 0) /
-          data.length
-      )
+    ? Math.floor(sum(data.map((d) => d.busy)) / data.length)
     : 0;
+
+  const lastDataItem = formattedData && last(formattedData);
+  const currentUsagePercent =
+    formattedData && lastDataItem ? Math.floor(lastDataItem.busyPercent) : "?";
 
   return (
     <ChartContainer
-      title={`Farm current usage : ${
-        data && data.length !== 0 ? Math.floor(data[data.length - 1].busy) : "?"
-      }%`}
+      title={`Farm current usage : ${currentUsagePercent}%`}
       titleParenthesis={`${lastHoursUsage}% for the last 24h`}
       height={320}
       color="white"
-      backgroundColor={PROJECTS[1].color}
+      backgroundColor={COLORS.red}
       right={
         <DateSelector
           startDate={startDate}
@@ -99,8 +88,8 @@ const FarmCurrentUsage = (): JSX.Element => {
       }
     >
       <AreaChart
-        data={data}
         className="chart"
+        data={formattedData}
         margin={{
           top: 20,
           right: 20,
@@ -112,13 +101,13 @@ const FarmCurrentUsage = (): JSX.Element => {
 
         <XAxis
           type="number"
-          dataKey="timestamp"
-          domain={["dataMin", (dataMax: number) => dataMax + 86400000]}
+          dataKey="createdAt"
           height={50}
           scale="linear"
+          domain={["dataMin", (dataMax: number) => dataMax + 86400000]}
           tickFormatter={(i: number) =>
             `${DateUtils.timestampToMMHH(i)}${
-              new Date(i).getHours() === new Date().getHours() ? " (now)" : ""
+              new Date(i).getHours() === currentHour ? " (now)" : ""
             }`
           }
         />
@@ -130,21 +119,26 @@ const FarmCurrentUsage = (): JSX.Element => {
         />
 
         <Area
-          dataKey="busy"
+          name="busy"
+          dataKey="busyPercent"
           type="monotone"
           animationDuration={1500}
-          stroke={PROJECTS[1].color}
-          fill={PROJECTS[1].color}
+          stroke={COLORS.red}
+          fill={COLORS.red}
         />
 
-        {/* Line for today */}
         <ReferenceLine x={Date.now()} stroke="rgba(255, 0, 0, 0.3)" />
 
         <Tooltip
-          formatter={(percent: number, _key: string, sample: any) => {
-            return `${Math.round((percent / 100) * sample.payload.total)} / ${
-              sample.payload.total
-            } available computers`;
+          formatter={(
+            percent: number,
+            _key: string,
+            sample: { payload: { total: number } }
+          ) => {
+            const currentBusyPercent = Math.round(
+              (percent / 100) * sample.payload.total
+            );
+            return `${currentBusyPercent} / ${sample.payload.total} computers`;
           }}
           labelFormatter={(t: number) =>
             `${DateUtils.timestampToMMDDYYYY(t)} at ${DateUtils.timestampToMMHH(

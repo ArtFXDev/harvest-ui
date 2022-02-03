@@ -1,5 +1,5 @@
 import ChartContainer from "components/charts/ChartContainer/ChartContainer";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Bar,
   BarChart,

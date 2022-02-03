@@ -2,7 +2,7 @@
 import ChartContainer from "components/charts/ChartContainer/ChartContainer";
 // Global import
 import { PROJECTS, STATES } from "global.d";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Area,
   AreaChart,
@@ -15,7 +15,7 @@ import {
 import * as DataUtils from "utils/data-utils";
 import * as DateUtils from "utils/date-utils";
 
-import DateSelector from "../DateSelector/DateSelector";
+import DateSelector from "../../common/DateSelector/DateSelector";
 
 const FarmUsageHistoryChart = (): JSX.Element => {
   const [data, setData] = useState<Array<any> | undefined>([]);

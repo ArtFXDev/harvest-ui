@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { GetRoute, GetRoutes } from "types/api";
+import { GetParams, GetResponse, GetRoutes } from "types/api";
 import { apiGet } from "utils/api";
 
-interface FetchConfig {
+export interface FetchConfig {
   /** Interval in ms to refetch data */
   interval?: number;
 }
@@ -10,13 +10,16 @@ interface FetchConfig {
 /**
  * Custom React hook to fetch data from the Harvest API
  */
-export function useFetchData(route: GetRoute, config: FetchConfig = {}) {
-  type Data = GetRoutes[typeof route];
-  const [data, setData] = useState<Data>();
+export function useFetchData<R extends keyof GetRoutes>(
+  route: R,
+  config: FetchConfig = {},
+  params: Partial<GetParams<R>> = {}
+) {
+  const [data, setData] = useState<GetResponse<R>>();
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await apiGet<Data>(route);
+      const result = await apiGet<R>(route, params);
       setData(result);
     };
 
@@ -39,6 +42,7 @@ export function useFetchData(route: GetRoute, config: FetchConfig = {}) {
     if (interval) {
       return () => clearInterval(interval as NodeJS.Timeout);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [config.interval, route]);
 
   return data;

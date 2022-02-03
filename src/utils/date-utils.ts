@@ -59,3 +59,16 @@ export const getMonthName = (date: Date): string => {
 export const dateDiffDays = (date1: Date, date2: Date): number => {
   return Math.ceil((date2.getTime() - date1.getTime()) / (1000 * 60 * 60 * 24));
 };
+
+/**
+ * Returns the date yesterday at midnight from now
+ */
+export function yesterday() {
+  const now = new Date();
+  const yesterday = new Date(now.getTime());
+
+  yesterday.setDate(now.getDate() - 1);
+  yesterday.setHours(0, 0, 0, 0);
+
+  return yesterday;
+}

@@ -1,8 +1,7 @@
-// Utility
 import ChartContainer from "components/charts/ChartContainer/ChartContainer";
-// Global import
+import DateSelector from "components/common/DateSelector/DateSelector";
 import { PROJECTS } from "global.d";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   CartesianGrid,
   Legend,
@@ -13,8 +12,6 @@ import {
   YAxis,
 } from "recharts";
 import * as DateUtils from "utils/date-utils";
-
-import DateSelector from "../DateSelector/DateSelector";
 
 const ProjectsHistoryChart = (): JSX.Element => {
   const [data, setData] = useState<Array<any> | undefined>([]);

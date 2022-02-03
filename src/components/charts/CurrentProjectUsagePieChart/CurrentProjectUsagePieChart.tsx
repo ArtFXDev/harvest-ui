@@ -9,6 +9,7 @@ import {
 } from "recharts";
 import { toNameValue } from "utils/api";
 import * as ChartUtils from "utils/chart-utils";
+import { getColorFromString } from "utils/colors";
 
 import styles from "./CurrentProjectUsagePieChart.module.scss";
 
@@ -41,7 +42,12 @@ const CurrentProjectUsagePieChart = (): JSX.Element => {
             {pieData &&
               pieData.length !== 0 &&
               pieData.map((project, i) => {
-                return <Cell key={`pcstate-${i}`} fill={"#ff6a00"} />;
+                return (
+                  <Cell
+                    key={`pcstate-${i}`}
+                    fill={getColorFromString(project.name)}
+                  />
+                );
               })}
 
             <Label
