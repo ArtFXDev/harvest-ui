@@ -39,7 +39,7 @@ function toBusyPercent(
  * A chart showing the farm usage in a more explicit way
  * by not considering nimby and off computers
  */
-const FarmCurrentUsage = (): JSX.Element => {
+const FarmBusyUsageHistoryChart = (): JSX.Element => {
   // Initialize at today midnight
   const [startDate, setStartDate] = useState<Date>(
     new Date(Date.now() - 86400000)
@@ -157,4 +157,4 @@ const FarmCurrentUsage = (): JSX.Element => {
   );
 };
 
-export default FarmCurrentUsage;
+export default FarmBusyUsageHistoryChart;

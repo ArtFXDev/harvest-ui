@@ -1,6 +1,7 @@
 import ChartContainer from "components/charts/ChartContainer/ChartContainer";
-import { PROJECTS, STATES } from "global.d";
-import { useEffect, useState } from "react";
+import DateSelector from "components/common/DateSelector/DateSelector";
+import { useFetchData } from "hooks/fetch";
+import { useState } from "react";
 import {
   Area,
   AreaChart,
@@ -12,10 +13,12 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import * as DataUtils from "utils/data";
+import { BLADE_STATUSES } from "types/api";
+import { BLADE_STATUS_COLOR } from "utils/colors";
+import { normalizeToPercentWithTotal } from "utils/data";
+import { yesterday } from "utils/date";
 
-import DateSelector from "../../common/DateSelector/DateSelector";
-import styles from "./FarmUsageChart.module.scss";
+import styles from "./SplittedBladeUsageCharts.module.scss";
 
 interface UsageProps {
   data: any;
@@ -77,7 +80,7 @@ const AreaChartUsage = (props: UsageProps): JSX.Element => {
 
         <XAxis
           type="number"
-          dataKey="time"
+          dataKey="createdAt"
           domain={[0, props.maxValue - 1]}
           height={50}
           tickCount={props.maxValue}
@@ -104,12 +107,12 @@ const AreaChartUsage = (props: UsageProps): JSX.Element => {
         />
 
         <Tooltip
+          labelFormatter={getDataText}
           formatter={(percent: number, _key: string, sample: any) => {
             return `${Math.round(
               (percent / 100) * sample.payload.total
             )} computers`;
           }}
-          labelFormatter={getDataText}
         />
 
         <Legend />
@@ -121,43 +124,56 @@ const AreaChartUsage = (props: UsageProps): JSX.Element => {
 /**
  * Average values of the usage of the farm over a day
  */
-const FarmUsageChart = (): JSX.Element => {
-  const [data, setData] = useState<Array<any> | undefined>([]);
-
-  const [startDate, setStartDate] = useState<Date>(new Date(2021, 2, 24));
+const SplittedBladeUsageCharts = (): JSX.Element => {
+  const [startDate, setStartDate] = useState<Date>(yesterday());
+  const [endDate, setEndDate] = useState<Date>(new Date());
   const [period, setPeriod] = useState<string>("hours");
   const [includeWE, setIncludeWE] = useState<boolean>(true);
 
-  const [endDate, setEndDate] = useState<Date>(new Date());
+  const data = useFetchData(
+    "history/blade-usage",
+    {}
+    // { start: startDate.getDate(), end: endDate.getDate() }
+  );
 
-  const fetchData = async () => {
-    const baseRoute = `${process.env.REACT_APP_API_URL}/stats/farm-history/${period}`;
-    const parameters = `start=${startDate!.getTime()}&end=${endDate!.getTime()}&${
-      !includeWE ? "ignore-we=1" : ""
-    }`;
-    const url = `${baseRoute}?${parameters}`;
+  const formattedData =
+    data &&
+    data.map((entry) => {
+      const { busy, free, nimby, off } = entry;
+      const toPercent = normalizeToPercentWithTotal({ busy, free, nimby, off });
+      return { ...toPercent, createdAt: new Date(entry.createdAt).getTime() };
+    });
 
-    fetch(url)
-      .then((response) => {
-        return response.json();
-      })
-      .then((json) => {
-        setData(
-          DataUtils.normalizeDataToPercent(
-            DataUtils.sortByKey(json, "time"),
-            STATES
-          )
-        );
-      })
-      .catch((error) => {
-        setData(undefined);
-      });
-  };
+  console.log(formattedData);
 
-  // Fetch data when modifying selection options
-  useEffect(() => {
-    fetchData();
-  }, [startDate, endDate, period, includeWE]);
+  // const fetchData = async () => {
+  //   const baseRoute = `${process.env.REACT_APP_API_URL}/stats/farm-history/${period}`;
+  //   const parameters = `start=${startDate!.getTime()}&end=${endDate!.getTime()}&${
+  //     !includeWE ? "ignore-we=1" : ""
+  //   }`;
+  //   const url = `${baseRoute}?${parameters}`;
+
+  //   fetch(url)
+  //     .then((response) => {
+  //       return response.json();
+  //     })
+  //     .then((json) => {
+  //       setData(
+  //         DataUtils.normalizeDataToPercent(
+  //           DataUtils.sortByKey(json, "time"),
+  //           STATES
+  //         )
+  //       );
+  //     })
+  //     .catch((error) => {
+  //       setData(undefined);
+  //     });
+  // };
+
+  // // Fetch data when modifying selection options
+  // useEffect(() => {
+  //   fetchData();
+  // }, [startDate, endDate, period, includeWE]);
 
   return (
     <ChartContainer
@@ -178,15 +194,15 @@ const FarmUsageChart = (): JSX.Element => {
     >
       {/* Display four charts */}
       <div className={styles.chartGrid}>
-        {data &&
-          data.length !== 0 &&
-          STATES.map((dataKey: string, i: number) => {
+        {formattedData &&
+          formattedData.length !== 0 &&
+          BLADE_STATUSES.map((status, i) => {
             return (
               <div className={styles.chartUsage} key={`farm-usage-${i}`}>
                 <AreaChartUsage
-                  data={data}
-                  dataKey={dataKey}
-                  fillColor={PROJECTS[i].color}
+                  data={formattedData}
+                  dataKey={status}
+                  fillColor={BLADE_STATUS_COLOR[status]}
                   maxValue={period === "hours" ? 24 : 7}
                 />
               </div>
@@ -197,4 +213,4 @@ const FarmUsageChart = (): JSX.Element => {
   );
 };
 
-export default FarmUsageChart;
+export default SplittedBladeUsageCharts;

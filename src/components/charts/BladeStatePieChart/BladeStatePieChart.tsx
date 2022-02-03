@@ -1,4 +1,3 @@
-import { PROJECTS } from "global.d";
 import { useFetchData } from "hooks/fetch";
 import {
   Cell,
@@ -10,6 +9,7 @@ import {
 } from "recharts";
 import { toNameValue } from "utils/api";
 import * as ChartUtils from "utils/chart";
+import { BLADE_STATUS_COLOR } from "utils/colors";
 
 import styles from "./BladeStatePieChart.module.scss";
 
@@ -38,11 +38,11 @@ const CurrentBladeUsagePieChart = (): JSX.Element => {
             }
           >
             {pieData &&
-              pieData.map((el, i) => (
+              pieData.map((sample, i) => (
                 <Cell
                   key={`pcstate-${i}`}
-                  fill={PROJECTS[i].color}
-                  color={PROJECTS[i].color}
+                  fill={BLADE_STATUS_COLOR[sample.name]}
+                  color={BLADE_STATUS_COLOR[sample.name]}
                 />
               ))}
 

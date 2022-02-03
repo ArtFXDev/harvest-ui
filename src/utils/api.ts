@@ -35,12 +35,19 @@ export async function apiGet<R extends keyof GetRoutes>(
  *
  * Ex: {nimby: 0, off: 50} -> [{name: "nimby", value: 0}, {name: "off", value: 50}]
  */
-export function toNameValue<T>(
-  object: { [K in keyof T]: T[K] } | undefined
-): { name: string; value: T }[] | undefined {
+export function toNameValue<T extends object, K extends keyof T & string>(
+  object: T | undefined
+): { name: K; value: T[keyof T] }[] | undefined {
   if (!object) return undefined;
-  return Object.entries(object).map(([key, value]) => ({
-    name: key,
-    value: value as T,
-  }));
+
+  const result = [];
+
+  for (const key in object) {
+    result.push({
+      name: key as unknown as K,
+      value: object[key],
+    });
+  }
+
+  return result;
 }

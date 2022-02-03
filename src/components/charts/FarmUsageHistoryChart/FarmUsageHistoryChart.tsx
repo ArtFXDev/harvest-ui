@@ -1,8 +1,9 @@
 // Utility
 import ChartContainer from "components/charts/ChartContainer/ChartContainer";
+import DateSelector from "components/common/DateSelector/DateSelector";
 // Global import
-import { PROJECTS, STATES } from "global.d";
-import { useEffect, useState } from "react";
+import { PROJECTS } from "global.d";
+import { useState } from "react";
 import {
   CartesianGrid,
   Legend,
@@ -12,10 +13,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import * as DataUtils from "utils/data";
 import * as DateUtils from "utils/date";
-
-import DateSelector from "../../common/DateSelector/DateSelector";
 
 const FarmUsageHistoryChart = (): JSX.Element => {
   const [data, setData] = useState<Array<any> | undefined>([]);
@@ -25,35 +23,35 @@ const FarmUsageHistoryChart = (): JSX.Element => {
   );
   const [endDate, setEndDate] = useState<Date>(new Date());
 
-  /**
-   * Get data from api
-   */
-  const fetchData = async () => {
-    const baseRoute = `${process.env.REACT_APP_API_URL}/graphics/blade-status`;
-    const parameters = `start=${startDate!.getTime()}&end=${endDate!.getTime()}`;
-    const url = `${baseRoute}?${parameters}`;
+  // /**
+  //  * Get data from api
+  //  */
+  // const fetchData = async () => {
+  //   const baseRoute = `${process.env.REACT_APP_API_URL}/graphics/blade-status`;
+  //   const parameters = `start=${startDate!.getTime()}&end=${endDate!.getTime()}`;
+  //   const url = `${baseRoute}?${parameters}`;
 
-    fetch(url)
-      .then((response) => {
-        return response.json();
-      })
-      .then((json) => {
-        setData(
-          DataUtils.normalizeDataToPercent(
-            json.filter((d: any) => d.timestamp > +new Date(2021, 2, 26)),
-            STATES
-          )
-        );
-      })
-      .catch((error) => {
-        setData(undefined);
-      });
-  };
+  //   fetch(url)
+  //     .then((response) => {
+  //       return response.json();
+  //     })
+  //     .then((json) => {
+  //       setData(
+  //         DataUtils.normalizeDataToPercent(
+  //           json.filter((d: any) => d.timestamp > +new Date(2021, 2, 26)),
+  //           STATES
+  //         )
+  //       );
+  //     })
+  //     .catch((error) => {
+  //       setData(undefined);
+  //     });
+  // };
 
-  // Fetch data when changing date selection
-  useEffect(() => {
-    fetchData();
-  }, [startDate, endDate]);
+  // // Fetch data when changing date selection
+  // useEffect(() => {
+  //   fetchData();
+  // }, [startDate, endDate, fetchData]);
 
   return (
     <ChartContainer

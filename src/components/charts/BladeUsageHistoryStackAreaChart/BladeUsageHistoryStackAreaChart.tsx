@@ -1,8 +1,7 @@
-// Utility
 import ChartContainer from "components/charts/ChartContainer/ChartContainer";
-// Global import
-import { PROJECTS, STATES } from "global.d";
-import { useEffect, useState } from "react";
+import DateSelector from "components/common/DateSelector/DateSelector";
+import { useFetchData } from "hooks/fetch";
+import { useState } from "react";
 import {
   Area,
   AreaChart,
@@ -12,52 +11,37 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import * as DataUtils from "utils/data";
+import { BLADE_STATUSES } from "types/api";
+import { BLADE_STATUS_COLOR } from "utils/colors";
+import { normalizeToPercentWithTotal } from "utils/data";
 import * as DateUtils from "utils/date";
 
-import DateSelector from "../../common/DateSelector/DateSelector";
-
-const FarmUsageHistoryChart = (): JSX.Element => {
-  const [data, setData] = useState<Array<any> | undefined>([]);
-
+/**
+ * Stacked areas of the history of blade statuses
+ */
+const BladeUsageHistoryStackAreaChart = (): JSX.Element => {
   const [startDate, setStartDate] = useState<Date>(
     new Date(Date.now() - 604800000 / 2.0)
   );
   const [endDate, setEndDate] = useState<Date>(new Date());
 
-  /**
-   * Get data from api
-   */
-  const fetchData = async () => {
-    const baseRoute = `${process.env.REACT_APP_API_URL}/graphics/blade-status`;
-    const parameters = `start=${startDate!.getTime()}&end=${endDate!.getTime()}`;
-    const url = `${baseRoute}?${parameters}`;
+  const data = useFetchData(
+    "history/blade-usage",
+    {},
+    { start: startDate.getTime(), end: endDate.getTime() }
+  );
 
-    fetch(url)
-      .then((response) => {
-        return response.json();
-      })
-      .then((json) => {
-        setData(
-          DataUtils.normalizeDataToPercent(
-            DataUtils.sortByKey(json, "time"),
-            STATES
-          )
-        );
-      })
-      .catch((error) => {
-        setData(undefined);
-      });
-  };
-
-  // Fetch data when changing date selection
-  useEffect(() => {
-    fetchData();
-  }, [startDate, endDate]);
+  const formattedData =
+    data &&
+    data.map((entry) => {
+      const { busy, free, nimby, off } = entry;
+      const toPercent = normalizeToPercentWithTotal({ busy, free, nimby, off });
+      return { ...toPercent, createdAt: new Date(entry.createdAt).getTime() };
+    });
 
   return (
     <ChartContainer
-      title="Farm usage history"
+      title="Blade usage history"
       right={
         <DateSelector
           startDate={startDate}
@@ -70,7 +54,7 @@ const FarmUsageHistoryChart = (): JSX.Element => {
       <AreaChart
         width={800}
         height={500}
-        data={data}
+        data={formattedData}
         className="chart"
         margin={{
           top: 20,
@@ -83,7 +67,7 @@ const FarmUsageHistoryChart = (): JSX.Element => {
 
         <XAxis
           type="number"
-          dataKey="timestamp"
+          dataKey="createdAt"
           domain={["dataMin", "dataMax"]}
           tickFormatter={DateUtils.timestampToMMDDYYYY}
           height={50}
@@ -102,24 +86,27 @@ const FarmUsageHistoryChart = (): JSX.Element => {
 
         {data &&
           data.length !== 0 &&
-          ["off", "nimby", "free", "busy"].map((e, i) => {
-            const stateIndex = STATES.indexOf(e);
+          BLADE_STATUSES.map((status, i) => {
             return (
               <Area
                 type="monotone"
-                dataKey={e}
+                dataKey={status}
                 stackId="1"
                 key={`blade-history-${i}`}
                 strokeWidth={3}
-                stroke={PROJECTS[stateIndex].color}
-                fill={PROJECTS[stateIndex].color}
+                stroke={BLADE_STATUS_COLOR[status]}
+                fill={BLADE_STATUS_COLOR[status]}
                 dot={false}
               />
             );
           })}
 
         <Tooltip
-          formatter={(percent: number, _key: string, sample: any) => {
+          formatter={(
+            percent: number,
+            _key: string,
+            sample: { payload: { total: number } }
+          ) => {
             return `${Math.round(
               (percent / 100) * sample.payload.total
             )} computers`;
@@ -137,4 +124,4 @@ const FarmUsageHistoryChart = (): JSX.Element => {
   );
 };
 
-export default FarmUsageHistoryChart;
+export default BladeUsageHistoryStackAreaChart;

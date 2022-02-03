@@ -1,6 +1,7 @@
 import CurrentBladeUsagePieChart from "components/charts/BladeStatePieChart/BladeStatePieChart";
+import BladeUsageHistoryStackAreaChart from "components/charts/BladeUsageHistoryStackAreaChart/BladeUsageHistoryStackAreaChart";
 import CurrentProjectUsagePieChart from "components/charts/CurrentProjectUsagePieChart/CurrentProjectUsagePieChart";
-import FarmCurrentUsageChart from "components/charts/FarmCurrentUsageChart/FarmCurrentUsageChart";
+import FarmCurrentUsageChart from "components/charts/FarmBusyUsageHistoryChart/FarmBusyUsageHistoryChart";
 import NumberStats from "components/NumberStats/NumberStats";
 import FadeIn from "react-fade-in";
 
@@ -21,17 +22,17 @@ const HomePage = (): JSX.Element => (
 
     <FarmCurrentUsageChart />
 
-    {/*<hr />
+    {/* <hr />
 
-    <FarmTotalComputeTime />
-
-    <hr />
-
-    <FarmUsageStackAreaChart />
+     <FarmTotalComputeTime /> */}
 
     <hr />
 
-    <FarmUsageChart />*/}
+    <BladeUsageHistoryStackAreaChart />
+
+    <hr />
+
+    {/* <SplittedBladeUsageCharts /> */}
   </>
 );
 

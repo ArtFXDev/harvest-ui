@@ -1,11 +1,7 @@
 export type URLParams = { [param: string]: string | number };
 
-export interface BladeStatuses {
-  busy: number;
-  off: number;
-  nimby: number;
-  free: number;
-}
+export const BLADE_STATUSES = ["off", "nimby", "free", "busy"] as const;
+export type BladeStatuses = { [K in typeof BLADE_STATUSES[number]]: number };
 
 export interface GetRoutes {
   "current/blade-usage": {

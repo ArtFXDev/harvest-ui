@@ -89,8 +89,6 @@ export const PROJECTS: Array<Project> = [
   }*/
 ];
 
-export const STATES: Array<string> = ["free", "busy", "nimby", "off"];
-
 // Return the total number of frames of all projects
 export const getTotalFrames = (): number => {
   return PROJECTS.map((project: Project) => project.totalFrames).reduce(
