@@ -9,8 +9,28 @@ html {
   font-family: $main-font;
 }
 
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #323131;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #545353; /* color of the scroll thumb */
+  border-radius: 4px; /* roundness of the scroll thumb */
+  border: 2px solid #323131; /* creates padding around scroll thumb */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #666565;
+}
+
 hr {
-  color: rgba(0.1, 0.1, 0.1, 0.1);
+  color: rgba(98, 98, 98, 0.315);
+  border-color: rgba(98, 98, 98, 0.315);
   width: 50%;
   margin: 50px auto;
 }
