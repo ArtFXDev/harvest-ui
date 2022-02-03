@@ -53,7 +53,7 @@ const CurrentBladeUsagePieChart = (): JSX.Element => {
             />
           </Pie>
 
-          <Tooltip content={ChartUtils.renderPieChartTooltipContent} />
+          <Tooltip content={ChartUtils.coloredTooltip} />
         </PieChart>
       </ResponsiveContainer>
     </div>
