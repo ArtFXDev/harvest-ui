@@ -18,8 +18,6 @@ or using HTTPS :
 git clone https://github.com/ArtFXDev/harvest-ui.git && cd harvest-ui
 ```
 
-
-
 Install npm dependencies with :
 
 ```bash
@@ -28,16 +26,17 @@ npm install
 
 **-> If it doesn't work, try with the `--legacy-peer-deps` option.**
 
-To update the dependencies, use : 
+To update the dependencies, use :
 
 ```
-npm update 
+npm update
 ```
+
 (Same rule as above if it doesn't work)
 
 ## Usage
 
-To start the development server : 
+To start the development server :
 
 ```bash
 npm run start
@@ -50,9 +49,11 @@ npm run build
 ```
 
 ## Contributing
+
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
 Please make sure to update tests as appropriate.
 
 ## License
+
 [MIT](https://choosealicense.com/licenses/mit/)

@@ -19,9 +19,7 @@
       "jsx": true
     },
     "ecmaVersion": "latest",
-    "project": [
-      "./tsconfig.json"
-    ],
+    "project": ["./tsconfig.json"],
     "sourceType": "module"
   },
   "plugins": [
@@ -49,19 +47,13 @@
     "no-restricted-imports": [
       "error",
       {
-        "patterns": [
-          "@mui/*/*/*",
-          "!@mui/material/test-utils/*"
-        ]
+        "patterns": ["@mui/*/*/*", "!@mui/material/test-utils/*"]
       }
     ],
     "simple-import-sort/imports": "error",
     "simple-import-sort/exports": "error",
     "no-console": "warn",
-    "eqeqeq": [
-      "error",
-      "smart"
-    ],
+    "eqeqeq": ["error", "smart"],
     "no-var": "error",
     "camelcase": "warn"
   }
