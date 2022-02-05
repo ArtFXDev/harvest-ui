@@ -10,6 +10,7 @@ import {
 import { toNameValue } from "utils/api";
 import * as ChartUtils from "utils/chart";
 import { getColorFromString } from "utils/colors";
+import { shortenName } from "utils/string";
 
 import styles from "./CurrentProjectUsagePieChart.module.scss";
 
@@ -32,7 +33,9 @@ const CurrentProjectUsagePieChart = (): JSX.Element => {
             labelLine={false}
             label={({ percent, index }) =>
               pieData
-                ? `${pieData[index].name}: ${Math.round(percent * 100)}%`
+                ? `${shortenName(pieData[index].name)}: ${Math.round(
+                    percent * 100
+                  )}%`
                 : ""
             }
             animationDuration={800}
