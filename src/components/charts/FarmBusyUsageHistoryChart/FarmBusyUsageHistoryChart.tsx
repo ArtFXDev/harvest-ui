@@ -46,11 +46,14 @@ const FarmBusyUsageHistoryChart = (): JSX.Element => {
   );
   const [endDate, setEndDate] = useState<Date>(new Date());
 
+  // Fetch the whole history
   const data = useFetchData(
     "history/blade-usage",
     {},
     { start: startDate.getTime(), end: endDate.getTime() }
   );
+
+  // Also fetch the current usage to add a data point
   const currentBladeUsage = useFetchData("current/blade-usage", {
     interval: 10000,
   });
@@ -67,8 +70,8 @@ const FarmBusyUsageHistoryChart = (): JSX.Element => {
   }
 
   const currentHour = new Date().getHours();
-  const lastHoursUsage = data
-    ? Math.floor(sum(data.map((d) => d.busy)) / data.length)
+  const lastHoursUsage = formattedData
+    ? Math.floor(sum(formattedData.map((d) => d.busyPercent)) / data.length)
     : 0;
 
   const lastDataItem = formattedData && last(formattedData);
