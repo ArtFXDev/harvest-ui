@@ -1,19 +1,9 @@
 import { sum } from "./array";
 
 /**
- * Normalize data to percentage relative to the sum of all the keys
+ * Normalize values of an object to percentage
+ * Ex: {a: 50, b: 10} -> {a: 83.3, b: 16.6, total: 60}
  */
-export const normalizeDataToPercent = (
-  data: Array<any>,
-  keys: Array<string>
-): Array<any> =>
-  data.map((d: any) => {
-    const total = keys.map((state) => d[state]).reduce((e, acc) => acc + e, 0);
-    keys.forEach((state) => (d[state] = (d[state] / total) * 100));
-    d.total = total;
-    return d;
-  });
-
 export function normalizeToPercentWithTotal<
   T extends Record<string, number>,
   K extends keyof T
@@ -27,6 +17,3 @@ export function normalizeToPercentWithTotal<
 
   return { ...copy, total };
 }
-
-export const sortByKey = (data: [], key: string): [] =>
-  data.sort((a, b) => (a[key] > b[key] ? 1 : -1));

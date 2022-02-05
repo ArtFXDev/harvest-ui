@@ -1,7 +1,4 @@
 /**
- * Date utility functions (formatting)
- */
-/**
  * Convert a date object to MM/DD/YYYY string
  */
 export const dateToMMDDYYYY = (date: Date): string =>
