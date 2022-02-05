@@ -5,7 +5,7 @@ import styles from "./Header.module.scss";
 
 const Header = (): JSX.Element => (
   <header className={styles.header}>
-    <h1>Harvest 👨‍🌾🌾</h1>
+    <h1>Harvest {Math.random() > 0.5 ? "👨‍🌾" : "👩‍🌾"}🌾</h1>
     <img src={artfxLogo} alt="ArtFX Logo" className={styles.artfxLogo} />
     <Navigation />
   </header>
