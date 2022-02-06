@@ -15,7 +15,7 @@ export const coloredTooltip: ContentType<number, string> = (o) => {
       style={{ color: element.payload.fill }}
     >
       {element.name?.replaceAll("_", " ")} : {element.value} computer
-      {element.value && parseInt(element.name || "0") > 1 ? "s" : ""}
+      {element.value && element.value > 1 ? "s" : ""}
     </div>
   );
 };
