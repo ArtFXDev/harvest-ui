@@ -30,7 +30,7 @@ function toBusyPercent(
 
   return {
     total,
-    busyPercent: (entry.busy / total) * 100,
+    busyPercent: (entry.busy / (total > 0 ? total : 1)) * 100,
     createdAt: timestamp,
   };
 }
@@ -70,13 +70,16 @@ const FarmBusyUsageHistoryChart = (): JSX.Element => {
   }
 
   const currentHour = new Date().getHours();
-  const lastHoursUsage = formattedData
-    ? Math.floor(sum(formattedData.map((d) => d.busyPercent)) / data.length)
-    : 0;
 
   const lastDataItem = formattedData && last(formattedData);
   const currentUsagePercent =
     formattedData && lastDataItem ? Math.floor(lastDataItem.busyPercent) : "?";
+
+  const lastHoursUsage = formattedData
+    ? Math.floor(
+        sum(formattedData.map((d) => d.busyPercent)) / formattedData.length
+      )
+    : 0;
 
   return (
     <ChartContainer
