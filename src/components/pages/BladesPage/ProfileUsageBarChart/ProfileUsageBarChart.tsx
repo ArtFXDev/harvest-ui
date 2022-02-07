@@ -53,7 +53,7 @@ function bladesIntoProfile(blades: Blade[]) {
       nimby: (p.nimby / p.total) * 100,
       off: (p.off / p.total) * 100,
     }))
-    .sort((a, b) => b.busy - a.busy);
+    .sort((a, b) => b.total - a.total);
 }
 
 const ProfileUsageBarChart = (): JSX.Element => {
