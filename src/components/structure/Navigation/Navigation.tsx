@@ -2,7 +2,10 @@ import { NavLink } from "react-router-dom";
 
 import styles from "./Navigation.module.scss";
 
-const links: { route: string; text: string }[] = [{ route: "/", text: "Farm" }];
+const links: { route: string; text: string }[] = [
+  { route: "/", text: "Farm" },
+  { route: "/blades", text: "Blades" },
+];
 
 /**
  * Navbar component

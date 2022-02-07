@@ -9,10 +9,9 @@ import styles from "./App.module.scss";
 
 // Import pages (use lazy loading)
 const HomePage = React.lazy(() => import("components/pages/HomePage/HomePage"));
-
-/*const ProjectsPage = React.lazy(
-  () => import("components/pages/ProjectsPage/ProjectsPage")
-);*/
+const BladesPage = React.lazy(
+  () => import("components/pages/BladesPage/BladesPage")
+);
 
 /**
  * Main application component, contains the router, the routes and the pages
@@ -25,11 +24,8 @@ const App = (): JSX.Element => (
       <main className={styles.pageContent}>
         <Suspense fallback={<Loader />}>
           <Routes>
-            {/* Home page */}
             <Route path="/" element={<HomePage />} />
-
-            {/* Projects page */}
-            {/*<Route path="/projects" element={<ProjectsPage />} />*/}
+            <Route path="/blades" element={<BladesPage />} />
           </Routes>
         </Suspense>
       </main>

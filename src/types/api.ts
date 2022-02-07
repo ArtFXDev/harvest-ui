@@ -1,3 +1,5 @@
+import { Blade } from "./tractor";
+
 export type URLParams = { [param: string]: string | number };
 
 export const BLADE_STATUSES = ["off", "nimby", "free", "busy"] as const;
@@ -17,6 +19,7 @@ export interface GetRoutes {
     response: { hours: number; minutes: number };
     params: { start: number; end: number };
   };
+  "info/blades": { response: { blades: Blade[] }; params: undefined };
   "history/blade-usage": {
     response: (BladeStatuses & {
       createdAt: string;
