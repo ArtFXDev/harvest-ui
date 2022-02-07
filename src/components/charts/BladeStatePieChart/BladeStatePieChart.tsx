@@ -11,8 +11,6 @@ import { toNameValue } from "utils/api";
 import * as ChartUtils from "utils/chart";
 import { BLADE_STATUS_COLOR } from "utils/colors";
 
-import styles from "./BladeStatePieChart.module.scss";
-
 /**
  * Distribution of free/nimby/busy/off computers currently on the farm
  */
@@ -49,7 +47,7 @@ const CurrentBladeUsagePieChart = (): JSX.Element => {
             <Label
               value="Computer state"
               position="center"
-              className={styles.centeredLabel}
+              className="centeredLabel"
             />
           </Pie>
 
