@@ -28,4 +28,5 @@ export const BLADE_STATUS_COLOR: { [key in keyof BladeStatuses]: string } = {
   free: COLORS.green,
   nimby: COLORS.blue,
   off: COLORS.purple,
+  noFreeSlots: "#654e8d",
 };
