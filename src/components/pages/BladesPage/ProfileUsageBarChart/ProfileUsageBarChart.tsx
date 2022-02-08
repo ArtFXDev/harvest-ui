@@ -8,6 +8,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import { BLADE_STATUSES, BladeStatuses } from "types/api";
 import { Blade } from "types/tractor";
 import { BLADE_STATUS_COLOR } from "utils/colors";
 import { getBladeStatus } from "utils/tractor";
@@ -22,6 +23,7 @@ function bladesIntoProfile(blades: Blade[]) {
       free: number;
       nimby: number;
       off: number;
+      noFreeSlots: number;
       total: number;
     };
   } = {};
@@ -37,6 +39,7 @@ function bladesIntoProfile(blades: Blade[]) {
         free: 0,
         nimby: 0,
         off: 0,
+        noFreeSlots: 0,
       };
     }
 
@@ -52,8 +55,9 @@ function bladesIntoProfile(blades: Blade[]) {
       free: (p.free / p.total) * 100,
       nimby: (p.nimby / p.total) * 100,
       off: (p.off / p.total) * 100,
+      noFreeSlots: (p.noFreeSlots / p.total) * 100,
     }))
-    .sort((a, b) => b.busy - a.busy);
+    .sort((a, b) => b.total - a.total);
 }
 
 const ProfileUsageBarChart = (): JSX.Element => {
@@ -97,10 +101,16 @@ const ProfileUsageBarChart = (): JSX.Element => {
         />
         <Legend />
 
-        <Bar dataKey="busy" stackId="a" fill={BLADE_STATUS_COLOR.busy} />
-        <Bar dataKey="free" stackId="a" fill={BLADE_STATUS_COLOR.free} />
-        <Bar dataKey="nimby" stackId="a" fill={BLADE_STATUS_COLOR.nimby} />
-        <Bar dataKey="off" stackId="a" fill={BLADE_STATUS_COLOR.off} />
+        {BLADE_STATUSES.map((status) => {
+          return (
+            <Bar
+              key={status}
+              dataKey={status}
+              stackId="a"
+              fill={BLADE_STATUS_COLOR[status as keyof BladeStatuses]}
+            />
+          );
+        })}
       </BarChart>
     </ChartContainer>
   );

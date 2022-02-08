@@ -2,7 +2,13 @@ import { Blade } from "./tractor";
 
 export type URLParams = { [param: string]: string | number };
 
-export const BLADE_STATUSES = ["off", "nimby", "free", "busy"] as const;
+export const BLADE_STATUSES = [
+  "busy",
+  "free",
+  "nimby",
+  "off",
+  "noFreeSlots",
+] as const;
 export type BladeStatuses = { [K in typeof BLADE_STATUSES[number]]: number };
 
 export interface GetRoutes {
