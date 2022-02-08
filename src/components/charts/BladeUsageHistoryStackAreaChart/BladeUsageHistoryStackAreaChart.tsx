@@ -40,7 +40,7 @@ const BladeUsageHistoryStackAreaChart = (): JSX.Element => {
         free,
         nimby,
         off,
-        noFreeSlots: noFreeSlots || 0,
+        noFreeSlots,
       });
       return { ...toPercent, createdAt: new Date(entry.createdAt).getTime() };
     });
@@ -92,20 +92,22 @@ const BladeUsageHistoryStackAreaChart = (): JSX.Element => {
 
         {data &&
           data.length !== 0 &&
-          BLADE_STATUSES.map((status, i) => {
-            return (
-              <Area
-                type="monotone"
-                dataKey={status}
-                stackId="1"
-                key={`blade-history-${i}`}
-                strokeWidth={3}
-                stroke={BLADE_STATUS_COLOR[status]}
-                fill={BLADE_STATUS_COLOR[status]}
-                dot={false}
-              />
-            );
-          })}
+          BLADE_STATUSES.slice()
+            .reverse()
+            .map((status, i) => {
+              return (
+                <Area
+                  type="monotone"
+                  dataKey={status}
+                  stackId="1"
+                  key={`blade-history-${i}`}
+                  strokeWidth={3}
+                  stroke={BLADE_STATUS_COLOR[status]}
+                  fill={BLADE_STATUS_COLOR[status]}
+                  dot={false}
+                />
+              );
+            })}
 
         <Tooltip
           formatter={(

@@ -6,8 +6,8 @@ export const BLADE_STATUSES = [
   "busy",
   "free",
   "nimby",
-  "off",
   "noFreeSlots",
+  "off",
 ] as const;
 export type BladeStatuses = { [K in typeof BLADE_STATUSES[number]]: number };
 
