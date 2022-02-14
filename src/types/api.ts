@@ -1,3 +1,4 @@
+import { Group, GroupID } from "./fog";
 import { Blade } from "./tractor";
 
 export type URLParams = { [param: string]: string | number };
@@ -9,7 +10,8 @@ export const BLADE_STATUSES = [
   "noFreeSlots",
   "off",
 ] as const;
-export type BladeStatuses = { [K in typeof BLADE_STATUSES[number]]: number };
+export type BladeStatus = typeof BLADE_STATUSES[number];
+export type BladeStatuses = { [K in BladeStatus]: number };
 
 export interface GetRoutes {
   "current/blade-usage": {
@@ -31,6 +33,10 @@ export interface GetRoutes {
       createdAt: string;
     })[];
     params: { start: number; end: number };
+  };
+  "fog/groups": {
+    response: { [groupID: GroupID]: Group };
+    params: undefined;
   };
 }
 

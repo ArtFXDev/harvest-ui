@@ -62,7 +62,7 @@ function bladesIntoProfile(blades: Blade[]) {
 
 const ProfileUsageBarChart = (): JSX.Element => {
   const { blades } = useBladesQuery();
-  const profiles = blades && bladesIntoProfile(blades);
+  const profiles = blades && bladesIntoProfile(Object.values(blades));
 
   if (!profiles) return <p>Loading...</p>;
 

@@ -36,7 +36,7 @@ const BladeStatsPieChart = <K extends keyof Blade>({
   sortKey,
 }: BladeStatsPieChartProps<K>): JSX.Element => {
   const { blades } = useBladesQuery();
-  const samples = blades && countByKey(blades, sortKey);
+  const samples = blades && countByKey(Object.values(blades), sortKey);
 
   return (
     <PieChart width={500} height={300} className="chart">

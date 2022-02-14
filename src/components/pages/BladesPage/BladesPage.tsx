@@ -1,7 +1,5 @@
-import FadeIn from "react-fade-in";
-
-import BladesGrid from "./BladesGrid/BladesGrid";
 import styles from "./BladesPage.module.scss";
+import BladesPerGroup from "./BladesPerGroup/BladesPerGroup";
 import { ProvideBladesQuery } from "./BladesQueryContext";
 import BladeStatsPieChart from "./BladeStatsPieChart/BladeStatsPieChart";
 import ProfileUsageBarChart from "./ProfileUsageBarChart/ProfileUsageBarChart";
@@ -9,6 +7,14 @@ import ProfileUsageBarChart from "./ProfileUsageBarChart/ProfileUsageBarChart";
 const BladesPage = (): JSX.Element => (
   <ProvideBladesQuery>
     <>
+      <div className={styles.bladesSection}>
+        <div className={styles.center}>
+          <BladesPerGroup />
+        </div>
+      </div>
+
+      <hr />
+
       <div style={{ display: "flex", alignItems: "center" }}>
         <BladeStatsPieChart label="CPU cores" sortKey="ncpu" labelAdd="cores" />
         <BladeStatsPieChart
@@ -20,14 +26,6 @@ const BladesPage = (): JSX.Element => (
           }}
         />
       </div>
-
-      <hr />
-
-      <FadeIn transitionDuration={1500}>
-        <div className={styles.bladesGrid}>
-          <BladesGrid />
-        </div>
-      </FadeIn>
 
       <hr />
 

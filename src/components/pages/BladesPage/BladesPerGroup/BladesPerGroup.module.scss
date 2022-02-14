@@ -1,0 +1,15 @@
+.statusButton {
+  display: inline-block;
+  padding: 5px 8px;
+  font-size: 0.9em;
+  border-radius: 9999px;
+  cursor: pointer;
+  border: 1px solid white;
+
+  transition: all 0.15s ease;
+  margin: 0px 3px;
+
+  &:hover {
+    filter: brightness(1.2);
+  }
+}
