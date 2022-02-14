@@ -11,6 +11,8 @@ import styles from "./BladesPerGroup.module.scss";
 
 const BladesPerGroup = (): JSX.Element => {
   const [statusFilter, setStatusFilter] = useState<BladeStatus>();
+  const [unknownBlades, setUnknownBlades] = useState<boolean>(false);
+
   const { blades } = useBladesQuery();
   const groups = useFetchData("fog/groups");
 
@@ -29,6 +31,21 @@ const BladesPerGroup = (): JSX.Element => {
           marginBottom: "10px",
         }}
       >
+        <div
+          className={styles.statusButton}
+          style={{
+            backgroundColor: unknownBlades ? "rgb(85, 85, 85)" : "",
+            color: unknownBlades ? "white" : "rgb(85, 85, 85)",
+            borderColor: "rgb(85, 85, 85)",
+          }}
+          key={status}
+          onClick={() => {
+            setUnknownBlades((old) => !old);
+          }}
+        >
+          Unknown
+        </div>
+
         <div>
           {BLADE_STATUSES.map((status) => {
             const selected = statusFilter && statusFilter === status;
@@ -68,7 +85,11 @@ const BladesPerGroup = (): JSX.Element => {
                 transitionDuration={600 * Math.random()}
                 delay={i * 20}
               >
-                <BladesGroup group={group} statusFilter={statusFilter} />
+                <BladesGroup
+                  group={group}
+                  statusFilter={statusFilter}
+                  showUnknown={unknownBlades}
+                />
               </FadeIn>
             ))}
       </div>

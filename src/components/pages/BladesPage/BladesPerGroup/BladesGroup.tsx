@@ -9,11 +9,13 @@ import BladeSquare from "./BladeSquare";
 interface BladesGroupProps {
   statusFilter?: BladeStatus;
   group: Group;
+  showUnknown?: boolean;
 }
 
 const BladesGroup = ({
   group,
   statusFilter,
+  showUnknown,
 }: BladesGroupProps): JSX.Element => {
   const { blades } = useBladesQuery();
 
@@ -29,6 +31,9 @@ const BladesGroup = ({
             blades[host.name] && statusFilter
               ? getBladeStatus(blades[host.name]) === statusFilter
               : true
+          )
+          .filter((host) =>
+            showUnknown ? true : blades[host.name] !== undefined
           )
           .sort((a, b) => a.name.localeCompare(b.name))
           .map((host) => (
