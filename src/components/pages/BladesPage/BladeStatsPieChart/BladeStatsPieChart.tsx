@@ -49,7 +49,7 @@ const BladeStatsPieChart = <K extends keyof Blade>({
         animationDuration={800}
         paddingAngle={2}
         isAnimationActive={true}
-        label={({ _, index }) => {
+        label={({ index }) => {
           if (!samples) return;
           const originalName = samples[index].name;
           const name = labelFormat ? labelFormat(originalName) : originalName;
@@ -57,7 +57,7 @@ const BladeStatsPieChart = <K extends keyof Blade>({
         }}
       >
         {samples &&
-          samples.map((sample, i) => (
+          samples.map((sample) => (
             <Cell key={sample.name} fill={getColorFromString(sample.name)} />
           ))}
 
