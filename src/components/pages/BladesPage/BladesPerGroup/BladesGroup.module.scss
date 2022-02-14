@@ -1,0 +1,20 @@
+$greyColor: rgb(107, 107, 107);
+
+.container {
+  .headerText {
+    color: lighten($greyColor, 10%);
+    margin: 0px;
+    margin-bottom: 5px;
+    font-size: 0.9em;
+  }
+
+  .bladesContainer {
+    border: 1px solid rgba($greyColor, 0.5);
+    background-color: rgba(68, 68, 68, 0.1);
+    border-radius: 5px;
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+    padding: 10px;
+  }
+}

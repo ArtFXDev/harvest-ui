@@ -18,7 +18,7 @@ export const BladesGrid = (): JSX.Element => {
     <>
       <div className={styles.grid}>
         {blades &&
-          blades.map((blade, i) => {
+          Object.values(blades).map((blade, i) => {
             const status = getBladeStatus(blade);
             const tip = `
               <p>${blade.hnm}</p>
@@ -30,7 +30,7 @@ export const BladesGrid = (): JSX.Element => {
               <FadeIn
                 key={i}
                 transitionDuration={400 * Math.random()}
-                delay={Math.random() * blades.length * 5}
+                delay={Math.random() * Object.keys(blades).length * 5}
               >
                 <div
                   className={styles.cell}

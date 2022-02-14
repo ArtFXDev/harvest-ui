@@ -3,7 +3,7 @@ import React, { useContext } from "react";
 import { Blade } from "types/tractor";
 
 export interface BladeContext {
-  blades?: Blade[];
+  blades?: { [hnm: string]: Blade };
 }
 
 export const BladesQueryContext = React.createContext<BladeContext>(
@@ -21,11 +21,18 @@ export const ProvideBladesQuery = ({
   children,
 }: ProvideBladeProps): JSX.Element => {
   const data = useFetchData("info/blades", { interval: 10000 });
+  const bladesDict: BladeContext["blades"] = {};
+
+  if (data) {
+    for (const blade of data.blades) {
+      bladesDict[blade.hnm] = blade;
+    }
+  }
 
   return (
     <BladesQueryContext.Provider
       value={{
-        blades: data?.blades,
+        blades: bladesDict,
       }}
     >
       {children}
