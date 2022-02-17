@@ -7,6 +7,10 @@ import ProfileUsageBarChart from "./ProfileUsageBarChart/ProfileUsageBarChart";
 const BladesPage = (): JSX.Element => (
   <ProvideBladesQuery>
     <>
+      <ProfileUsageBarChart />
+
+      <hr />
+
       <div className={styles.bladesSection}>
         <div className={styles.center}>
           <BladesPerGroup />
@@ -26,10 +30,6 @@ const BladesPage = (): JSX.Element => (
           }}
         />
       </div>
-
-      <hr />
-
-      <ProfileUsageBarChart />
     </>
   </ProvideBladesQuery>
 );
