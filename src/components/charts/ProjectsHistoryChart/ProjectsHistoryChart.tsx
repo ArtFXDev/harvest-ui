@@ -1,53 +1,49 @@
 import ChartContainer from "components/charts/ChartContainer/ChartContainer";
 import DateSelector from "components/common/DateSelector/DateSelector";
-import { PROJECTS } from "global.d";
-import { useEffect, useState } from "react";
+import { useFetchData } from "hooks/fetch";
+import { useState } from "react";
 import {
+  Area,
+  AreaChart,
   CartesianGrid,
   Legend,
-  Line,
-  LineChart,
   Tooltip,
   XAxis,
   YAxis,
 } from "recharts";
+import { getColorFromString } from "utils/colors";
+import { normalizeToPercentWithTotal } from "utils/data";
 import * as DateUtils from "utils/date";
 
 const ProjectsHistoryChart = (): JSX.Element => {
-  const [data, setData] = useState<Array<any> | undefined>([]);
-
-  // Start date one day ago
-  const [startDate, setStartDate] = useState<Date>(
-    new Date(Date.now() - 86400000)
-  );
-
-  // Until now
+  const [startDate, setStartDate] = useState<Date>(DateUtils.yesterday());
   const [endDate, setEndDate] = useState<Date>(new Date());
 
-  /**
-   * Get data from api
-   */
-  const fetchData = async () => {
-    const baseRoute = `${process.env.REACT_APP_API_URL}/stats/projects-history`;
-    const parameters = `start=${startDate!.getTime()}&end=${endDate!.getTime()}`;
-    const url = `${baseRoute}?${parameters}`;
+  const data = useFetchData(
+    "history/project-usage",
+    {},
+    { start: startDate.getTime(), end: endDate.getTime() }
+  );
 
-    fetch(url)
-      .then((response) => {
-        return response.json();
-      })
-      .then((json) => {
-        setData(json.filter((d: any) => d.time > +new Date(2021, 2, 24)));
-      })
-      .catch((error) => {
-        setData(undefined);
-      });
-  };
+  const projects = useFetchData("info/projects");
 
-  // Fetch data when the project changes
-  useEffect(() => {
-    fetchData();
-  }, [startDate, endDate]);
+  const formattedData =
+    data &&
+    projects &&
+    data.map((entry) => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { createdAt, ...rest } = entry;
+      const toPercent = normalizeToPercentWithTotal(rest);
+
+      // Add missing projects
+      for (const project of projects) {
+        if (!(project in entry)) {
+          entry[project] = 0;
+        }
+      }
+
+      return { ...toPercent, createdAt: new Date(entry.createdAt).getTime() };
+    });
 
   return (
     <ChartContainer
@@ -61,10 +57,10 @@ const ProjectsHistoryChart = (): JSX.Element => {
         />
       }
     >
-      <LineChart
+      <AreaChart
         width={800}
         height={500}
-        data={data}
+        data={formattedData}
         className="chart"
         margin={{
           top: 20,
@@ -77,9 +73,9 @@ const ProjectsHistoryChart = (): JSX.Element => {
 
         <XAxis
           type="number"
-          dataKey="time"
+          dataKey="createdAt"
           domain={["dataMin", "dataMax"]}
-          tickFormatter={DateUtils.timestampToMMDDYYYY}
+          tickFormatter={DateUtils.timestampToMMHH}
           height={50}
           label={{
             value: "Time",
@@ -89,36 +85,36 @@ const ProjectsHistoryChart = (): JSX.Element => {
 
         <YAxis
           type="number"
-          domain={[0, 50]}
-          tickFormatter={(value) => `${value} computers`}
+          domain={[0, 100]}
+          tickFormatter={(value) => `${Math.floor(value)}%`}
         />
 
-        {/* Curve for each project */}
-        {data &&
-          data.length !== 0 &&
-          PROJECTS.map((project) => {
-            return (
-              <Line
-                key={project.name}
-                type="monotone"
-                dataKey={project.name}
+        {projects &&
+          projects
+            .sort((a, b) => a.localeCompare(b))
+            .map((project) => (
+              <Area
+                type="basis"
+                dataKey={project}
+                stackId="1"
+                key={project}
                 strokeWidth={3}
-                stroke={project.color}
-                dot={false}
+                stroke={getColorFromString(project)}
+                fill={getColorFromString(project)}
               />
-            );
-          })}
+            ))}
 
         <Tooltip
-          labelFormatter={(t: number) =>
-            `${DateUtils.timestampToMMDDYYYY(t)} at ${DateUtils.timestampToMMHH(
-              t
+          labelFormatter={(p: number) =>
+            `${DateUtils.timestampToMMDDYYYY(p)} at ${DateUtils.timestampToMMHH(
+              p
             )}`
           }
+          formatter={(p: number) => `${Math.floor(p)}%`}
         />
 
         <Legend />
-      </LineChart>
+      </AreaChart>
     </ChartContainer>
   );
 };

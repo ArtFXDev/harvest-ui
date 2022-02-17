@@ -5,6 +5,7 @@ import styles from "./Navigation.module.scss";
 const links: { route: string; text: string }[] = [
   { route: "/", text: "Farm" },
   { route: "/blades", text: "Blades" },
+  { route: "/projects", text: "Projects" },
 ];
 
 /**

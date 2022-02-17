@@ -1,13 +1,11 @@
-import ProjectsFrameRatioBarChart from "components/charts/ProjectsFrameRatioBarChart/ProjectsFrameRatioBarChart";
 import ProjectsHistoryChart from "components/charts/ProjectsHistoryChart/ProjectsHistoryChart";
-import ProjectsProgressChart from "components/charts/ProjectsProgressChart/ProjectsProgressChart";
 
 const ProjectsPage = (): JSX.Element => (
   <>
-    <ProjectsProgressChart />
+    {/*<ProjectsProgressChart />
     <hr />
     <ProjectsFrameRatioBarChart />
-    <hr />
+    <hr />*/}
     <ProjectsHistoryChart />
   </>
 );
