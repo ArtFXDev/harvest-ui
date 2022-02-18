@@ -30,8 +30,6 @@ const HomePage = (): JSX.Element => (
 
     <BladeUsageHistoryStackAreaChart />
 
-    <hr />
-
     {/* <SplittedBladeUsageCharts /> */}
   </>
 );

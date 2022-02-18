@@ -13,6 +13,8 @@ export const BLADE_STATUSES = [
 export type BladeStatus = typeof BLADE_STATUSES[number];
 export type BladeStatuses = { [K in BladeStatus]: number };
 
+type WithTimestamp<T> = T & { createdAt: string };
+
 export interface GetRoutes {
   "current/blade-usage": {
     response: BladeStatuses;
@@ -29,9 +31,11 @@ export interface GetRoutes {
   };
   "info/blades": { response: { blades: Blade[] }; params: undefined };
   "history/blade-usage": {
-    response: (BladeStatuses & {
-      createdAt: string;
-    })[];
+    response: WithTimestamp<BladeStatuses>[];
+    params: { start: number; end: number };
+  };
+  "history/project-usage": {
+    response: WithTimestamp<{ [project: string]: number }>[];
     params: { start: number; end: number };
   };
   "fog/groups": {

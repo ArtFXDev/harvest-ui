@@ -1,4 +1,5 @@
 import Loader from "components/common/Loader/Loader";
+import ProjectsPage from "components/pages/ProjectsPage/ProjectsPage";
 import Footer from "components/structure/Footer/Footer";
 import Header from "components/structure/Header/Header";
 import React from "react";
@@ -26,6 +27,7 @@ const App = (): JSX.Element => (
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/blades" element={<BladesPage />} />
+            <Route path="/projects" element={<ProjectsPage />} />
           </Routes>
         </Suspense>
       </main>
