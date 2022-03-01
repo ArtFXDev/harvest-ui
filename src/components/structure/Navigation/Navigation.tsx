@@ -6,6 +6,7 @@ const links: { route: string; text: string }[] = [
   { route: "/", text: "Farm" },
   { route: "/blades", text: "Blades" },
   { route: "/projects", text: "Projects" },
+  { route: "/jobs", text: "Jobs" },
 ];
 
 /**

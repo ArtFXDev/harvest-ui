@@ -4,6 +4,8 @@
  * Ex: WHAT_ABOUT_COOKING -> WAC
  */
 export function shortenName(name: string) {
+  if (!name) return "";
+
   if (name.length > 15) {
     return name
       .split("_")

@@ -1,4 +1,5 @@
 import Loader from "components/common/Loader/Loader";
+import JobsPage from "components/pages/JobsPage/JobsPage";
 import ProjectsPage from "components/pages/ProjectsPage/ProjectsPage";
 import Footer from "components/structure/Footer/Footer";
 import Header from "components/structure/Header/Header";
@@ -28,6 +29,7 @@ const App = (): JSX.Element => (
             <Route path="/" element={<HomePage />} />
             <Route path="/blades" element={<BladesPage />} />
             <Route path="/projects" element={<ProjectsPage />} />
+            <Route path="/jobs" element={<JobsPage />} />
           </Routes>
         </Suspense>
       </main>

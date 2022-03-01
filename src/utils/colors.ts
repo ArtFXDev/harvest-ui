@@ -10,6 +10,26 @@ export function getColorFromString(str: string): string {
   return colorHash.hex(str);
 }
 
+export function getDarkerColorFromString(str: string): string {
+  return new ColorHash({ lightness: 0.7, saturation: 0.5 }).hex(str);
+}
+
+function lerp(a: number, b: number, t: number) {
+  return a + (b - a) * t;
+}
+
+export function lerpColor(
+  r1: number,
+  g1: number,
+  b1: number,
+  r2: number,
+  g2: number,
+  b2: number,
+  t: number
+): string {
+  return `rgb(${lerp(r1, r2, t)}, ${lerp(g1, g2, t)}, ${lerp(b1, b2, t)})`;
+}
+
 /**
  * Constant colors used in the theme
  */

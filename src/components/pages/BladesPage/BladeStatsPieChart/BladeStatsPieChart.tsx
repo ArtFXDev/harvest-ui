@@ -9,14 +9,16 @@ function countByKey<K extends keyof Blade & string>(blades: Blade[], key: K) {
   const values: { [key: string]: { name: string; value: number } } = {};
 
   for (const blade of blades) {
-    if (!values[blade[key] as string]) {
-      values[blade[key] as string] = {
-        name: (blade[key] as string).toString(),
-        value: 0,
-      };
-    }
+    if (blade[key]) {
+      if (!values[blade[key] as string]) {
+        values[blade[key] as string] = {
+          name: (blade[key] as string).toString(),
+          value: 0,
+        };
+      }
 
-    values[blade[key] as string].value++;
+      values[blade[key] as string].value++;
+    }
   }
 
   return Object.values(values).sort((a, b) => b.value - a.value);
