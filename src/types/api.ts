@@ -1,5 +1,5 @@
 import { Group, GroupID } from "./fog";
-import { Blade } from "./tractor";
+import { Blade, Job } from "./tractor";
 
 export type URLParams = { [param: string]: string | number };
 
@@ -30,6 +30,18 @@ export interface GetRoutes {
     params: { start: number; end: number };
   };
   "info/blades": { response: { blades: Blade[] }; params: undefined };
+  "info/jobs": {
+    response: { rc: number; msg: string; rows: Job[] };
+    params: undefined;
+  };
+  "info/jobs-per-owner": {
+    response: { [owner: string]: number };
+    params: undefined;
+  };
+  "info/jobs-per-project": {
+    response: { [project: string]: { jobs: number; tasks: number } };
+    params: undefined;
+  };
   "history/blade-usage": {
     response: WithTimestamp<BladeStatuses>[];
     params: { start: number; end: number };

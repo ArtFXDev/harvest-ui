@@ -9,6 +9,9 @@ const BladesPage = (): JSX.Element => (
     <>
       <ProfileUsageBarChart />
 
+      {/*<hr />
+      <ProfileUsagePerProjectBarChart />*/}
+
       <hr />
 
       <div className={styles.bladesSection}>

@@ -17,13 +17,8 @@ import { useBladesQuery } from "../BladesQueryContext";
 
 function bladesIntoProfile(blades: Blade[]) {
   const profiles: {
-    [profile: string]: {
+    [profile: string]: BladeStatuses & {
       name: string;
-      busy: number;
-      free: number;
-      nimby: number;
-      off: number;
-      noFreeSlots: number;
       total: number;
     };
   } = {};
@@ -47,7 +42,7 @@ function bladesIntoProfile(blades: Blade[]) {
     profiles[blade.profile][status]++;
   }
 
-  const profilesList = Object.values(profiles);
+  const profilesList = Object.values(profiles).filter((p) => p.name.length > 0);
   return profilesList
     .map((p) => ({
       ...p,
@@ -99,6 +94,7 @@ const ProfileUsageBarChart = (): JSX.Element => {
             )} computers`;
           }}
         />
+
         <Legend />
 
         {BLADE_STATUSES.map((status) => {
