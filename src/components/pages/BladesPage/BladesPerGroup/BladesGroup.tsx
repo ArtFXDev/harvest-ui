@@ -10,12 +10,14 @@ interface BladesGroupProps {
   statusFilter?: BladeStatus;
   group: Group;
   showUnknown?: boolean;
+  hostnameSearch?: string;
 }
 
 const BladesGroup = ({
   group,
   statusFilter,
   showUnknown,
+  hostnameSearch,
 }: BladesGroupProps): JSX.Element => {
   const { blades } = useBladesQuery();
 
@@ -34,6 +36,11 @@ const BladesGroup = ({
           )
           .filter((host) =>
             showUnknown ? true : blades[host.name] !== undefined
+          )
+          .filter((host) =>
+            hostnameSearch
+              ? host.name.includes(hostnameSearch.toLowerCase())
+              : true
           )
           .sort((a, b) => a.name.localeCompare(b.name))
           .map((host) => (

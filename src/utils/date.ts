@@ -33,7 +33,7 @@ export const timestampToMMHH = (timestamp: number): string =>
  * Format seconds to [h]:[m]:s
  * See : https://stackoverflow.com/a/37096512/11452044
  */
-export const secondsToHms = (date: number): string => {
+export const secondsToMs = (date: number): string => {
   const d = Number(date);
   const m = Math.floor(d / 60);
   const s = Math.floor((d % 3600) % 60);
@@ -42,6 +42,24 @@ export const secondsToHms = (date: number): string => {
   const sDisplay = s > 0 ? s + (s === 1 ? " s" : " s") : "empty";
   return mDisplay + sDisplay;
 };
+
+export function secondsToHms(sec: number) {
+  const hours = Math.floor(sec / 3600); // get hours
+  const minutes = Math.floor((sec - hours * 3600) / 60); // get minutes
+  const seconds = Math.floor(sec - hours * 3600 - minutes * 60); //  get seconds
+
+  /*if (hours < 10) {
+    hours = "0" + hours;
+  }
+  if (minutes < 10) {
+    minutes = "0" + minutes;
+  }
+  if (seconds < 10) {
+    seconds = "0" + seconds;
+  }*/
+
+  return hours + "h " + minutes + "m " + seconds + "s"; // Return is HH : MM : SS
+}
 
 /**
  * Get month name of date

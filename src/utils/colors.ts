@@ -50,3 +50,10 @@ export const BLADE_STATUS_COLOR: { [key in keyof BladeStatuses]: string } = {
   off: COLORS.purple,
   noFreeSlots: "#654e8d",
 };
+
+export const TASK_STATUS_COLOR = {
+  numerror: COLORS.red,
+  numdone: COLORS.green,
+  numready: COLORS.blue,
+  numblocked: COLORS.purple,
+};

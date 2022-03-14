@@ -77,7 +77,7 @@ const ComputeTimeBarChart = (): JSX.Element => {
           }}
         />
 
-        <Tooltip formatter={DateUtils.secondsToHms} />
+        <Tooltip formatter={DateUtils.secondsToMs} />
         <Legend />
 
         {bars}

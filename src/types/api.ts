@@ -10,8 +10,18 @@ export const BLADE_STATUSES = [
   "noFreeSlots",
   "off",
 ] as const;
+
 export type BladeStatus = typeof BLADE_STATUSES[number];
 export type BladeStatuses = { [K in BladeStatus]: number };
+
+export const TASK_STATUSES = [
+  "numblocked",
+  "numdone",
+  "numerror",
+  "numready",
+] as const;
+export type TaskStatus = typeof TASK_STATUSES[number];
+export type TaskStatuses = { [K in TaskStatus]: number };
 
 type WithTimestamp<T> = T & { createdAt: string };
 
@@ -40,6 +50,15 @@ export interface GetRoutes {
   };
   "info/jobs-per-project": {
     response: { [project: string]: { jobs: number; tasks: number } };
+    params: undefined;
+  };
+  "info/task-status-per-project": {
+    response: {
+      numdone: number;
+      numerror: number;
+      numready: number;
+      numblocked: number;
+    }[];
     params: undefined;
   };
   "history/blade-usage": {

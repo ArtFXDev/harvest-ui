@@ -12,6 +12,7 @@ import styles from "./BladesPerGroup.module.scss";
 const BladesPerGroup = (): JSX.Element => {
   const [statusFilter, setStatusFilter] = useState<BladeStatus>();
   const [unknownBlades, setUnknownBlades] = useState<boolean>(false);
+  const [hostnameSearch, setHostnameSearch] = useState<string>();
 
   const { blades } = useBladesQuery();
   const groups = useFetchData("fog/groups");
@@ -27,50 +28,58 @@ const BladesPerGroup = (): JSX.Element => {
       <div
         style={{
           display: "flex",
-          justifyContent: "flex-end",
+          justifyContent: "space-between",
           marginBottom: "10px",
         }}
       >
-        <div
-          className={styles.statusButton}
-          style={{
-            backgroundColor: unknownBlades ? "rgb(85, 85, 85)" : "",
-            color: unknownBlades ? "white" : "rgb(85, 85, 85)",
-            borderColor: "rgb(85, 85, 85)",
-          }}
-          key={status}
-          onClick={() => {
-            setUnknownBlades((old) => !old);
-          }}
-        >
-          Unknown
-        </div>
+        <input
+          type="text"
+          placeholder="Search..."
+          value={hostnameSearch}
+          onChange={(e) => setHostnameSearch(e.target.value)}
+        />
 
         <div>
-          {BLADE_STATUSES.map((status) => {
-            const selected = statusFilter && statusFilter === status;
+          <div>
+            <div
+              className={styles.statusButton}
+              style={{
+                backgroundColor: unknownBlades ? "rgb(85, 85, 85)" : "",
+                color: unknownBlades ? "white" : "rgb(85, 85, 85)",
+                borderColor: "rgb(85, 85, 85)",
+              }}
+              key={status}
+              onClick={() => {
+                setUnknownBlades((old) => !old);
+              }}
+            >
+              Unknown
+            </div>
+            {BLADE_STATUSES.map((status) => {
+              const selected = statusFilter && statusFilter === status;
 
-            return (
-              <div
-                className={styles.statusButton}
-                style={{
-                  backgroundColor: selected ? BLADE_STATUS_COLOR[status] : "",
-                  color: selected ? "white" : BLADE_STATUS_COLOR[status],
-                  borderColor: BLADE_STATUS_COLOR[status],
-                }}
-                key={status}
-                onClick={() => {
-                  if (status !== statusFilter) {
-                    setStatusFilter(status);
-                  } else {
-                    setStatusFilter(undefined);
-                  }
-                }}
-              >
-                {status}
-              </div>
-            );
-          })}
+              return (
+                <div
+                  className={styles.statusButton}
+                  style={{
+                    backgroundColor: selected ? BLADE_STATUS_COLOR[status] : "",
+                    color: selected ? "white" : BLADE_STATUS_COLOR[status],
+                    borderColor: BLADE_STATUS_COLOR[status],
+                  }}
+                  key={status}
+                  onClick={() => {
+                    if (status !== statusFilter) {
+                      setStatusFilter(status);
+                    } else {
+                      setStatusFilter(undefined);
+                    }
+                  }}
+                >
+                  {status}
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
 
@@ -78,6 +87,13 @@ const BladesPerGroup = (): JSX.Element => {
         {groups &&
           Object.values(groups)
             .filter((g) => g.name.length > 0)
+            .filter((g) =>
+              hostnameSearch
+                ? Object.values(g.hosts).some((host) =>
+                    host.name.includes(hostnameSearch.toLowerCase())
+                  )
+                : true
+            )
             .sort((a, b) => a.name.localeCompare(b.name))
             .map((group, i) => (
               <FadeIn
@@ -89,6 +105,7 @@ const BladesPerGroup = (): JSX.Element => {
                   group={group}
                   statusFilter={statusFilter}
                   showUnknown={unknownBlades}
+                  hostnameSearch={hostnameSearch}
                 />
               </FadeIn>
             ))}
