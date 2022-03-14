@@ -39,7 +39,11 @@ const BladesGroup = ({
           )
           .filter((host) =>
             hostnameSearch
-              ? host.name.includes(hostnameSearch.toLowerCase())
+              ? host.name.includes(hostnameSearch) ||
+                (blades[host.name] &&
+                  blades[host.name].profile
+                    .toLowerCase()
+                    .includes(hostnameSearch))
               : true
           )
           .sort((a, b) => a.name.localeCompare(b.name))

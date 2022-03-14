@@ -89,8 +89,13 @@ const BladesPerGroup = (): JSX.Element => {
             .filter((g) => g.name.length > 0)
             .filter((g) =>
               hostnameSearch
-                ? Object.values(g.hosts).some((host) =>
-                    host.name.includes(hostnameSearch.toLowerCase())
+                ? Object.values(g.hosts).some(
+                    (host) =>
+                      host.name.includes(hostnameSearch.toLowerCase()) ||
+                      (blades[host.name] &&
+                        blades[host.name].profile
+                          .toLowerCase()
+                          .includes(hostnameSearch.toLowerCase()))
                   )
                 : true
             )
@@ -105,7 +110,7 @@ const BladesPerGroup = (): JSX.Element => {
                   group={group}
                   statusFilter={statusFilter}
                   showUnknown={unknownBlades}
-                  hostnameSearch={hostnameSearch}
+                  hostnameSearch={hostnameSearch?.toLowerCase()}
                 />
               </FadeIn>
             ))}
