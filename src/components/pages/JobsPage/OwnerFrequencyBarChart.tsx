@@ -39,7 +39,11 @@ const OwnerFrequencyBarChart = (): JSX.Element => {
 
         <XAxis dataKey="name" angle={-30} textAnchor="end" interval={0} />
 
-        <YAxis type="number" domain={[0, (dataMax: number) => dataMax + 10]} />
+        <YAxis
+          type="number"
+          domain={[0, (dataMax: number) => dataMax + 10]}
+          tickFormatter={(v) => `${Math.round(v)} jobs`}
+        />
 
         <Tooltip formatter={(value: string) => `${value} jobs`} />
 

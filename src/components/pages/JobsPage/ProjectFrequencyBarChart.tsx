@@ -57,13 +57,15 @@ const ProjectFrequencyBarChart = (): JSX.Element => {
           yAxisId="left"
           orientation="left"
           stroke="#8884d8"
-          domain={[0, (dataMax: number) => dataMax + 50]}
+          domain={[0, (dataMax: number) => dataMax * 1.1]}
+          tickFormatter={(v) => `${Math.round(v)} jobs`}
         />
         <YAxis
           yAxisId="right"
           orientation="right"
           stroke="#82ca9d"
-          domain={[0, (dataMax: number) => dataMax + 1000]}
+          domain={[0, (dataMax: number) => dataMax * 1.15]}
+          tickFormatter={(v) => `${Math.round(v)} tasks`}
         />
 
         <Tooltip />
