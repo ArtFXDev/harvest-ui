@@ -66,10 +66,13 @@ const BladesMemoryUsageBarChart = (): JSX.Element => {
       >
         <CartesianGrid strokeDasharray="3 3" />
 
-        <XAxis dataKey="name" />
+        <XAxis dataKey="name" label="GB" />
         <YAxis type="number" />
 
-        <Tooltip formatter={(v: string) => `${v} computers`} />
+        <Tooltip
+          formatter={(v: string) => `${v} computers`}
+          labelFormatter={(l) => `${l} GB`}
+        />
 
         <Bar dataKey="rest" stackId="a" fill={COLORS.purple}>
           {data.map((sample, i) => (
