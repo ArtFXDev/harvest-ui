@@ -1,4 +1,4 @@
-import { ReactElement, ReactNode } from "react";
+import React, { ReactElement, ReactNode } from "react";
 import FadeIn from "react-fade-in";
 import TrackVisibility from "react-on-screen";
 import { ResponsiveContainer } from "recharts";
@@ -15,7 +15,7 @@ interface Props {
   backgroundColor?: string;
   gradient?: Array<string>;
 
-  right?: any;
+  right?: JSX.Element;
   responsive?: boolean;
 
   isVisible?: boolean;
@@ -72,7 +72,7 @@ const Chart = (props: Props): JSX.Element => {
         >
           {!props.responsive ? (
             <ResponsiveContainer width="100%" height="100%">
-              {props.children as ReactElement<any>}
+              {props.children as ReactElement}
             </ResponsiveContainer>
           ) : (
             <>{props.children}</>

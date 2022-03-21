@@ -24,7 +24,11 @@ const OwnerFrequencyBarChart = (): JSX.Element => {
   }
 
   return (
-    <ChartContainer title="Jobs submitted per user" height={500}>
+    <ChartContainer
+      title="Jobs submitted per user"
+      height={500}
+      gradient={["rgb(0,155,217)", "rgb(176,53,139)"]}
+    >
       <BarChart
         data={data}
         className="chart"

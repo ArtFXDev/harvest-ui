@@ -3,11 +3,30 @@ import { useEffect, useState } from "react";
 import FadeIn from "react-fade-in";
 import ReactTooltip from "react-tooltip";
 import { BLADE_STATUSES, BladeStatus } from "types/api";
+import { Group } from "types/fog";
+import { Blade } from "types/tractor";
 import { BLADE_STATUS_COLOR } from "utils/colors";
 
 import { useBladesQuery } from "../BladesQueryContext";
 import BladesGroup from "./BladesGroup";
 import styles from "./BladesPerGroup.module.scss";
+
+export function filterGroup(
+  group: Group,
+  blades: { [hnm: string]: Blade },
+  hostnameSearch: string | undefined
+): boolean {
+  if (!hostnameSearch) return true;
+
+  return Object.values(group.hosts).some(
+    (host) =>
+      host.name.includes(hostnameSearch.toLowerCase()) ||
+      (blades[host.name] &&
+        blades[host.name].profile
+          .toLowerCase()
+          .includes(hostnameSearch.toLowerCase()))
+  );
+}
 
 const BladesPerGroup = (): JSX.Element => {
   const [statusFilter, setStatusFilter] = useState<BladeStatus>();
@@ -87,18 +106,7 @@ const BladesPerGroup = (): JSX.Element => {
         {groups &&
           Object.values(groups)
             .filter((g) => g.name.length > 0)
-            .filter((g) =>
-              hostnameSearch
-                ? Object.values(g.hosts).some(
-                    (host) =>
-                      host.name.includes(hostnameSearch.toLowerCase()) ||
-                      (blades[host.name] &&
-                        blades[host.name].profile
-                          .toLowerCase()
-                          .includes(hostnameSearch.toLowerCase()))
-                  )
-                : true
-            )
+            .filter((g) => filterGroup(g, blades, hostnameSearch))
             .sort((a, b) => a.name.localeCompare(b.name))
             .map((group, i) => (
               <FadeIn

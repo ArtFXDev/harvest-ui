@@ -1,3 +1,4 @@
+import BladesMemoryUsageBarChart from "./BladesMemoryUsageBarChart/BladesMemoryUsageBarChart";
 import styles from "./BladesPage.module.scss";
 import BladesPerGroup from "./BladesPerGroup/BladesPerGroup";
 import { ProvideBladesQuery } from "./BladesQueryContext";
@@ -9,8 +10,9 @@ const BladesPage = (): JSX.Element => (
     <>
       <ProfileUsageBarChart />
 
-      {/*<hr />
-      <ProfileUsagePerProjectBarChart />*/}
+      <hr />
+
+      <BladesMemoryUsageBarChart />
 
       <hr />
 
