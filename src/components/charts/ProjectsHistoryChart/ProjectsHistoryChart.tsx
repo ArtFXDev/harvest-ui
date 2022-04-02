@@ -16,13 +16,15 @@ import { normalizeToPercentWithTotal } from "utils/data";
 import * as DateUtils from "utils/date";
 
 const ProjectsHistoryChart = (): JSX.Element => {
-  const [startDate, setStartDate] = useState<Date>(DateUtils.yesterday());
-  const [endDate, setEndDate] = useState<Date>(new Date());
+  const [startDate, setStartDate] = useState<number>(
+    DateUtils.yesterday().getTime()
+  );
+  const [endDate, setEndDate] = useState<number>(Date.now());
 
   const data = useFetchData(
     "history/project-usage",
     {},
-    { start: startDate.getTime(), end: endDate.getTime() }
+    { start: startDate, end: endDate }
   );
 
   const projects = useFetchData("info/projects");

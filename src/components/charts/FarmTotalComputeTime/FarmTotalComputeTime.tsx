@@ -1,5 +1,5 @@
 import DateSelector from "components/common/DateSelector/DateSelector";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   Area,
   AreaChart,
@@ -22,14 +22,12 @@ const FarmTotalComputeTime = (): JSX.Element => {
   const [data, setData] = useState<Array<any> | undefined>([]);
 
   // Initialize at today midnight
-  const [startDate, setStartDate] = useState<Date>(
-    new Date(Date.now() - 86400000 * 7)
-  );
+  const [startDate, setStartDate] = useState<number>(Date.now() - 86400000 * 7);
 
   // End now
-  const [endDate, setEndDate] = useState<Date>(new Date());
+  const [endDate, setEndDate] = useState<number>(Date.now());
 
-  const fetchData = async () => {
+  /* const fetchData = async () => {
     const baseRoute = `${process.env.REACT_APP_API_URL}/stats/history-computetime`;
     const parameters = `start=${startDate!.getTime()}&end=${endDate!.getTime()}`;
     const url = `${baseRoute}?${parameters}`;
@@ -41,14 +39,14 @@ const FarmTotalComputeTime = (): JSX.Element => {
         /* const onlyBusy = json.map((d: any) => {
          *   const total: number = Math.floor(d.busy + d.free);
          *   return { busy: (d.busy / total) * 100, total: total, timestamp: d.timestamp };
-         * }); */
+         * });
 
         setData(json);
       })
       .catch((error) => {
         setData(undefined);
       });
-  };
+  }; */
 
   const formatMinutes = (minutes: number): string => {
     const hours = Math.floor(minutes / 60);
@@ -57,9 +55,9 @@ const FarmTotalComputeTime = (): JSX.Element => {
   };
 
   // Fetch data when modifying selection options
-  useEffect(() => {
+  /* useEffect(() => {
     fetchData();
-  }, [startDate, endDate]);
+  }, [startDate, endDate]); */
 
   return (
     <ChartContainer

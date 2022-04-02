@@ -20,15 +20,15 @@ import * as DateUtils from "utils/date";
  * Stacked areas of the history of blade statuses
  */
 const BladeUsageHistoryStackAreaChart = (): JSX.Element => {
-  const [startDate, setStartDate] = useState<Date>(
-    new Date(Date.now() - 604800000 / 2.0)
+  const [startDate, setStartDate] = useState<number>(
+    Date.now() - 604800000 / 2.0
   );
-  const [endDate, setEndDate] = useState<Date>(new Date());
+  const [endDate, setEndDate] = useState<number>(Date.now());
 
   const data = useFetchData(
     "history/blade-usage",
     {},
-    { start: startDate.getTime(), end: endDate.getTime() }
+    { start: startDate, end: endDate }
   );
 
   const formattedData =

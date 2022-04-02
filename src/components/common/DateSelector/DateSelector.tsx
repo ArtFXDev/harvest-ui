@@ -4,11 +4,11 @@ import * as DateUtils from "utils/date";
 import styles from "./DateSelector.module.scss";
 
 interface DateSelectorProps {
-  startDate: Date;
-  setStartDate: (date: Date) => void;
+  startDate: number;
+  setStartDate: (date: number) => void;
 
-  endDate: Date;
-  setEndDate: (date: Date) => void;
+  endDate: number;
+  setEndDate: (date: number) => void;
 
   period?: string;
   setPeriod?: (period: string) => void;
@@ -30,11 +30,13 @@ const DateSelector = (props: DateSelectorProps): JSX.Element => {
           id="start"
           name="start-date"
           value={
-            props.startDate ? DateUtils.dateToYYYYMMDD(props.startDate) : ""
+            props.startDate
+              ? DateUtils.dateToYYYYMMDD(new Date(props.startDate))
+              : ""
           }
           onChange={(d) => {
             if (d.target.valueAsDate) {
-              props.setStartDate(d.target.valueAsDate);
+              props.setStartDate(d.target.valueAsDate.getTime());
             }
           }}
           required={true}
@@ -50,12 +52,12 @@ const DateSelector = (props: DateSelectorProps): JSX.Element => {
           type="date"
           id="end"
           name="end-date"
-          value={DateUtils.dateToYYYYMMDD(props.endDate)}
-          min={DateUtils.dateToYYYYMMDD(props.startDate)}
+          value={DateUtils.dateToYYYYMMDD(new Date(props.endDate))}
+          min={DateUtils.dateToYYYYMMDD(new Date(props.startDate))}
           max={DateUtils.dateToYYYYMMDD(new Date())}
           onChange={(d) => {
             if (d.target.valueAsDate) {
-              props.setEndDate(d.target.valueAsDate);
+              props.setEndDate(d.target.valueAsDate.getTime());
             }
           }}
           required={true}
