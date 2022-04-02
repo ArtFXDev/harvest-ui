@@ -1,28 +1,13 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { GetParams, GetResponse, GetRoutes } from "types/api";
 import { apiGet } from "utils/api";
+import { singleDepthEqual } from "utils/diff";
+
+import { usePrevious } from "./utils";
 
 export interface FetchConfig {
   /** Interval in ms to refetch data */
   interval?: number;
-}
-
-function usePrevious<T>(value: T) {
-  const ref = useRef<T>();
-
-  useEffect(() => {
-    ref.current = value;
-  });
-
-  return ref.current;
-}
-
-function singleDepthEqual(a: any, b: any) {
-  for (const keyA in a) {
-    if (!b[keyA] || b[keyA] !== a[keyA]) return false;
-  }
-
-  return true;
 }
 
 /**
