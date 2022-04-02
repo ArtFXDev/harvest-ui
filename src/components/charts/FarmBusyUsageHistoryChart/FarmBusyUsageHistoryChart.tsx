@@ -41,16 +41,14 @@ function toBusyPercent(
  */
 const FarmBusyUsageHistoryChart = (): JSX.Element => {
   // Initialize at today midnight
-  const [startDate, setStartDate] = useState<Date>(
-    new Date(Date.now() - 86400000)
-  );
-  const [endDate, setEndDate] = useState<Date>(new Date());
+  const [startDate, setStartDate] = useState<number>(Date.now() - 86400000);
+  const [endDate, setEndDate] = useState<number>(Date.now());
 
   // Fetch the whole history
   const data = useFetchData(
     "history/blade-usage",
     {},
-    { start: startDate.getTime(), end: endDate.getTime() }
+    { start: startDate, end: endDate }
   );
 
   // Also fetch the current usage to add a data point
@@ -66,7 +64,7 @@ const FarmBusyUsageHistoryChart = (): JSX.Element => {
 
   // Add the current farm usage
   if (currentBladeUsage) {
-    formattedData?.push(toBusyPercent(currentBladeUsage, new Date().getTime()));
+    formattedData?.push(toBusyPercent(currentBladeUsage, Date.now()));
   }
 
   const currentHour = new Date().getHours();

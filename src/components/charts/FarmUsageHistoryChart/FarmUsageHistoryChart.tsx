@@ -18,10 +18,8 @@ import * as DateUtils from "utils/date";
 const FarmUsageHistoryChart = (): JSX.Element => {
   const [data, setData] = useState<Array<any> | undefined>([]);
 
-  const [startDate, setStartDate] = useState<Date>(
-    new Date(Date.now() - 604800000)
-  );
-  const [endDate, setEndDate] = useState<Date>(new Date());
+  const [startDate, setStartDate] = useState<number>(Date.now() - 604800000);
+  const [endDate, setEndDate] = useState<number>(Date.now());
 
   // /**
   //  * Get data from api

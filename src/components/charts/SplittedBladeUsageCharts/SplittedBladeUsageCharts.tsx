@@ -125,8 +125,8 @@ const AreaChartUsage = (props: UsageProps): JSX.Element => {
  * Average values of the usage of the farm over a day
  */
 const SplittedBladeUsageCharts = (): JSX.Element => {
-  const [startDate, setStartDate] = useState<Date>(yesterday());
-  const [endDate, setEndDate] = useState<Date>(new Date());
+  const [startDate, setStartDate] = useState<number>(yesterday().getTime());
+  const [endDate, setEndDate] = useState<number>(Date.now());
   const [period, setPeriod] = useState<string>("hours");
   const [includeWE, setIncludeWE] = useState<boolean>(true);
 
@@ -143,8 +143,6 @@ const SplittedBladeUsageCharts = (): JSX.Element => {
       const toPercent = normalizeToPercentWithTotal({ busy, free, nimby, off });
       return { ...toPercent, createdAt: new Date(entry.createdAt).getTime() };
     });
-
-  console.log(formattedData);
 
   // const fetchData = async () => {
   //   const baseRoute = `${process.env.REACT_APP_API_URL}/stats/farm-history/${period}`;
