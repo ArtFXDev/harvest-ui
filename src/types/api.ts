@@ -69,6 +69,12 @@ export interface GetRoutes {
     response: WithTimestamp<{ [project: string]: number }>[];
     params: { start: number; end: number };
   };
+  "history/jobs-per-owner": {
+    response: WithTimestamp<{
+      [user: string]: number;
+    }>[];
+    params: { resolution?: number };
+  };
   "fog/groups": {
     response: { [groupID: GroupID]: Group };
     params: undefined;
