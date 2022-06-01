@@ -2,6 +2,10 @@ import { BladeStatuses } from "types/api";
 import { Blade } from "types/tractor";
 
 export function getBladeStatus(blade: Blade): keyof BladeStatuses {
+  if (["BUG", "DONOTUSE"].includes(blade.profile)) {
+    return "bug";
+  }
+
   if (blade.owners && blade.owners.length > 0) {
     return "busy";
   }

@@ -1,4 +1,4 @@
-import ChartContainer from "components/charts/ChartContainer/ChartContainer";
+import ChartContainer from "components/common/ChartContainer/ChartContainer";
 import {
   Bar,
   BarChart,
@@ -35,6 +35,7 @@ function bladesIntoProfile(blades: Blade[]) {
         nimby: 0,
         off: 0,
         noFreeSlots: 0,
+        bug: 0,
       };
     }
 
@@ -51,6 +52,7 @@ function bladesIntoProfile(blades: Blade[]) {
       nimby: (p.nimby / p.total) * 100,
       off: (p.off / p.total) * 100,
       noFreeSlots: (p.noFreeSlots / p.total) * 100,
+      bug: (p.bug / p.total) * 100,
     }))
     .sort((a, b) => b.total - a.total);
 }
