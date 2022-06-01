@@ -62,7 +62,8 @@ const Counter = <R extends GetRoute>(props: CounterProps<R>): JSX.Element => {
 };
 
 const NumberStats = (): JSX.Element => {
-  const now = new Date();
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
   const yesterday = DateUtils.yesterday();
 
   return (
@@ -103,7 +104,7 @@ const NumberStats = (): JSX.Element => {
                   dataTransform={(response) => response.hours}
                   routeParams={{
                     start: yesterday.getTime(),
-                    end: now.getTime(),
+                    end: today.getTime(),
                   }}
                 />
 
@@ -113,14 +114,14 @@ const NumberStats = (): JSX.Element => {
                   fontSize={35}
                   routeParams={{
                     start: yesterday.getTime(),
-                    end: now.getTime(),
+                    end: today.getTime(),
                   }}
                   dataTransform={(response) => response.minutes}
                   label={"minutes of render time in the last 24h"}
                   info={`${yesterday.getDate()} ${DateUtils.getMonthName(
                     yesterday
-                  )} 00h00 - ${now.getDate()} ${DateUtils.getMonthName(
-                    now
+                  )} 00h00 - ${today.getDate()} ${DateUtils.getMonthName(
+                    today
                   )} 00h00`}
                 />
               </div>
