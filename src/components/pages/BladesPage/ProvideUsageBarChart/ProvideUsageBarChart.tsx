@@ -15,36 +15,39 @@ import { getBladeStatus } from "utils/tractor";
 
 import { useBladesQuery } from "../BladesQueryContext";
 
-function bladesIntoProfile(blades: Blade[]) {
-  const profiles: {
-    [profile: string]: BladeStatuses & {
+function bladesIntoProvides(blades: Blade[]) {
+  const provides: {
+    [provide: string]: BladeStatuses & {
       name: string;
       total: number;
     };
   } = {};
 
   for (const blade of blades) {
+    if (!blade.provides) continue;
     const status = getBladeStatus(blade);
 
-    if (!profiles[blade.profile]) {
-      profiles[blade.profile] = {
-        name: blade.profile,
-        total: 0,
-        busy: 0,
-        free: 0,
-        nimby: 0,
-        off: 0,
-        noFreeSlots: 0,
-        bug: 0,
-      };
-    }
+    for (const provide of blade.provides) {
+      if (!provides[provide]) {
+        provides[provide] = {
+          name: provide,
+          total: 0,
+          busy: 0,
+          free: 0,
+          nimby: 0,
+          off: 0,
+          noFreeSlots: 0,
+          bug: 0,
+        };
+      }
 
-    profiles[blade.profile].total++;
-    profiles[blade.profile][status]++;
+      provides[provide].total++;
+      provides[provide][status]++;
+    }
   }
 
-  const profilesList = Object.values(profiles).filter((p) => p.name.length > 0);
-  return profilesList
+  const providesList = Object.values(provides).filter((p) => p.name.length > 0);
+  return providesList
     .map((p) => ({
       ...p,
       busy: (p.busy / p.total) * 100,
@@ -57,14 +60,14 @@ function bladesIntoProfile(blades: Blade[]) {
     .sort((a, b) => b.total - a.total);
 }
 
-const ProfileUsageBarChart = (): JSX.Element => {
+const ProvideUsageBarChart = (): JSX.Element => {
   const { blades } = useBladesQuery();
-  const profiles = blades && bladesIntoProfile(Object.values(blades));
+  const profiles = blades && bladesIntoProvides(Object.values(blades));
 
   if (!profiles) return <p>Loading...</p>;
 
   return (
-    <ChartContainer title="Blade state per pool" height={400}>
+    <ChartContainer title="Blade state per tag" height={400}>
       <BarChart
         data={profiles}
         className="chart"
@@ -114,4 +117,4 @@ const ProfileUsageBarChart = (): JSX.Element => {
   );
 };
 
-export default ProfileUsageBarChart;
+export default ProvideUsageBarChart;
