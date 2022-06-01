@@ -1,4 +1,4 @@
-import ChartContainer from "components/charts/ChartContainer/ChartContainer";
+import ChartContainer from "components/common/ChartContainer/ChartContainer";
 import { useFetchData } from "hooks/fetch";
 import {
   Bar,

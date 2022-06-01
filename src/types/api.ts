@@ -9,6 +9,7 @@ export const BLADE_STATUSES = [
   "nimby",
   "noFreeSlots",
   "off",
+  "bug",
 ] as const;
 
 export type BladeStatus = typeof BLADE_STATUSES[number];

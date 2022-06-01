@@ -4,11 +4,14 @@ import BladesPerGroup from "./BladesPerGroup/BladesPerGroup";
 import { ProvideBladesQuery } from "./BladesQueryContext";
 import BladeStatsPieChart from "./BladeStatsPieChart/BladeStatsPieChart";
 import ProfileUsageBarChart from "./ProfileUsageBarChart/ProfileUsageBarChart";
+import ProvideUsageBarChart from "./ProvideUsageBarChart/ProvideUsageBarChart";
 
 const BladesPage = (): JSX.Element => (
   <ProvideBladesQuery>
     <>
       <ProfileUsageBarChart />
+
+      <ProvideUsageBarChart />
 
       <hr />
 

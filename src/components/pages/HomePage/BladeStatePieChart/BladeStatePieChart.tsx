@@ -12,18 +12,22 @@ import * as ChartUtils from "utils/chart";
 import { BLADE_STATUS_COLOR } from "utils/colors";
 
 /**
- * Distribution of free/nimby/busy/off computers currently on the farm
+ * Distribution of free/nimby/busy/off/bug computers currently on the farm
  */
 const CurrentBladeUsagePieChart = (): JSX.Element => {
   const data = useFetchData("current/blade-usage", { interval: 10000 });
-  const pieData = toNameValue(data);
+  let pieData = toNameValue(data);
+
+  if (pieData) {
+    pieData = pieData.filter((sample) => sample.value !== 0);
+  }
 
   return (
     <div className="chartContainerSmall">
       <ResponsiveContainer width="99%" minWidth="0">
         <PieChart width={250} height={250} className="chart">
           <Pie
-            data={toNameValue(data)}
+            data={pieData}
             dataKey="value"
             innerRadius="60%"
             outerRadius="80%"
@@ -38,7 +42,7 @@ const CurrentBladeUsagePieChart = (): JSX.Element => {
             {pieData &&
               pieData.map((sample, i) => (
                 <Cell
-                  key={`pcstate-${i}`}
+                  key={`blade-usage-cell-${i}`}
                   fill={BLADE_STATUS_COLOR[sample.name]}
                   color={BLADE_STATUS_COLOR[sample.name]}
                 />

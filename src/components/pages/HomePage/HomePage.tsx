@@ -1,7 +1,7 @@
-import CurrentBladeUsagePieChart from "components/charts/BladeStatePieChart/BladeStatePieChart";
-import BladeUsageHistoryStackAreaChart from "components/charts/BladeUsageHistoryStackAreaChart/BladeUsageHistoryStackAreaChart";
-import CurrentProjectUsagePieChart from "components/charts/CurrentProjectUsagePieChart/CurrentProjectUsagePieChart";
-import FarmBusyUsageHistoryChart from "components/charts/FarmBusyUsageHistoryChart/FarmBusyUsageHistoryChart";
+import CurrentBladeUsagePieChart from "components/pages/HomePage/BladeStatePieChart/BladeStatePieChart";
+import BladeUsageHistoryStackAreaChart from "components/pages/HomePage/BladeUsageHistoryStackAreaChart/BladeUsageHistoryStackAreaChart";
+import CurrentProjectUsagePieChart from "components/pages/HomePage/CurrentProjectUsagePieChart/CurrentProjectUsagePieChart";
+import FarmBusyUsageHistoryChart from "components/pages/HomePage/FarmBusyUsageHistoryChart/FarmBusyUsageHistoryChart";
 import NumberStats from "components/pages/HomePage/NumberStats/NumberStats";
 import FadeIn from "react-fade-in";
 

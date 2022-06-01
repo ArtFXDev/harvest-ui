@@ -5,7 +5,7 @@ import { ResponsiveContainer } from "recharts";
 
 import styles from "./ChartContainer.module.scss";
 
-interface Props {
+interface ChartContainerProps {
   title: string;
   titleParenthesis?: string;
 
@@ -23,7 +23,7 @@ interface Props {
   height?: number;
 }
 
-const Chart = (props: Props): JSX.Element => {
+const Chart = (props: ChartContainerProps): JSX.Element => {
   // Expand style properties
   const style: {
     color?: string;
@@ -83,7 +83,7 @@ const Chart = (props: Props): JSX.Element => {
   );
 };
 
-const ChartContainer = (props: Props): JSX.Element => {
+const ChartContainer = (props: ChartContainerProps): JSX.Element => {
   return (
     <TrackVisibility offset={-300} partialVisibility once>
       {({ isVisible }) =>

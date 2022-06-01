@@ -49,6 +49,7 @@ export const BLADE_STATUS_COLOR: { [key in keyof BladeStatuses]: string } = {
   nimby: COLORS.blue,
   off: COLORS.purple,
   noFreeSlots: "#654e8d",
+  bug: "#e0497a",
 };
 
 export const TASK_STATUS_COLOR = {

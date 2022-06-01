@@ -15,7 +15,7 @@ import { last, sum } from "utils/array";
 import { COLORS } from "utils/colors";
 import * as DateUtils from "utils/date";
 
-import ChartContainer from "../ChartContainer/ChartContainer";
+import ChartContainer from "../../../common/ChartContainer/ChartContainer";
 
 /**
  * Convert an object of statuses to a percent value

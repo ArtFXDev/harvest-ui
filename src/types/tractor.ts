@@ -22,6 +22,8 @@ export interface Blade {
   lp: number;
   ns: number;
   cpu: number;
+
+  provides: string[] | null;
 }
 
 export interface Job {

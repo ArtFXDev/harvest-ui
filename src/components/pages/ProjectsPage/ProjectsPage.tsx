@@ -1,11 +1,7 @@
-import ProjectsHistoryChart from "components/charts/ProjectsHistoryChart/ProjectsHistoryChart";
+import ProjectsHistoryChart from "components/pages/ProjectsPage/ProjectsHistoryChart/ProjectsHistoryChart";
 
 const ProjectsPage = (): JSX.Element => (
   <>
-    {/*<ProjectsProgressChart />
-    <hr />
-    <ProjectsFrameRatioBarChart />
-    <hr />*/}
     <ProjectsHistoryChart />
   </>
 );
