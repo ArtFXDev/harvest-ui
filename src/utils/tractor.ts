@@ -2,7 +2,10 @@ import { BladeStatuses } from "types/api";
 import { Blade } from "types/tractor";
 
 export function getBladeStatus(blade: Blade): keyof BladeStatuses {
-  if (["BUG", "DONOTUSE"].includes(blade.profile)) {
+  if (
+    ["BUG", "DONOTUSE"].includes(blade.profile) ||
+    blade.note.startsWith("MinDisk")
+  ) {
     return "bug";
   }
 
