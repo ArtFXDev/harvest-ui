@@ -1,9 +1,8 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { GetParams, GetResponse, GetRoutes } from "types/api";
 import { apiGet } from "utils/api";
-import { singleDepthEqual } from "utils/diff";
 
-import { usePrevious } from "./utils";
+import { useDeepCompareEffect } from "./utils";
 
 export interface FetchConfig {
   /** Interval in ms to refetch data */
@@ -18,15 +17,9 @@ export function useFetchData<R extends keyof GetRoutes>(
   config: FetchConfig = {},
   params: Partial<GetParams<R>> = {}
 ) {
-  const previousParams = usePrevious(params);
   const [data, setData] = useState<GetResponse<R>>();
 
-  useEffect(() => {
-    // Make sure previous params are not equal
-    // It was creating an infinite loop since comparing an object was triggering useEffect every time
-    // See: https://stackoverflow.com/questions/54095994/react-useeffect-comparing-objects
-    if (previousParams && singleDepthEqual(params, previousParams)) return;
-
+  useDeepCompareEffect(() => {
     const fetchData = async () => {
       const result = await apiGet<R>(route, params);
       setData(result);
@@ -51,7 +44,7 @@ export function useFetchData<R extends keyof GetRoutes>(
     if (interval) {
       return () => clearInterval(interval as NodeJS.Timeout);
     }
-  }, [config.interval, params, previousParams, route]);
+  }, [config.interval, params, route]);
 
   return data;
 }
