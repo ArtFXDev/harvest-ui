@@ -34,13 +34,14 @@ const BladeUsageHistoryStackAreaChart = (): JSX.Element => {
   const formattedData =
     data &&
     data.map((entry) => {
-      const { busy, free, nimby, off, noFreeSlots } = entry;
+      const { busy, free, nimby, off, noFreeSlots, bug } = entry;
       const toPercent = normalizeToPercentWithTotal({
         busy,
         free,
         nimby,
         off,
         noFreeSlots,
+        bug,
       });
       return { ...toPercent, createdAt: new Date(entry.createdAt).getTime() };
     });
