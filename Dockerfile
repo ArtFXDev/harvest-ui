@@ -2,7 +2,7 @@ FROM node:lts-alpine AS build
 WORKDIR /home/
 RUN mkdir -p /home/build
 COPY package.json yarn.lock ./
-RUN yarn
+RUN yarn install --frozen-lockfile
 COPY . .
 RUN yarn build
 
