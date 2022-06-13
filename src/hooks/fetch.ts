@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { GetParams, GetResponse, GetRoutes } from "types/api";
+import useDeepCompareEffect from "use-deep-compare-effect";
 import { apiGet } from "utils/api";
-
-import { useDeepCompareEffect } from "./utils";
 
 export interface FetchConfig {
   /** Interval in ms to refetch data */
@@ -44,7 +43,7 @@ export function useFetchData<R extends keyof GetRoutes>(
     if (interval) {
       return () => clearInterval(interval as NodeJS.Timeout);
     }
-  }, [config.interval, params, route]);
+  }, [config, params, route]);
 
   return data;
 }
